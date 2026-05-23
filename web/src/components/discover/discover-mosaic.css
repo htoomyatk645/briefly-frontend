@@ -28,6 +28,10 @@
   gap: 0.5rem;
 }
 
+.home-header-actions {
+  gap: 4px;
+}
+
 .discover__viewport {
   flex: 1;
   min-height: 0;

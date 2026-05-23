@@ -6,12 +6,14 @@ import { JumpRightIn } from '../components/discover/JumpRightIn'
 import { ContinueListeningCard } from '../components/home/ContinueListeningCard'
 import { MOCK_HOME_FEED } from '../components/home/homeData'
 import { BrieflyLogo } from '../components/onboarding/BrieflyLogo'
-import { ThemeToggle } from '../components/ui/ThemeToggle'
+import { AccountMenuButton } from '../components/home/AccountMenuButton'
+import { ThemeIndicator } from '../components/ui/ThemeIndicator'
 import { categories, pulseEpisodes } from '../data/homeData'
 import '../components/home/home.css'
 import '../components/discover/discover-mosaic.css'
 import '../styles/sections.css'
 import '../styles/home-layout.css'
+import '../styles/header-actions.css'
 
 export type HomeProps = {
   onTileSelect: (id: string) => void
@@ -63,8 +65,9 @@ export const Home = ({ onTileSelect }: HomeProps) => {
           <div className="discover__brand" aria-label="Briefly">
             <BrieflyLogo />
           </div>
-          <div className="discover__actions">
-            <ThemeToggle />
+          <div className="discover__actions home-header-actions">
+            <ThemeIndicator />
+            <AccountMenuButton />
           </div>
         </header>
 

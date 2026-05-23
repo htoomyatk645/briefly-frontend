@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ThemeToggle } from '../ui/ThemeToggle'
+import { ThemeIndicator } from '../ui/ThemeIndicator'
 import { BrieflyLogo } from './BrieflyLogo'
 import { TypewriterText } from './TypewriterText'
 import { useWelcomeSequence } from './useWelcomeSequence'
@@ -18,7 +18,7 @@ export const WelcomeScreen = ({ onGetStarted }: WelcomeScreenProps) => {
   return (
     <section className="welcome-screen" aria-label="Welcome to Briefly">
       <div className="welcome-screen__theme">
-        <ThemeToggle />
+        <ThemeIndicator />
       </div>
 
       <div className="welcome-hero">

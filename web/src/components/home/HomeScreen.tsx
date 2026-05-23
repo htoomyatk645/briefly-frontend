@@ -1,4 +1,4 @@
-import { ThemeToggle } from '../ui/ThemeToggle'
+import { ThemeIndicator } from '../ui/ThemeIndicator'
 import { BrieflyLogo } from '../onboarding/BrieflyLogo'
 import { ContinueListeningCard } from './ContinueListeningCard'
 import { EpisodeFeedItem } from './EpisodeFeedItem'
@@ -53,7 +53,7 @@ export const HomeScreen = ({
           <BrieflyLogo />
         </div>
         <div className="home-header__actions">
-          <ThemeToggle />
+          <ThemeIndicator />
           <button
             type="button"
             className="home-header__icon-btn"

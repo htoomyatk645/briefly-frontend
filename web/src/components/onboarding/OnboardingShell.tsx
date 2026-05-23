@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { ThemeToggle } from '../ui/ThemeToggle'
+import { ThemeIndicator } from '../ui/ThemeIndicator'
 import './onboarding-shell.css'
 
 export type OnboardingShellProps = {
@@ -64,7 +64,7 @@ export const OnboardingShell = ({
         </div>
 
         <div className="onboarding-shell__tools">
-          <ThemeToggle />
+          <ThemeIndicator />
         </div>
       </header>
 

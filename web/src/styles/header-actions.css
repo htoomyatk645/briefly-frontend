@@ -1,0 +1,80 @@
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  cursor: default;
+  transition: background 180ms ease-out;
+}
+
+button.header-icon-btn {
+  cursor: pointer;
+}
+
+button.header-icon-btn:hover {
+  background: var(--header-icon-hover);
+}
+
+.theme-indicator {
+  pointer-events: auto;
+}
+
+.theme-indicator:hover {
+  background: var(--header-icon-hover);
+}
+
+.account-menu {
+  position: relative;
+}
+
+.account-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  transform-origin: top right;
+  z-index: 50;
+}
+
+.account-menu__item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 180ms ease-out;
+}
+
+.account-menu__item:hover {
+  background: var(--header-icon-hover);
+}
+
+.account-menu__item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-icon-btn,
+  .account-menu__item {
+    transition: none;
+  }
+}
