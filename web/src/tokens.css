@@ -1,0 +1,5 @@
+:root {
+  --duration-normal: 240ms;
+  --duration-entrance: 360ms;
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}

@@ -1,0 +1,35 @@
+/* Subsection header typography — extracted from legacy Trending section (.home-section__title / __subtitle) */
+
+.section-heading {
+  margin: 0 0 1rem;
+  font-family: var(--font-display, 'Fraunces', Georgia, serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-transform: none;
+}
+
+.section-subtitle {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.home-section__head {
+  margin-bottom: 1rem;
+}
+
+.home-section__head .section-heading {
+  margin-bottom: 0;
+}
+
+.home-section {
+  padding-inline: 16px;
+  margin-bottom: 2rem;
+}
+
+.home-section:last-child {
+  margin-bottom: 0;
+}

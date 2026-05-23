@@ -1,0 +1,55 @@
+@import './theme.css';
+@import './tokens.css';
+
+:root {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Geist', 'Inter', sans-serif;
+  --duration-entrance: 360ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  margin: 0;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button:focus-visible {
+  outline: none;
+}
+
+.app-toast {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 13px;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  z-index: 50;
+}

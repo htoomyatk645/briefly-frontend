@@ -1,0 +1,26 @@
+{
+  "huberman": {
+    "showName": "Huberman Lab",
+    "episodeTitle": "Restore Youthfulness & Vitality to the Aging Brain & Body | Dr. Tony Wyss-Coray",
+    "coverPath": "/feed/covers/huberman.jpg",
+    "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts221/v4/9a/d3/19/9ad31912-0b5a-a16e-2d7c-9fd074698b9c/mza_8994222203629500925.jpg/1000x1000bb.jpg"
+  },
+  "wsj": {
+    "showName": "WSJ Tech News Briefing",
+    "episodeTitle": "WSJ Tech News Briefing",
+    "coverPath": "/feed/covers/wsj.jpg",
+    "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/cd/0b/bb/cd0bbbae-acb2-1962-6653-6b4e0634db3c/mza_2669424987953808400.jpg/1000x1000bb.jpg"
+  },
+  "fa": {
+    "showName": "The Foreign Affairs Interview",
+    "episodeTitle": "The Foreign Affairs Interview",
+    "coverPath": "/feed/covers/foreign-affairs.jpg",
+    "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts116/v4/d3/47/d6/d347d6a6-6732-2349-0801-f1c76c9e3e69/mza_13598977958412175792.jpg/1000x1000bb.jpg"
+  },
+  "jay": {
+    "showName": "On Purpose with Jay Shetty",
+    "episodeTitle": "Why Monks Meditate in Early Sunrise & How You Can Too",
+    "coverPath": "/feed/covers/jay-shetty.jpg",
+    "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/5e/a1/69/5ea169e2-18c4-40b0-0982-2fda3476d9a4/mza_9372864784596222041.jpg/1000x1000bb.jpg"
+  }
+}

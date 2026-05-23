@@ -1,0 +1,38 @@
+/**
+ * Feed screen tokens
+ */
+.feed-screen,
+.tab-shell--feed {
+  --feed-bg: #18110f;
+  --feed-player-gradient: linear-gradient(
+    160deg,
+    #5bc8d4 0%,
+    #3aafbf 35%,
+    #2196a8 65%,
+    #1a7b9a 100%
+  );
+  --feed-player-radius: 2.75rem 2.75rem 0 0;
+
+  --feed-up-purple: #6d62a7;
+  --feed-up-navy: #16314e;
+  --feed-up-crimson: #5e2329;
+  --feed-peek-left-bg: #a7a6a4;
+  --feed-peek-right-bg: #ac5f4f;
+
+  --feed-glass-bg: rgba(255, 255, 255, 0.14);
+  --feed-glass-border: rgba(255, 255, 255, 0.26);
+  --feed-glass-shadow: 0 -1px 2px rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.1);
+  --feed-blur: blur(12px);
+  --feed-text: #ffffff;
+  --feed-font: 'Geist', sans-serif;
+  --feed-tab-bar-height: 5.25rem;
+}
+
+.feed-glass {
+  box-sizing: border-box;
+  background: var(--feed-glass-bg);
+  border: 1px solid var(--feed-glass-border);
+  box-shadow: var(--feed-glass-shadow);
+  backdrop-filter: var(--feed-blur);
+  -webkit-backdrop-filter: var(--feed-blur);
+}

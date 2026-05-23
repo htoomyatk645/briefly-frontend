@@ -1,0 +1,311 @@
+.listening-habits {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.listening-habits--shelled {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.listening-habits__header {
+  flex-shrink: 0;
+  padding: 0.25rem 0 1rem;
+}
+
+.listening-habits__title {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', Georgia, serif);
+  font-size: clamp(1.65rem, 5.5vw, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.listening-habits__subtitle {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.listening-habits__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0 4px 0.75rem;
+}
+
+.listening-habits__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.listening-habits__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 2px 1px 4px;
+}
+
+.listening-habit-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-height: 9.5rem;
+  width: 100%;
+  padding: 1rem 0.875rem 0.875rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--habit-surface, var(--surface));
+  color: var(--habit-ink, var(--text));
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.listening-habit-card__decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.listening-habit-card__decor::before,
+.listening-habit-card__decor::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Commute — dawn transit */
+.listening-habit-card--commute {
+  --habit-surface: #f6efe8;
+  --habit-ink: #3d3028;
+  --habit-accent: #c45a2a;
+}
+
+.listening-habit-card--commute .listening-habit-card__decor::before {
+  width: 72%;
+  height: 68%;
+  top: -28%;
+  right: -22%;
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(201, 24, 74, 0.22) 0%,
+    rgba(201, 24, 74, 0) 68%
+  );
+}
+
+.listening-habit-card--commute .listening-habit-card__decor::after {
+  width: 48%;
+  height: 44%;
+  bottom: -18%;
+  left: -12%;
+  background: radial-gradient(
+    circle,
+    rgba(53, 56, 57, 0.08) 0%,
+    rgba(53, 56, 57, 0) 70%
+  );
+}
+
+/* Work — clean desk */
+.listening-habit-card--work {
+  --habit-surface: #eef2f6;
+  --habit-ink: #1e3344;
+  --habit-accent: #3d6b8c;
+}
+
+.listening-habit-card--work .listening-habit-card__decor::before {
+  width: 80%;
+  height: 55%;
+  top: -20%;
+  left: -15%;
+  background: linear-gradient(
+    135deg,
+    rgba(61, 107, 140, 0.16) 0%,
+    rgba(61, 107, 140, 0) 72%
+  );
+  border-radius: 28% 72% 0 48%;
+}
+
+.listening-habit-card--work .listening-habit-card__decor::after {
+  width: 40%;
+  height: 40%;
+  bottom: 8%;
+  right: -8%;
+  background: rgba(31, 35, 36, 0.05);
+}
+
+/* Sleep — night calm */
+.listening-habit-card--sleep {
+  --habit-surface: #ebeaf4;
+  --habit-ink: #2a2848;
+  --habit-accent: #4a4670;
+}
+
+.listening-habit-card--sleep .listening-habit-card__decor::before {
+  width: 65%;
+  height: 65%;
+  top: -18%;
+  right: -10%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    rgba(74, 70, 112, 0.2) 0%,
+    rgba(74, 70, 112, 0) 70%
+  );
+}
+
+.listening-habit-card--sleep .listening-habit-card__decor::after {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  top: 22%;
+  left: 18%;
+  background: rgba(74, 70, 112, 0.35);
+  box-shadow:
+    28px 8px 0 rgba(74, 70, 112, 0.25),
+    52px 20px 0 rgba(74, 70, 112, 0.18),
+    14px 32px 0 rgba(74, 70, 112, 0.2);
+}
+
+/* Workout — kinetic warmth */
+.listening-habit-card--workout {
+  --habit-surface: #faede8;
+  --habit-ink: #4a2418;
+  --habit-accent: var(--primary);
+}
+
+.listening-habit-card--workout .listening-habit-card__decor::before {
+  width: 90%;
+  height: 70%;
+  bottom: -35%;
+  right: -25%;
+  background: radial-gradient(
+    circle at 50% 30%,
+    rgba(201, 24, 74, 0.28) 0%,
+    rgba(201, 24, 74, 0) 65%
+  );
+}
+
+.listening-habit-card--workout .listening-habit-card__decor::after {
+  width: 55%;
+  height: 30%;
+  top: 10%;
+  left: -20%;
+  background: linear-gradient(
+    90deg,
+    rgba(201, 24, 74, 0.12) 0%,
+    rgba(201, 24, 74, 0) 100%
+  );
+  border-radius: 40%;
+  transform: rotate(-12deg);
+}
+
+.listening-habit-card__icon-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto;
+  color: var(--habit-ink);
+}
+
+.listening-habit-card__copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.listening-habit-card__label {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--habit-ink);
+}
+
+.listening-habit-card__description {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--habit-ink) 72%, transparent);
+}
+
+.listening-habit-card:hover:not([aria-pressed='true']) {
+  border-color: color-mix(in srgb, var(--habit-ink) 16%, transparent);
+}
+
+.listening-habit-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.listening-habit-card[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, var(--habit-surface));
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.listening-habit-card[aria-pressed='true'] .listening-habit-card__label {
+  color: var(--text);
+}
+
+.listening-habit-card[aria-pressed='true'] .listening-habit-card__description {
+  color: var(--text-secondary);
+}
+
+.listening-habit-card__check {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  z-index: 2;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  pointer-events: none;
+}
+
+.listening-habits__footer {
+  flex-shrink: 0;
+  padding-top: 0.75rem;
+}
+
+.listening-habits__footer .btn-pill-primary {
+  width: 100%;
+}
+
+.listening-habits__footer .btn-pill-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listening-habit-card {
+    transition: none;
+  }
+}

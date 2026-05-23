@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Briefly Token Preview</title>
+  <style>
+    :root {
+      --terracotta: #E44D2E;
+      --gunmetal: #353839;
+      --seashell: #FFF5EE;
+      --button-grey: #EBEBEB;
+      --text-secondary: rgba(53, 56, 57, 0.78);
+      --text-muted: rgba(53, 56, 57, 0.56);
+      --border-subtle: rgba(53, 56, 57, 0.10);
+      --border-default: rgba(53, 56, 57, 0.18);
+      --border-accent: rgba(228, 77, 46, 0.34);
+      --accent-muted: rgba(228, 77, 46, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Geist", "Inter", Arial, sans-serif;
+      background: var(--seashell);
+      color: var(--gunmetal);
+      padding: 28px;
+      line-height: 1.45;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    .sub {
+      margin: 0 0 24px;
+      color: var(--text-secondary);
+    }
+
+    .section {
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .swatch {
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .tone {
+      height: 78px;
+    }
+
+    .meta {
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .name {
+      font-weight: 600;
+      margin: 0 0 2px;
+    }
+
+    .hex {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .combos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .combo-card {
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid var(--border-default);
+      min-height: 170px;
+    }
+
+    .combo-title {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .combo-copy {
+      margin: 0 0 14px;
+      font-size: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid transparent;
+    }
+
+    .chip {
+      display: inline-block;
+      margin-top: 10px;
+      border-radius: 9999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid transparent;
+    }
+  </style>
+</head>
+<body>
+  <h1>Briefly Palette Preview</h1>
+  <p class="sub">Updated set: Fiery Terracotta, Gunmetal, Seashell, and Button Grey</p>
+
+  <section class="section">
+    <h2 class="section-title">Core Colors</h2>
+    <div class="grid">
+      <article class="swatch">
+        <div class="tone" style="background:#E44D2E;"></div>
+        <div class="meta">
+          <p class="name">Fiery Terracotta</p>
+          <p class="hex">#E44D2E</p>
+        </div>
+      </article>
+      <article class="swatch">
+        <div class="tone" style="background:#353839;"></div>
+        <div class="meta">
+          <p class="name">Gunmetal</p>
+          <p class="hex">#353839</p>
+        </div>
+      </article>
+      <article class="swatch">
+        <div class="tone" style="background:#FFF5EE;"></div>
+        <div class="meta">
+          <p class="name">Seashell</p>
+          <p class="hex">#FFF5EE</p>
+        </div>
+      </article>
+      <article class="swatch">
+        <div class="tone" style="background:#EBEBEB;"></div>
+        <div class="meta">
+          <p class="name">Button Grey</p>
+          <p class="hex">#EBEBEB</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Complementary Pairings</h2>
+    <div class="combos">
+      <article class="combo-card" style="background:#FFF5EE;color:#353839;">
+        <h3 class="combo-title">Editorial Surface</h3>
+        <p class="combo-copy">Seashell background with Gunmetal text for long-form reading and UI clarity.</p>
+        <span class="btn" style="background:#353839;color:#FFF5EE;border-color:#E44D2E;">Primary Action</span>
+      </article>
+
+      <article class="combo-card" style="background:#353839;color:#FFF5EE;border-color:rgba(228,77,46,0.34);">
+        <h3 class="combo-title">Inverse Panel</h3>
+        <p class="combo-copy">Gunmetal sections with Seashell type and Terracotta accents for contrast blocks.</p>
+        <span class="chip" style="background:rgba(228,77,46,0.12);color:#E44D2E;border-color:rgba(228,77,46,0.34);">Accent Chip</span>
+      </article>
+
+      <article class="combo-card" style="background:#EBEBEB;color:#353839;">
+        <h3 class="combo-title">Secondary Action</h3>
+        <p class="combo-copy">Button Grey controls reduce emphasis while preserving readability and hierarchy.</p>
+        <span class="btn" style="background:#EBEBEB;color:#353839;border-color:rgba(53,56,57,0.18);">Secondary Button</span>
+      </article>
+    </div>
+  </section>
+</body>
+</html>

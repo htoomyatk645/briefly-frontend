@@ -1,0 +1,186 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  DEFAULT_FEED_ID,
+  FEED_QUEUE,
+  getEpisodeById,
+  getUpNextItems,
+  mosaicIdToFeedId,
+} from './feedData'
+import type { MoreMenuAction } from './player/MoreMenu'
+import {
+  readFollowedShowIds,
+  readSavedEpisodeIds,
+  writeFollowedShowIds,
+  writeSavedEpisodeIds,
+} from './player/playerStorage'
+import { PlayerCard } from './PlayerCard'
+import { UpNextCarousel } from './UpNextCarousel'
+import { usePlayback } from './usePlayback'
+import './clip-feed.css'
+
+type ClipFeedProps = {
+  selectedEpisodeId?: string | null
+  onPlayEpisode?: (id: string) => void
+}
+
+function resolveInitialId(selectedEpisodeId?: string | null): string {
+  if (!selectedEpisodeId) return DEFAULT_FEED_ID
+  const match = FEED_QUEUE.find((e) => e.id === selectedEpisodeId)
+  if (match) return match.id
+  return mosaicIdToFeedId(selectedEpisodeId)
+}
+
+export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) => {
+  const [nowPlayingId, setNowPlayingId] = useState(() => resolveInitialId(selectedEpisodeId))
+  const [savedIds, setSavedIds] = useState(() => readSavedEpisodeIds())
+  const [followedShows, setFollowedShows] = useState(() => readFollowedShowIds())
+  const [toast, setToast] = useState<string | null>(null)
+  const autoPlayNext = useRef(false)
+
+  const nowPlaying = useMemo(
+    () => getEpisodeById(nowPlayingId) ?? FEED_QUEUE[0],
+    [nowPlayingId],
+  )
+
+  const upNextItems = useMemo(() => getUpNextItems(nowPlayingId), [nowPlayingId])
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg)
+    window.setTimeout(() => setToast(null), 2400)
+  }, [])
+
+  const playNextInQueue = useCallback(() => {
+    if (upNextItems.length === 0) return
+    const nextId = upNextItems[0].id
+    autoPlayNext.current = true
+    setNowPlayingId(nextId)
+    onPlayEpisode?.(nextId)
+  }, [upNextItems, onPlayEpisode])
+
+  const playback = usePlayback({
+    durationSeconds: nowPlaying.durationSeconds,
+    initialSeconds: nowPlaying.startSeconds ?? 0,
+    onEnded: playNextInQueue,
+  })
+
+  useEffect(() => {
+    if (autoPlayNext.current) {
+      autoPlayNext.current = false
+      playback.play()
+    }
+  }, [nowPlayingId, playback])
+
+  useEffect(() => {
+    setNowPlayingId(resolveInitialId(selectedEpisodeId))
+  }, [selectedEpisodeId])
+
+  const selectFromUpNext = useCallback(
+    (id: string) => {
+      setNowPlayingId(id)
+      onPlayEpisode?.(id)
+      playback.play()
+    },
+    [onPlayEpisode, playback],
+  )
+
+  const goNext = useCallback(() => {
+    playNextInQueue()
+    playback.play()
+  }, [playNextInQueue, playback])
+
+  const goPrev = useCallback(() => {
+    const idx = FEED_QUEUE.findIndex((e) => e.id === nowPlayingId)
+    const prev = FEED_QUEUE[(idx - 1 + FEED_QUEUE.length) % FEED_QUEUE.length]
+    setNowPlayingId(prev.id)
+    onPlayEpisode?.(prev.id)
+    playback.play()
+  }, [nowPlayingId, onPlayEpisode, playback])
+
+  const toggleSaved = useCallback(() => {
+    setSavedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(nowPlayingId)) next.delete(nowPlayingId)
+      else next.add(nowPlayingId)
+      writeSavedEpisodeIds(next)
+      return next
+    })
+  }, [nowPlayingId])
+
+  const toggleFollow = useCallback(() => {
+    setFollowedShows((prev) => {
+      const next = new Set(prev)
+      if (next.has(nowPlaying.showId)) next.delete(nowPlaying.showId)
+      else next.add(nowPlaying.showId)
+      writeFollowedShowIds(next)
+      return next
+    })
+  }, [nowPlaying.showId])
+
+  const handleMoreAction = useCallback(
+    (action: MoreMenuAction) => {
+      switch (action) {
+        case 'similar':
+          showToast('Three similar episodes added to Up Next')
+          break
+        case 'not-similar':
+          showToast("We'll show fewer episodes like this")
+          break
+        case 'unplayed':
+          playback.seek(0)
+          showToast('Marked as unplayed')
+          break
+        case 'report':
+          showToast('Thanks — we will review this report')
+          break
+        case 'share': {
+          const t = playback.formatTime(playback.currentTime)
+          const text = `Listen to "${nowPlaying.episodeTitle}" at ${t}`
+          if (navigator.share) {
+            void navigator.share({ title: nowPlaying.showName, text, url: window.location.href })
+          } else {
+            void navigator.clipboard.writeText(`${text}\n${window.location.href}`)
+            showToast('Link copied with timestamp')
+          }
+          break
+        }
+        default:
+          break
+      }
+    },
+    [nowPlaying, playback, showToast],
+  )
+
+  return (
+    <div className="feed-screen">
+      {toast ? <div className="player-toast" role="status">{toast}</div> : null}
+
+      <UpNextCarousel
+        items={upNextItems}
+        queueDepth={upNextItems.length}
+        onSelect={selectFromUpNext}
+      />
+
+      <PlayerCard
+        episode={nowPlaying}
+        isPlaying={playback.isPlaying}
+        currentTime={playback.currentTime}
+        duration={playback.duration}
+        progress={playback.progress}
+        playbackRate={playback.playbackRate}
+        saved={savedIds.has(nowPlayingId)}
+        following={followedShows.has(nowPlaying.showId)}
+        onTogglePlay={playback.togglePlay}
+        onSeek={playback.seek}
+        onRewind15={playback.rewind15}
+        onForward30={playback.forward30}
+        onPrev={goPrev}
+        onNext={goNext}
+        onSetSpeed={playback.setSpeed}
+        onToggleSaved={toggleSaved}
+        onToggleFollow={toggleFollow}
+        onMoreAction={handleMoreAction}
+        onShowPage={() => showToast(`Opening ${nowPlaying.showName}`)}
+      />
+    </div>
+  )
+}

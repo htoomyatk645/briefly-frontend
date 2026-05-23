@@ -1,0 +1,7 @@
+{
+  "name": "@briefly/tokens",
+  "version": "0.0.1",
+  "private": true,
+  "main": "colors.ts",
+  "types": "colors.ts"
+}

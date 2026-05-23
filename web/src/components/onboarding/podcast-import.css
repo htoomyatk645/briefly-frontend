@@ -1,0 +1,119 @@
+.podcast-import {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.podcast-import--shelled {
+  padding: 0.25rem 1.25rem 1.25rem;
+}
+
+.podcast-import__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+}
+
+.podcast-import__title {
+  margin: 0;
+  max-width: 14ch;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: clamp(2rem, 7.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.podcast-import__subtitle {
+  margin: 1rem 0 0;
+  max-width: 22rem;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.podcast-import__options {
+  margin-top: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.podcast-import-option {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.875rem 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.podcast-import-option:hover {
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.podcast-import-option:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.podcast-import-option__icon {
+  flex-shrink: 0;
+  display: flex;
+  line-height: 0;
+}
+
+.podcast-import-option__label {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.podcast-import__footer {
+  flex-shrink: 0;
+  padding: 1.5rem 0 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-pill-skip {
+  width: 100%;
+  max-width: 22rem;
+  min-height: 3.5rem;
+  padding: 0.875rem 2rem;
+  border: none;
+  border-radius: 9999px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 0 1px 0 var(--border-strong);
+  transition:
+    background 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-pill-skip:hover {
+  background: var(--surface-alt);
+}
+
+.btn-pill-skip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
