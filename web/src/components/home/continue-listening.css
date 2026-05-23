@@ -1,0 +1,110 @@
+.continue-listening__scroller {
+  display: flex;
+  gap: 12px;
+  margin-inline: -16px;
+  padding-inline: 16px;
+  overflow-x: auto;
+  scroll-padding-inline: 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.continue-listening__scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.continue-listening__item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.continue-listening-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 160px;
+  height: 96px;
+  padding: 0;
+  padding-left: 12px;
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  background: hsl(var(--continue-card-h) var(--continue-card-s) 92%);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+:root[data-theme='dark'] .continue-listening-card {
+  background: hsl(var(--continue-card-h) var(--continue-card-s) 22%);
+}
+
+.continue-listening-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.continue-listening-card__art {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.continue-listening-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding-right: 10px;
+}
+
+.continue-listening-card__show {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.continue-listening-card__title {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.continue-listening-card__progress {
+  display: block;
+  height: 3px;
+  margin-top: 2px;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.2);
+  overflow: hidden;
+}
+
+.continue-listening-card__progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #C9184A;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .continue-listening-card {
+    transition: none;
+  }
+}

@@ -1,4 +1,5 @@
 import { MOCK_HOME_FEED } from '../home/homeData'
+import { continueListeningEpisodes } from '../../data/homeData'
 
 export type MosaicItem = {
   id: string
@@ -32,14 +33,13 @@ function flatten(): MosaicItem[] {
     })
   }
 
-  for (const cl of MOCK_HOME_FEED.continueListening) {
+  for (const cl of continueListeningEpisodes) {
     items.push({
       id: cl.id,
       showName: cl.showName,
       episodeTitle: cl.episodeTitle,
-      artworkTone: cl.artworkTone,
+      artworkTone: 'slate',
       coverSrc: cl.coverSrc,
-      durationLabel: cl.durationLabel,
     })
   }
 

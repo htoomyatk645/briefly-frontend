@@ -1,13 +1,3 @@
-export type ContinueListeningItem = {
-  id: string
-  showName: string
-  episodeTitle: string
-  artworkTone: string
-  coverSrc?: string
-  progress: number
-  durationLabel: string
-}
-
 export type EpisodeRecommendation = {
   id: string
   showName: string
@@ -30,7 +20,6 @@ export type NewEpisodeItem = {
 }
 
 export type HomeFeedData = {
-  continueListening: ContinueListeningItem[]
   featured: EpisodeRecommendation
   recommendations: EpisodeRecommendation[]
   newEpisodes: NewEpisodeItem[]

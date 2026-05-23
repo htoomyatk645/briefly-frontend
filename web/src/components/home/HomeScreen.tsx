@@ -1,10 +1,11 @@
 import { ThemeIndicator } from '../ui/ThemeIndicator'
 import { BrieflyLogo } from '../onboarding/BrieflyLogo'
-import { ContinueListeningCard } from './ContinueListeningCard'
+import { ContinueListeningSection } from './ContinueListeningCard'
 import { EpisodeFeedItem } from './EpisodeFeedItem'
 import { FeaturedEpisodeCard } from './FeaturedEpisodeCard'
 import { MOCK_HOME_FEED } from './homeData'
 import { NewEpisodeFeedItem } from './NewEpisodeFeedItem'
+import { continueListeningEpisodes } from '../../data/homeData'
 import type { HomeFeedData } from './types'
 import './home.css'
 
@@ -44,7 +45,7 @@ export const HomeScreen = ({
   onProfile,
 }: HomeScreenProps) => {
   const hasContinue =
-    showContinueListening && feed.continueListening.length > 0
+    showContinueListening && continueListeningEpisodes.length > 0
 
   return (
     <main className="home-screen" aria-label="Home feed">
@@ -75,22 +76,10 @@ export const HomeScreen = ({
 
       <div className="home-scroll">
         {hasContinue ? (
-          <section className="home-section" aria-labelledby="continue-heading">
-            <div className="home-section__head">
-              <h2 id="continue-heading" className="home-section__title">
-                Continue listening
-              </h2>
-            </div>
-            <div className="home-rail" role="list">
-              {feed.continueListening.map((item) => (
-                <ContinueListeningCard
-                  key={item.id}
-                  item={item}
-                  onPress={onPlayEpisode}
-                />
-              ))}
-            </div>
-          </section>
+          <ContinueListeningSection
+            episodes={continueListeningEpisodes}
+            onPress={onPlayEpisode}
+          />
         ) : null}
 
         <section className="home-section" aria-labelledby="for-you-heading">

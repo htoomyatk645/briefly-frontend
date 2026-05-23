@@ -3,12 +3,11 @@ import { useEffect, useRef } from 'react'
 import { BrowseChannels } from '../components/BrowseChannels'
 import { PulseShelf } from '../components/PulseShelf'
 import { JumpRightIn } from '../components/discover/JumpRightIn'
-import { ContinueListeningCard } from '../components/home/ContinueListeningCard'
-import { MOCK_HOME_FEED } from '../components/home/homeData'
 import { BrieflyLogo } from '../components/onboarding/BrieflyLogo'
 import { AccountMenuButton } from '../components/home/AccountMenuButton'
 import { ThemeIndicator } from '../components/ui/ThemeIndicator'
-import { categories, pulseEpisodes } from '../data/homeData'
+import { ContinueListeningSection } from '../components/home/ContinueListeningCard'
+import { categories, continueListeningEpisodes, pulseEpisodes } from '../data/homeData'
 import '../components/home/home.css'
 import '../components/discover/discover-mosaic.css'
 import '../styles/sections.css'
@@ -21,8 +20,6 @@ export type HomeProps = {
 }
 
 export const Home = ({ onTileSelect }: HomeProps) => {
-  const feed = MOCK_HOME_FEED
-  const hasContinue = feed.continueListening.length > 0
   const chipsRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
 
@@ -77,25 +74,10 @@ export const Home = ({ onTileSelect }: HomeProps) => {
           <PulseShelf episodes={pulseEpisodes} onPlay={onTileSelect} />
         </div>
 
-        {hasContinue ? (
-          <section className="home-section" aria-labelledby="continue-listening-heading">
-            <div className="home-section__head">
-              <h2 id="continue-listening-heading" className="section-heading">
-                Continue listening
-              </h2>
-              <p className="section-subtitle">Pick up where you paused</p>
-            </div>
-            <div className="home-rail" role="list">
-              {feed.continueListening.map((item) => (
-                <ContinueListeningCard
-                  key={item.id}
-                  item={item}
-                  onPress={onTileSelect}
-                />
-              ))}
-            </div>
-          </section>
-        ) : null}
+        <ContinueListeningSection
+          episodes={continueListeningEpisodes}
+          onPress={onTileSelect}
+        />
       </div>
     </div>
   )

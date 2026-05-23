@@ -1,5 +1,15 @@
 import { colors } from '../../../packages/tokens/colors'
-import { PODCAST_COVERS } from './podcastCatalog'
+import { PLAYER_EPISODES, PODCAST_COVERS } from './podcastCatalog'
+
+export type ContinueListeningEpisode = {
+  id: string
+  showName: string
+  episodeTitle: string
+  coverSrc: string
+  progress: number
+  /** Build-time dominant color from cover art (color-thief). Hue/sat used for card tint. */
+  dominantColor: string
+}
 
 export type PulseEpisode = {
   id: string
@@ -31,6 +41,50 @@ export type BrowseCategory = {
     | 'cpu'
     | 'users'
 }
+
+/** Dominant colors extracted via `node scripts/extract-continue-colors.mjs` */
+export const continueListeningEpisodes: ContinueListeningEpisode[] = [
+  {
+    id: 'cl-1',
+    showName: PLAYER_EPISODES.huberman.showName,
+    episodeTitle: PLAYER_EPISODES.huberman.episodeTitle,
+    coverSrc: PODCAST_COVERS.huberman,
+    progress: 0.42,
+    dominantColor: 'hsl(152 29% 62%)',
+  },
+  {
+    id: 'cl-2',
+    showName: 'The Daily',
+    episodeTitle: 'Nicolas Cage Made Himself a Legend. Then He Had to Live With It.',
+    coverSrc: PODCAST_COVERS.theDaily,
+    progress: 0.68,
+    dominantColor: 'hsl(197 100% 40%)',
+  },
+  {
+    id: 'cl-3',
+    showName: 'Acquired',
+    episodeTitle: 'NVIDIA',
+    coverSrc: PODCAST_COVERS.acquired,
+    progress: 0.15,
+    dominantColor: 'hsl(177 75% 11%)',
+  },
+  {
+    id: 'cl-4',
+    showName: 'Hard Fork',
+    episodeTitle: 'Our Field Trip to Google I/O + A Sit-Down With Sundar Pichai',
+    coverSrc: PODCAST_COVERS.hardFork,
+    progress: 0.31,
+    dominantColor: 'hsl(59 79% 54%)',
+  },
+  {
+    id: 'cl-5',
+    showName: 'Radiolab',
+    episodeTitle: 'The Wubi Effect',
+    coverSrc: PODCAST_COVERS.radiolab,
+    progress: 0.57,
+    dominantColor: 'hsl(6 100% 63%)',
+  },
+]
 
 export const pulseEpisodes: PulseEpisode[] = [
   {

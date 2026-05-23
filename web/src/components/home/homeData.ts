@@ -2,35 +2,6 @@ import { PODCAST_COVERS, PLAYER_EPISODES } from '../../data/podcastCatalog'
 import type { HomeFeedData } from './types'
 
 export const MOCK_HOME_FEED: HomeFeedData = {
-  continueListening: [
-    {
-      id: 'cl-1',
-      showName: PLAYER_EPISODES.huberman.showName,
-      episodeTitle: PLAYER_EPISODES.huberman.episodeTitle,
-      artworkTone: 'teal',
-      coverSrc: PODCAST_COVERS.huberman,
-      progress: 0.42,
-      durationLabel: '18 min left',
-    },
-    {
-      id: 'cl-2',
-      showName: 'The Daily',
-      episodeTitle: 'Nicolas Cage Made Himself a Legend. Then He Had to Live With It.',
-      artworkTone: 'slate',
-      coverSrc: PODCAST_COVERS.theDaily,
-      progress: 0.68,
-      durationLabel: '8 min left',
-    },
-    {
-      id: 'cl-3',
-      showName: 'Acquired',
-      episodeTitle: 'NVIDIA',
-      artworkTone: 'ember',
-      coverSrc: PODCAST_COVERS.acquired,
-      progress: 0.15,
-      durationLabel: '52 min left',
-    },
-  ],
   featured: {
     id: 'feat-1',
     showName: PLAYER_EPISODES.jayShetty.showName,
