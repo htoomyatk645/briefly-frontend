@@ -16,7 +16,6 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 1.25rem 0.5rem;
-  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
 }
 
 .discover__brand .welcome-logo {

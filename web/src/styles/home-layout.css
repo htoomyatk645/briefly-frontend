@@ -1,0 +1,35 @@
+/* Sticky top-of-page Explore Channels + header stack */
+
+.home-explore-channels-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding-bottom: 16px;
+  padding-inline: 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: hsl(0 0% 100% / 0.7);
+}
+
+[data-theme='dark'] .home-explore-channels-sticky {
+  background: hsl(0 0% 8% / 0.7);
+}
+
+.home-sticky-header {
+  position: sticky;
+  top: var(--home-chips-height, 0px);
+  z-index: 30;
+  background: var(--bg);
+}
+
+.home-explore-channels-sticky .home-shelf {
+  margin-bottom: 0;
+  padding-inline: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-explore-channels-sticky {
+    transition: none;
+  }
+}
