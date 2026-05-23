@@ -4,23 +4,17 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding-top: 12px;
   padding-bottom: 16px;
   padding-inline: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: hsl(0 0% 100% / 0.7);
-}
-
-[data-theme='dark'] .home-explore-channels-sticky {
-  background: hsl(0 0% 8% / 0.7);
+  background: var(--bg-page);
 }
 
 .home-sticky-header {
   position: sticky;
   top: var(--home-chips-height, 0px);
   z-index: 30;
-  background: var(--bg);
+  background: var(--bg-page);
 }
 
 .home-explore-channels-sticky .home-shelf {
@@ -29,7 +23,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-explore-channels-sticky {
+  .discover.home-page,
+  .discover__viewport,
+  .tab-shell {
     transition: none;
   }
 }

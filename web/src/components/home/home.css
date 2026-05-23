@@ -4,9 +4,10 @@
   flex-direction: column;
   height: 100dvh;
   max-height: 100dvh;
-  background: var(--bg);
+  background: var(--bg-page);
   overflow: hidden;
   position: relative;
+  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tab-shell__content {

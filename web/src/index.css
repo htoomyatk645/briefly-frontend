@@ -10,7 +10,9 @@
 :root[data-theme='light'] {
   color-scheme: light;
 
-  --bg: #FAF8F8;
+  --bg-page: hsl(40 20% 97%);
+  --bg-content: hsl(40 20% 97%);
+  --bg: hsl(40 20% 97%);
   --surface: #FFFFFF;
   --surface-alt: #F1ECEC;
   --primary: #C9184A;
@@ -37,7 +39,9 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --bg: #18110F;
+  --bg-page: hsl(20 6% 7%);
+  --bg-content: hsl(20 6% 7%);
+  --bg: hsl(20 6% 7%);
   --surface: #221917;
   --surface-alt: #261A18;
   --primary: #FF6B8E;
@@ -73,6 +77,13 @@ body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
+  background: var(--bg-page);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #root {
@@ -80,11 +91,15 @@ body {
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
+  background: var(--bg-page);
+  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@media (prefers-reduced-motion: reduce) {
+  body,
+  #root {
+    transition: none;
+  }
 }
 
 button:focus-visible {
