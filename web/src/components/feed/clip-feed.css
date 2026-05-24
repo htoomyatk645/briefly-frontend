@@ -75,46 +75,23 @@
 
 .up-next__carousel-wrap {
   position: relative;
-  display: flex;
-  align-items: center;
   flex: 1;
   min-height: 0;
-}
-
-.up-next__peek {
-  flex-shrink: 0;
-  width: 0.65rem;
-  height: 155px;
+  padding-inline: 16px;
   overflow: hidden;
-  border: 1px solid var(--feed-glass-border);
-  box-shadow: var(--feed-glass-shadow);
-}
-
-.up-next__peek--left {
-  background: var(--feed-peek-left-bg);
-  border-radius: 0 1rem 1rem 0;
-  margin-right: -0.2rem;
-  z-index: 2;
-}
-
-.up-next__peek--right {
-  background: var(--feed-peek-right-bg);
-  border-radius: 1rem 0 0 1rem;
-  margin-left: -0.2rem;
-  z-index: 2;
 }
 
 .up-next__track {
-  flex: 1;
-  min-width: 0;
   display: flex;
-  gap: 0.625rem;
+  gap: 10px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: 0.5rem;
   scrollbar-width: none;
-  padding: 0 0.35rem;
   -webkit-overflow-scrolling: touch;
+}
+
+.up-next__track[data-loading] {
+  opacity: 0.5;
 }
 
 .up-next__track::-webkit-scrollbar {
@@ -122,32 +99,38 @@
 }
 
 .up-next__card {
-  flex: 0 0 120px;
-  width: 120px;
-  height: 155px;
+  flex: 0 0 130px;
+  width: 130px;
+  height: 170px;
   scroll-snap-align: center;
   position: relative;
   display: block;
   padding: 0;
-  border: 1px solid var(--feed-glass-border);
-  border-radius: 14px;
+  border: none;
+  border-radius: 16px;
   overflow: hidden;
   text-align: left;
   cursor: pointer;
   color: var(--feed-text);
-  box-shadow: var(--feed-glass-shadow);
+  background: var(--feed-glass-bg);
 }
 
-.up-next__card--purple {
-  background: var(--feed-up-purple);
+.up-next__card--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  border: 1px solid var(--feed-glass-border);
 }
 
-.up-next__card--navy {
-  background: var(--feed-up-navy);
-}
-
-.up-next__card--crimson {
-  background: var(--feed-up-crimson);
+.up-next__card-placeholder-text {
+  margin: 0;
+  padding: 8px;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 .up-next__card:focus-visible {
@@ -165,13 +148,11 @@
 
 .up-next__card-scrim {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    transparent 30%,
-    rgba(0, 0, 0, 0.35) 55%,
-    rgba(0, 0, 0, 0.78) 100%
-  );
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45%;
+  background: linear-gradient(180deg, transparent 0%, hsl(0 0% 0% / 0.85) 100%);
   pointer-events: none;
 }
 
@@ -183,9 +164,11 @@
   margin: 0;
   padding: 8px;
   z-index: 1;
-  font-size: 0.5625rem;
-  font-weight: 800;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
   line-height: 1.25;
+  color: hsl(0 0% 100%);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -195,22 +178,21 @@
 
 .up-next__card-action {
   position: absolute;
-  right: 0.35rem;
-  bottom: 0.35rem;
+  right: 8px;
+  bottom: 8px;
   z-index: 2;
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.22);
-  border: 1px solid var(--feed-glass-border);
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .up-next__card-action-icon {
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 12px;
+  height: 12px;
   object-fit: contain;
 }
 
@@ -226,34 +208,27 @@
 .up-next__dot {
   padding: 0;
   border: none;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.28);
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.35);
   cursor: pointer;
   flex-shrink: 0;
 }
 
-.up-next__dot--size-20 {
-  width: 0.35rem;
-  height: 0.35rem;
-}
-
-.up-next__dot--size-27 {
-  width: 0.45rem;
-  height: 0.45rem;
-  background: rgba(255, 255, 255, 0.45);
-}
-
-.up-next__dot--size-30 {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: rgba(255, 255, 255, 0.7);
-}
-
 .up-next__dot--active {
-  width: 1.125rem;
-  height: 0.28rem;
-  background: #ffffff;
-  border-radius: 9999px;
+  width: 16px;
+  height: 4px;
+  background: hsl(0 0% 100%);
+  border-radius: 999px;
+}
+
+.up-next__dot-ellipsis {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1;
+  color: hsl(0 0% 100% / 0.35);
+  user-select: none;
 }
 
 /* —— Player zone — fills remaining height —— */
