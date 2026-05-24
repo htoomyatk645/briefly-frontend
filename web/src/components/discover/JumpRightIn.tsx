@@ -428,7 +428,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     <section className="home-section jump-right-in" aria-labelledby="jump-right-in-heading">
       <div className="home-section__head jump-right-in__head">
         <h2 id="jump-right-in-heading" className="section-heading">
-          Jump Right In
+          Welcome back, Jump Right In
         </h2>
       </div>
 
