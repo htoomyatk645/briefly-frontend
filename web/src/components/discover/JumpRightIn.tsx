@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { MosaicTile } from './MosaicTile'
-import { MOSAIC_ITEMS, type MosaicItem } from './discoverData'
+import {
+  getMosaicBaseId,
+  MOSAIC_ITEMS,
+  tileMosaicLibrary,
+} from './discoverData'
 import '../../styles/sections.css'
 import './discover-mosaic.css'
 
@@ -9,16 +13,16 @@ const COLS = 5
 const MIN_ZOOM = 1
 const MAX_ZOOM = 2.5
 const AUTO_COMMIT_ZOOM = 2.3
-const BORDER_ZOOM_THRESHOLD = 1.15
 const LENS_CENTER_SCALE = 1.55
 const LENS_EDGE_SCALE = 1
+const LENS_PEAK_SCALE = 1.45
 const FOCUS_RADIUS_RATIO = 0.2
-const MIN_EDGE_OPACITY = 0.45
 const WHEEL_SENSITIVITY = 0.002
 const PINCH_SENSITIVITY = 0.012
 const FRICTION = 0.92
 const VELOCITY_STOP = 0.35
 const ONBOARDING_KEY = 'briefly_mosaic_onboarding_seen'
+const LIBRARY_TILE_COUNT = 60
 
 type JumpRightInProps = {
   onTileSelect: (id: string) => void
@@ -38,33 +42,6 @@ function buildRows<T>(items: T[], cols: number): T[][] {
     rowIdx++
   }
   return rows
-}
-
-function expandLibrary(items: MosaicItem[]): MosaicItem[] {
-  if (items.length === 0) return []
-
-  const targetCount = Math.max(56, items.length * 4)
-  const expanded: MosaicItem[] = []
-
-  for (let i = 0; i < targetCount; i += 1) {
-    const source = items[i % items.length]
-    if (i < items.length) {
-      expanded.push(source)
-    } else {
-      expanded.push({
-        id: `mosaic-placeholder-${i}`,
-        showName: source.showName,
-        episodeTitle: source.episodeTitle,
-        artworkTone: 'slate',
-      })
-    }
-  }
-
-  return expanded
-}
-
-function isSelectableItem(id: string): boolean {
-  return !id.startsWith('mosaic-placeholder-')
 }
 
 function pointerDistance(a: PointerSample, b: PointerSample): number {
@@ -90,11 +67,15 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
   const lastPointer = useRef({ x: 0, y: 0, t: 0 })
   const pointers = useRef(new Map<number, PointerSample>())
   const lastPinchDist = useRef<number | null>(null)
-  const gestureMode = useRef<'none' | 'pan' | 'pinch'>('none')
+  const wasPinching = useRef(false)
   const pinchSessionZoomedIn = useRef(false)
   const centeredItemId = useRef<string | null>(null)
+  const hasAlignedGrid = useRef(false)
 
-  const libraryItems = useMemo(() => expandLibrary(MOSAIC_ITEMS), [])
+  const libraryItems = useMemo(
+    () => tileMosaicLibrary(MOSAIC_ITEMS, LIBRARY_TILE_COUNT),
+    [],
+  )
   const rows = useMemo(() => buildRows(libraryItems, COLS), [libraryItems])
   const isEmpty = libraryItems.length === 0
 
@@ -115,10 +96,10 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     const centerY = regionRect.top + regionRect.height / 2
     const minDim = Math.min(regionRect.width, regionRect.height)
     const focusRadius = minDim * FOCUS_RADIUS_RATIO
-    const maxDist = Math.hypot(regionRect.width / 2, regionRect.height / 2)
 
     const tiles = region.querySelectorAll<HTMLElement>('.mosaic-tile')
     let focusedTileEl: HTMLElement | null = null
+    let focusedScale = LENS_EDGE_SCALE
     let closestDist = Infinity
 
     const tileList = [...tiles]
@@ -128,11 +109,6 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
       const tileCenterY = rect.top + rect.height / 2
       const dist = Math.hypot(tileCenterX - centerX, tileCenterY - centerY)
 
-      if (dist < closestDist) {
-        closestDist = dist
-        focusedTileEl = tile
-      }
-
       let scale = LENS_EDGE_SCALE
       if (dist <= focusRadius) {
         const t = dist / focusRadius
@@ -141,24 +117,63 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
           ((LENS_CENTER_SCALE - LENS_EDGE_SCALE) * (1 + Math.cos(t * Math.PI))) / 2
       }
 
-      const viewDist = Math.hypot(tileCenterX - centerX, tileCenterY - centerY)
-      const opacity =
-        MIN_EDGE_OPACITY + (1 - MIN_EDGE_OPACITY) * (1 - Math.min(1, viewDist / maxDist))
+      if (dist < closestDist) {
+        closestDist = dist
+        focusedTileEl = tile
+        focusedScale = scale
+      }
 
       tile.style.setProperty('--lens-scale', scale.toFixed(3))
-      tile.style.setProperty('--lens-opacity', opacity.toFixed(3))
     }
 
     for (const tile of tileList) {
-      tile.classList.remove('mosaic-tile--centered')
+      tile.classList.remove('mosaic-tile--centered', 'mosaic-tile--lens-peak')
     }
 
-    if (focusedTileEl !== null && zoom.current > BORDER_ZOOM_THRESHOLD) {
+    if (focusedTileEl !== null) {
       focusedTileEl.classList.add('mosaic-tile--centered')
+      if (focusedScale > LENS_PEAK_SCALE) {
+        focusedTileEl.classList.add('mosaic-tile--lens-peak')
+      }
     }
+
     centeredItemId.current =
       focusedTileEl !== null ? (focusedTileEl.dataset.itemId ?? null) : null
   }, [isEmpty])
+
+  const alignGridToLensCenter = useCallback(() => {
+    const region = mosaicRegionRef.current
+    if (!region || isEmpty) return
+
+    const regionRect = region.getBoundingClientRect()
+    const centerX = regionRect.left + regionRect.width / 2
+    const centerY = regionRect.top + regionRect.height / 2
+
+    const tiles = region.querySelectorAll<HTMLElement>('.mosaic-tile')
+    let focusedTileEl: HTMLElement | null = null
+    let closestDist = Infinity
+
+    for (const tile of tiles) {
+      const rect = tile.getBoundingClientRect()
+      const tileCenterX = rect.left + rect.width / 2
+      const tileCenterY = rect.top + rect.height / 2
+      const dist = Math.hypot(tileCenterX - centerX, tileCenterY - centerY)
+      if (dist < closestDist) {
+        closestDist = dist
+        focusedTileEl = tile
+      }
+    }
+
+    if (focusedTileEl === null) return
+
+    const rect = focusedTileEl.getBoundingClientRect()
+    const tileCenterX = rect.left + rect.width / 2
+    const tileCenterY = rect.top + rect.height / 2
+    panX.current += centerX - tileCenterX
+    panY.current += centerY - tileCenterY
+    applyCanvasTransform()
+    updateLens()
+  }, [applyCanvasTransform, isEmpty, updateLens])
 
   const tick = useCallback(() => {
     if (
@@ -189,6 +204,30 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
   }, [])
 
   useEffect(() => {
+    if (isLoading || isEmpty || hasAlignedGrid.current) return
+
+    const frame = requestAnimationFrame(() => {
+      alignGridToLensCenter()
+      hasAlignedGrid.current = true
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [alignGridToLensCenter, isEmpty, isLoading])
+
+  useEffect(() => {
+    const region = mosaicRegionRef.current
+    if (!region || isLoading || isEmpty) return
+
+    const observer = new ResizeObserver(() => {
+      if (pointers.current.size === 0 && zoom.current === MIN_ZOOM) {
+        alignGridToLensCenter()
+      }
+    })
+    observer.observe(region)
+    return () => observer.disconnect()
+  }, [alignGridToLensCenter, isEmpty, isLoading])
+
+  useEffect(() => {
     if (!hintVisible) return
     const timer = window.setTimeout(() => setHintVisible(false), 4000)
     return () => clearTimeout(timer)
@@ -211,45 +250,47 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
       else {
         zoom.current = MIN_ZOOM
         applyCanvasTransform()
+        alignGridToLensCenter()
       }
     }
 
     requestAnimationFrame(pulse)
-  }, [applyCanvasTransform, isEmpty, isLoading, prefersReducedMotion])
+  }, [alignGridToLensCenter, applyCanvasTransform, isEmpty, isLoading, prefersReducedMotion])
 
   const commitSelection = useCallback(
     (id: string) => {
-      if (!isSelectableItem(id)) return
-
+      const baseId = getMosaicBaseId(id)
       setHintVisible(false)
 
       if (prefersReducedMotion) {
         setFadeOverlay(true)
-        window.setTimeout(() => onTileSelect(id), 220)
+        window.setTimeout(() => onTileSelect(baseId), 220)
         return
       }
 
       setTransitionItemId(id)
       setIsCommitting(true)
       requestAnimationFrame(() => {
-        onTileSelect(id)
+        onTileSelect(baseId)
       })
     },
     [onTileSelect, prefersReducedMotion],
   )
 
-  const tryAutoCommit = useCallback(() => {
+  const attemptPinchCommit = useCallback(() => {
+    updateLens()
+
     if (
-      gestureMode.current === 'pinch' &&
-      pinchSessionZoomedIn.current &&
-      zoom.current >= AUTO_COMMIT_ZOOM
+      !wasPinching.current ||
+      !pinchSessionZoomedIn.current ||
+      zoom.current < AUTO_COMMIT_ZOOM
     ) {
-      const id = centeredItemId.current
-      if (id && isSelectableItem(id)) {
-        commitSelection(id)
-      }
+      return
     }
-  }, [commitSelection])
+
+    const id = centeredItemId.current
+    if (id) commitSelection(id)
+  }, [commitSelection, updateLens])
 
   const sampleVelocity = useCallback((x: number, y: number) => {
     const now = performance.now()
@@ -277,23 +318,23 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     [applyCanvasTransform],
   )
 
-  const handlePointerDown = useCallback((e: PointerEvent) => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return
+  const handlePointerDown = useCallback(
+    (e: PointerEvent) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
 
-    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
-    velocityX.current = 0
-    velocityY.current = 0
-    lastPointer.current = { x: e.clientX, y: e.clientY, t: performance.now() }
-    mosaicRegionRef.current?.setPointerCapture(e.pointerId)
+      pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      velocityX.current = 0
+      velocityY.current = 0
+      lastPointer.current = { x: e.clientX, y: e.clientY, t: performance.now() }
+      mosaicRegionRef.current?.setPointerCapture(e.pointerId)
 
-    if (pointers.current.size === 2) {
-      gestureMode.current = 'pinch'
-      pinchSessionZoomedIn.current = false
-      lastPinchDist.current = getPinchDist()
-    } else if (pointers.current.size === 1) {
-      gestureMode.current = 'pan'
-    }
-  }, [getPinchDist])
+      if (pointers.current.size >= 2) {
+        wasPinching.current = true
+        lastPinchDist.current = getPinchDist()
+      }
+    },
+    [getPinchDist],
+  )
 
   const handlePointerMove = useCallback(
     (e: PointerEvent) => {
@@ -304,7 +345,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
 
       if (pointers.current.size >= 2) {
         e.preventDefault()
-        gestureMode.current = 'pinch'
+        wasPinching.current = true
 
         const dist = getPinchDist()
         if (dist !== null && lastPinchDist.current !== null) {
@@ -318,7 +359,6 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
       }
 
       e.preventDefault()
-      gestureMode.current = 'pan'
 
       const dx = e.clientX - lastPointer.current.x
       const dy = e.clientY - lastPointer.current.y
@@ -338,28 +378,24 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
       mosaicRegionRef.current?.releasePointerCapture(e.pointerId)
 
       if (pointers.current.size === 0) {
-        if (gestureMode.current === 'pinch') {
-          tryAutoCommit()
-        }
-        gestureMode.current = 'none'
-        lastPinchDist.current = null
+        attemptPinchCommit()
+        wasPinching.current = false
         pinchSessionZoomedIn.current = false
+        lastPinchDist.current = null
         return
       }
 
       if (pointers.current.size === 1) {
-        gestureMode.current = 'pan'
         lastPinchDist.current = null
         const remaining = [...pointers.current.values()][0]
         lastPointer.current = { x: remaining.x, y: remaining.y, t: performance.now() }
       }
 
-      if (pointers.current.size === 2) {
-        gestureMode.current = 'pinch'
+      if (pointers.current.size >= 2) {
         lastPinchDist.current = getPinchDist()
       }
     },
-    [getPinchDist, tryAutoCommit],
+    [attemptPinchCommit, getPinchDist],
   )
 
   useEffect(() => {
@@ -381,23 +417,8 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     }
   }, [handlePointerDown, handlePointerMove, handlePointerUp, handleWheel, isEmpty])
 
-  const handleTileSelect = useCallback(
-    (id: string) => {
-      if (!isSelectableItem(id)) return
-      commitSelection(id)
-    },
-    [commitSelection],
-  )
-
   return (
     <section className="home-section jump-right-in" aria-labelledby="jump-right-in-heading">
-      <div className="home-section__head">
-        <h2 id="jump-right-in-heading" className="section-heading">
-          Jump Right In
-        </h2>
-        <p className="section-subtitle">Drag and pinch to explore the mosaic</p>
-      </div>
-
       <div
         className={[
           'discover__mosaic-region',
@@ -431,10 +452,9 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
                       <MosaicTile
                         key={item.id}
                         item={item}
-                        isPlaceholder={!isSelectableItem(item.id)}
                         layoutIdActive={transitionItemId === item.id}
                         isTransitionSource={transitionItemId === item.id}
-                        onSelect={handleTileSelect}
+                        onSelect={commitSelection}
                       />
                     ))}
                   </div>
@@ -450,6 +470,13 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
             </div>
           </>
         )}
+      </div>
+
+      <div className="home-section__head jump-right-in__head">
+        <h2 id="jump-right-in-heading" className="section-heading">
+          Jump Right In
+        </h2>
+        <p className="section-subtitle">Drag and pinch to explore the mosaic</p>
       </div>
     </section>
   )
