@@ -1,8 +1,11 @@
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useState } from 'react'
+import { RouteTransition } from './components/motion/RouteTransition'
 import { TabShell } from './components/home/TabShell'
 import { OnboardingFlow } from './components/onboarding/OnboardingFlow'
 import type { PodcastImportSource } from './components/onboarding/PodcastImportScreen'
 import type { UserProfile } from './components/onboarding/types'
+import { modalVariants, transition } from './styles/motion'
 
 type AppPhase = 'onboarding' | 'home'
 
@@ -13,6 +16,7 @@ const previewFeed =
 export const App = () => {
   const [phase, setPhase] = useState<AppPhase>(previewFeed ? 'home' : 'onboarding')
   const [toast, setToast] = useState<string | null>(null)
+  const prefersReducedMotion = useReducedMotion()
 
   const handleAuthAction = useCallback(
     (provider: 'google' | 'apple' | 'facebook') => {
@@ -62,25 +66,41 @@ export const App = () => {
 
   return (
     <>
-      {phase === 'onboarding' ? (
-        <OnboardingFlow
-          onAuthAction={handleAuthAction}
-          onImportAction={handleImportAction}
-          onComplete={handleComplete}
-        />
-      ) : (
-        <TabShell
-          onPlayEpisode={handlePlayEpisode}
-          onShowSelect={handleShowSelect}
-          onNotifications={() => setToast('Notifications')}
-          onProfile={() => setToast('Profile')}
-        />
-      )}
-      {toast ? (
-        <div className="app-toast" role="status">
-          {toast}
-        </div>
-      ) : null}
+      <AnimatePresence mode="wait">
+        {phase === 'onboarding' ? (
+          <RouteTransition key="onboarding" routeKey="onboarding">
+            <OnboardingFlow
+              onAuthAction={handleAuthAction}
+              onImportAction={handleImportAction}
+              onComplete={handleComplete}
+            />
+          </RouteTransition>
+        ) : (
+          <RouteTransition key="home" routeKey="home">
+            <TabShell
+              onPlayEpisode={handlePlayEpisode}
+              onShowSelect={handleShowSelect}
+              onNotifications={() => setToast('Notifications')}
+              onProfile={() => setToast('Profile')}
+            />
+          </RouteTransition>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {toast ? (
+          <motion.div
+            className="app-toast"
+            role="status"
+            initial={prefersReducedMotion ? false : modalVariants.initial}
+            animate={modalVariants.animate}
+            exit={prefersReducedMotion ? undefined : modalVariants.exit}
+            transition={transition.base}
+          >
+            {toast}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </>
   )
 }

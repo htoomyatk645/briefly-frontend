@@ -25,6 +25,21 @@
   background: var(--feed-bg);
 }
 
+.tab-shell--feed .app-page-scroll {
+  overflow-y: hidden;
+}
+
+.tab-shell--feed .app-page-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.tab-shell--feed .feed-screen {
+  flex: 1;
+  min-height: 0;
+}
+
+
 .visually-hidden {
   position: absolute;
   width: 1px;

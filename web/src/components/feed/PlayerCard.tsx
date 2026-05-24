@@ -1,4 +1,7 @@
+import { motion } from 'framer-motion'
 import { useId, useState, type ChangeEvent } from 'react'
+import { AnimatedNumber } from '../motion/AnimatedNumber'
+import { transition } from '../../styles/motion'
 import type { FeedEpisode } from './feedData'
 import { feedAssetsRemote } from './feedAssets'
 import { AudioOutputSheet } from './player/AudioOutputSheet'
@@ -251,9 +254,10 @@ export const PlayerCard = ({
                 Playback position
               </label>
               <div className="player-card__progress-track" aria-hidden>
-                <div
+                <motion.div
                   className="player-card__progress-fill"
-                  style={{ width: `${progress * 100}%` }}
+                  animate={{ width: `${progress * 100}%` }}
+                  transition={transition.slow}
                 />
               </div>
               <input
@@ -269,8 +273,11 @@ export const PlayerCard = ({
                 aria-valuetext={`${formatTime(currentTime)}, ${formatRemaining(currentTime, duration)} remaining`}
               />
               <div className="player-card__times">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatRemaining(currentTime, duration)}</span>
+                <AnimatedNumber value={currentTime} format={formatTime} />
+                <AnimatedNumber
+                  value={currentTime}
+                  format={(t) => formatRemaining(t, duration)}
+                />
               </div>
             </div>
           </div>

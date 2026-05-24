@@ -1,0 +1,86 @@
+:root {
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-fast: 180ms;
+  --motion-base: 240ms;
+  --motion-slow: 320ms;
+  --motion-slower: 480ms;
+}
+
+body,
+#root,
+.tab-shell,
+.discover.home-page,
+.discover__viewport,
+.home-section,
+.pulse-card,
+.continue-listening-card,
+.section-heading,
+.section-subtitle,
+.topic-chip,
+.interest-pill,
+.header-icon-btn,
+.account-menu__dropdown,
+.player-card,
+.player-sheet,
+.player-speed,
+.player-more-menu,
+.placeholder-screen {
+  transition:
+    color var(--motion-slow) var(--motion-ease),
+    background-color var(--motion-slow) var(--motion-ease),
+    border-color var(--motion-slow) var(--motion-ease),
+    box-shadow var(--motion-slow) var(--motion-ease);
+}
+
+.home-shelf__scroller,
+.continue-listening__scroller,
+.up-next__track {
+  scroll-behavior: smooth;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .header-icon-btn:hover,
+  .topic-chip:hover,
+  .interest-pill:hover {
+    transition: background-color var(--motion-fast) var(--motion-ease);
+  }
+}
+
+.pulse-card__accent,
+.continue-listening-card__progress-fill,
+.player-card__progress-fill {
+  transition: width var(--motion-slow) var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  #root,
+  .tab-shell,
+  .discover.home-page,
+  .discover__viewport,
+  .home-section,
+  .pulse-card,
+  .continue-listening-card,
+  .section-heading,
+  .section-subtitle,
+  .topic-chip,
+  .interest-pill,
+  .header-icon-btn,
+  .account-menu__dropdown,
+  .player-card,
+  .player-sheet,
+  .player-speed,
+  .player-more-menu,
+  .placeholder-screen,
+  .pulse-card__accent,
+  .continue-listening-card__progress-fill,
+  .player-card__progress-fill {
+    transition: none;
+  }
+
+  .home-shelf__scroller,
+  .continue-listening__scroller,
+  .up-next__track {
+    scroll-behavior: auto;
+  }
+}

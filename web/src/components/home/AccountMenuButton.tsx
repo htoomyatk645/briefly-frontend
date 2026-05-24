@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useId, useRef, useState } from 'react'
 import { AccountIcon } from '../icons/AccountIcon'
+import { modalVariants, pressSpring, transition } from '../../styles/motion'
 import '../../styles/header-actions.css'
 
 const MENU_ITEMS = ['Profile', 'Subscription', 'Settings', 'Sign out'] as const
@@ -35,7 +36,7 @@ export const AccountMenuButton = () => {
 
   return (
     <div className="account-menu" ref={rootRef}>
-      <button
+      <motion.button
         type="button"
         className="header-icon-btn"
         aria-label="Account menu"
@@ -43,9 +44,11 @@ export const AccountMenuButton = () => {
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((current) => !current)}
+        whileTap={{ scale: 0.97 }}
+        transition={pressSpring}
       >
         <AccountIcon size={24} />
-      </button>
+      </motion.button>
 
       <AnimatePresence>
         {open ? (
@@ -54,21 +57,10 @@ export const AccountMenuButton = () => {
             role="menu"
             aria-label="Account"
             className="account-menu__dropdown"
-            initial={
-              prefersReducedMotion
-                ? { opacity: 1, scale: 1 }
-                : { opacity: 0, scale: 0.95 }
-            }
-            animate={{ opacity: 1, scale: 1 }}
-            exit={
-              prefersReducedMotion
-                ? { opacity: 1, scale: 1 }
-                : { opacity: 0, scale: 0.95 }
-            }
-            transition={{
-              duration: 0.22,
-              ease: [0.22, 1, 0.36, 1],
-            }}
+            initial={prefersReducedMotion ? false : modalVariants.initial}
+            animate={modalVariants.animate}
+            exit={prefersReducedMotion ? undefined : modalVariants.exit}
+            transition={transition.base}
           >
             {MENU_ITEMS.map((item) => (
               <button

@@ -1,5 +1,6 @@
 @import './theme.css';
 @import './tokens.css';
+@import './styles/motion.css';
 
 :root {
   --font-display: 'Fraunces', Georgia, serif;
@@ -83,7 +84,6 @@ body {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #root {
@@ -92,13 +92,11 @@ body {
   max-height: 100dvh;
   overflow: hidden;
   background: var(--bg-page);
-  transition: background-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body,
-  #root {
-    transition: none;
+  * {
+    scroll-behavior: auto !important;
   }
 }
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { BrowseCategory } from '../data/homeData'
+import type { BrowseCategory } from '../data/discoverData'
 import './homeShelves.css'
 
 export type BrowseChannelsProps = {

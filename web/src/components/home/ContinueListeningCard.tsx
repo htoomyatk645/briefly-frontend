@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import type { CSSProperties } from 'react'
 import type { ContinueListeningEpisode } from '../../data/homeData'
+import { pressSpring, transition } from '../../styles/motion'
 import '../../styles/sections.css'
 import './continue-listening.css'
 
@@ -33,7 +34,7 @@ export const ContinueListeningCard = ({
       onClick={() => onPress?.(item.id)}
       aria-label={`Resume ${item.episodeTitle} from ${item.showName}`}
       whileTap={{ scale: 0.97 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      transition={pressSpring}
     >
       <img
         src={item.coverSrc}
@@ -70,10 +71,7 @@ const cardVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.28,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
+    transition: transition.base,
   },
 }
 

@@ -1,0 +1,28 @@
+---
+description: Briefly Frontend project conventions
+globs:
+alwaysApply: true
+---
+
+This workspace is **Briefly Frontend** only.
+
+## Structure
+- Web prototype: `web/` (React + Vite + Framer Motion)
+- Mobile app: `mobile/` (Expo + React Native)
+- Shared tokens: `packages/tokens/` and `web/src/tokens.ts`
+- Design canvases: `canvases/`
+
+## Design
+- Primary bg: #0C0F14, accent: #B8FF3C, warm: #FF6640
+- Fonts: Fraunces (display), Geist (body) — never Inter or Roboto as primary
+- No purple gradients, glassmorphism, pill CTAs, or gradient text
+- All colors/spacing from tokens.ts — no hardcoded values
+
+## Motion
+- Easing: cubic-bezier(0.22, 1, 0.36, 1)
+- Animate transform and opacity only — never width/height/top/left
+- Respect prefers-reduced-motion
+
+## Scope
+- Default to `web/` unless the user explicitly asks for mobile
+- Do not modify agent-tools/, mcps/, or terminals/

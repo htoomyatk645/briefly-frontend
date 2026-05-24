@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { modalVariants, transition } from '../../../styles/motion'
 import './player-interactions.css'
 
 export type MoreMenuAction =
@@ -34,6 +35,7 @@ type MoreMenuProps = {
 }
 
 export const MoreMenu = ({ open, following, onAction, onClose }: MoreMenuProps) => {
+  const prefersReducedMotion = useReducedMotion()
   const items = BASE_ITEMS.map((item) =>
     item.id === 'follow'
       ? { ...item, label: following ? 'Unfollow' : 'Follow the show' }
@@ -44,23 +46,31 @@ export const MoreMenu = ({ open, following, onAction, onClose }: MoreMenuProps) 
     <AnimatePresence>
       {open ? (
         <>
-          <button type="button" className="player-overlay player-overlay--dim" aria-label="Close menu" onClick={onClose} />
+          <motion.button
+            type="button"
+            className="player-overlay player-overlay--dim"
+            aria-label="Close menu"
+            onClick={onClose}
+            initial={prefersReducedMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+            transition={transition.base}
+          />
           <motion.ul
             className="player-more-menu"
             role="menu"
             aria-label="More options"
-            initial="closed"
-            animate="open"
-            exit="closed"
+            initial={prefersReducedMotion ? false : modalVariants.initial}
+            animate={modalVariants.animate}
+            exit={prefersReducedMotion ? undefined : modalVariants.exit}
+            transition={transition.base}
           >
             {items.map((item, i) => (
               <motion.li
                 key={item.id}
-                variants={{
-                  closed: { opacity: 0, x: 16 },
-                  open: { opacity: 1, x: 0 },
-                }}
-                transition={{ duration: 0.24, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ ...transition.base, delay: i * 0.03 }}
                 className={item.dividerBefore ? 'player-more-menu__divider' : undefined}
               >
                 <button

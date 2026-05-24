@@ -1,7 +1,12 @@
-import { useCallback, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { AppHeader } from '../AppHeader'
+import { RouteTransition } from '../motion/RouteTransition'
 import { Home } from '../../pages/Home'
+import { Discover } from '../../pages/Discover'
 import { ClipFeed } from '../feed/ClipFeed'
 import { TabBar, type TabId } from './TabBar'
+import '../../styles/app-header.css'
 
 type TabShellProps = {
   onPlayEpisode?: (id: string) => void
@@ -26,6 +31,11 @@ export const TabShell = ({
 
   const [activeTab, setActiveTab] = useState<TabId>(previewFeed ? 'feed' : 'home')
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo(0, 0)
+  }, [activeTab])
 
   const handleTileSelect = useCallback((id: string) => {
     setSelectedEpisodeId(id)
@@ -54,7 +64,7 @@ export const TabShell = ({
           />
         )
       case 'discover':
-        return <PlaceholderScreen label="Discover" />
+        return <Discover />
       case 'saved':
         return <PlaceholderScreen label="Saved" />
       case 'account':
@@ -67,7 +77,19 @@ export const TabShell = ({
   return (
     <div className={`tab-shell${isFeed ? ' tab-shell--feed' : ''}`}>
       <div className="tab-shell__content">
-        {renderTab()}
+        <div className="app-page-scroll" ref={scrollRef}>
+          <AppHeader scrollContainerRef={scrollRef} layoutKey={activeTab} />
+          <AnimatePresence mode="wait">
+            <RouteTransition
+              key={activeTab}
+              routeKey={activeTab}
+              className="app-page-body"
+              fillViewport={false}
+            >
+              {renderTab()}
+            </RouteTransition>
+          </AnimatePresence>
+        </div>
       </div>
       <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
     </div>

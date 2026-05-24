@@ -1,30 +1,6 @@
-/* Sticky top-of-page Explore Channels + header stack */
-
-.home-explore-channels-sticky {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  padding-top: 12px;
-  padding-bottom: 16px;
-  padding-inline: 16px;
-  background: var(--bg-page);
-}
-
-.home-sticky-header {
-  position: sticky;
-  top: var(--home-chips-height, 0px);
-  z-index: 30;
-  background: var(--bg-page);
-}
-
-.home-explore-channels-sticky .home-shelf {
-  margin-bottom: 0;
-  padding-inline: 0;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .discover.home-page,
-  .discover__viewport,
+  .discover.discover-page,
   .tab-shell {
     transition: none;
   }

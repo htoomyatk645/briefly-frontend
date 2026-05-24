@@ -56,9 +56,6 @@ export const InterestsScreen = ({
                   <span className="topic-chip__check" aria-hidden>
                     {isSelected ? '✓' : ''}
                   </span>
-                  <span className="topic-chip__emoji" aria-hidden>
-                    {topic.emoji}
-                  </span>
                   <span className="topic-chip__label">{topic.label}</span>
                 </button>
               )

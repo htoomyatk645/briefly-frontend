@@ -23,10 +23,7 @@ button.header-icon-btn:hover {
 
 .theme-indicator {
   pointer-events: auto;
-}
-
-.theme-indicator:hover {
-  background: var(--header-icon-hover);
+  cursor: pointer;
 }
 
 .account-menu {
@@ -44,7 +41,7 @@ button.header-icon-btn:hover {
   background: var(--surface);
   box-shadow: var(--shadow-md);
   transform-origin: top right;
-  z-index: 50;
+  z-index: 60;
 }
 
 .account-menu__item {

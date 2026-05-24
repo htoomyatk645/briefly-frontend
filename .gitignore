@@ -1,7 +1,15 @@
 node_modules/
 dist/
 .expo/
+web-build/
 *.log
 .DS_Store
 .env
 .env.*
+*.tsbuildinfo
+
+# Cursor workspace internals (not part of Briefly)
+agent-tools/
+agent-transcripts/
+mcps/
+terminals/

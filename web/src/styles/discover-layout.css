@@ -1,0 +1,41 @@
+.discover-channels-sticky {
+  position: sticky;
+  top: var(--app-header-height, 56px);
+  z-index: 30;
+  padding-top: 12px;
+  padding-bottom: 16px;
+  padding-inline: 16px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+:root[data-theme='light'] .discover-channels-sticky {
+  background: hsl(0 0% 100% / 0.7);
+}
+
+:root[data-theme='dark'] .discover-channels-sticky {
+  background: hsl(0 0% 8% / 0.7);
+}
+
+.discover-channels-sticky .home-shelf {
+  margin-bottom: 0;
+  padding-inline: 0;
+}
+
+.discover-page__body {
+  padding-inline: 16px;
+  padding-bottom: 2rem;
+}
+
+.discover-page__placeholder {
+  margin: 1.5rem 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discover-channels-sticky {
+    transition: none;
+  }
+}

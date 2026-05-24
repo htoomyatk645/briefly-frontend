@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -7,9 +8,13 @@ import {
 } from 'react'
 
 export type Theme = 'light' | 'dark'
+export type ThemePreference = 'system' | Theme
 
 type ThemeContextValue = {
   theme: Theme
+  preference: ThemePreference
+  followsSystem: boolean
+  toggleTheme: () => void
 }
 
 export const ThemeContext = createContext<ThemeContextValue | null>(null)
@@ -30,24 +35,50 @@ type ThemeProviderProps = {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<Theme>(getSystemTheme)
+  const [systemTheme, setSystemTheme] = useState<Theme>(getSystemTheme)
+  const [preference, setPreference] = useState<ThemePreference>('system')
+
+  const theme = preference === 'system' ? systemTheme : preference
+  const followsSystem = preference === 'system'
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
 
-    const syncTheme = () => {
-      const nextTheme = media.matches ? 'dark' : 'light'
-      setTheme(nextTheme)
-      applyTheme(nextTheme)
+    const syncSystemTheme = () => {
+      setSystemTheme(media.matches ? 'dark' : 'light')
     }
 
-    syncTheme()
-    media.addEventListener('change', syncTheme)
+    syncSystemTheme()
+    media.addEventListener('change', syncSystemTheme)
 
-    return () => media.removeEventListener('change', syncTheme)
+    return () => media.removeEventListener('change', syncSystemTheme)
   }, [])
 
-  const value = useMemo(() => ({ theme }), [theme])
+  useEffect(() => {
+    applyTheme(theme)
+  }, [theme])
+
+  const toggleTheme = useCallback(() => {
+    setPreference((prev) => {
+      const resolved =
+        prev === 'system'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+          : prev
+      return resolved === 'dark' ? 'light' : 'dark'
+    })
+  }, [])
+
+  const value = useMemo(
+    () => ({
+      theme,
+      preference,
+      followsSystem,
+      toggleTheme,
+    }),
+    [theme, preference, followsSystem, toggleTheme],
+  )
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

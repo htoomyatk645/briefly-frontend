@@ -28,20 +28,6 @@ export type EditorialPick = {
   accentColor: string
 }
 
-export type BrowseCategory = {
-  id: string
-  label: string
-  icon:
-    | 'newspaper'
-    | 'heart'
-    | 'trending-up'
-    | 'alert-triangle'
-    | 'flask'
-    | 'laugh'
-    | 'cpu'
-    | 'users'
-}
-
 /** Dominant colors extracted via `node scripts/extract-continue-colors.mjs` */
 export const continueListeningEpisodes: ContinueListeningEpisode[] = [
   {
@@ -93,7 +79,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'Our Field Trip to Google I/O + A Sit-Down With Sundar Pichai',
     coverSrc: PODCAST_COVERS.hardFork,
     trendScore: 92,
-    trendLabel: '🔥 14k listening now',
+    trendLabel: '14k listening now',
   },
   {
     id: 'pulse-2',
@@ -101,7 +87,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'MURDERED: Hanna Harris',
     coverSrc: PODCAST_COVERS.crimeJunkie,
     trendScore: 78,
-    trendLabel: '🔥 9.2k listening now',
+    trendLabel: '9.2k listening now',
   },
   {
     id: 'pulse-3',
@@ -109,7 +95,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'The Wubi Effect',
     coverSrc: PODCAST_COVERS.radiolab,
     trendScore: 61,
-    trendLabel: '🔥 5.1k listening now',
+    trendLabel: '5.1k listening now',
   },
   {
     id: 'pulse-4',
@@ -117,7 +103,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'The Island No One Wants',
     coverSrc: PODCAST_COVERS.planetMoney,
     trendScore: 44,
-    trendLabel: '🔥 2.8k listening now',
+    trendLabel: '2.8k listening now',
   },
   {
     id: 'pulse-5',
@@ -125,7 +111,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'Adam Scott',
     coverSrc: PODCAST_COVERS.smartLess,
     trendScore: 31,
-    trendLabel: '🔥 1.4k listening now',
+    trendLabel: '1.4k listening now',
   },
 ]
 
@@ -136,14 +122,3 @@ export const editorialPick: EditorialPick = {
   coverSrc: PODCAST_COVERS.huberman,
   accentColor: colors.neutral[800],
 }
-
-export const categories: BrowseCategory[] = [
-  { id: 'news', label: 'News', icon: 'newspaper' },
-  { id: 'health', label: 'Health', icon: 'heart' },
-  { id: 'business', label: 'Business', icon: 'trending-up' },
-  { id: 'true-crime', label: 'True Crime', icon: 'alert-triangle' },
-  { id: 'science', label: 'Science', icon: 'flask' },
-  { id: 'comedy', label: 'Comedy', icon: 'laugh' },
-  { id: 'technology', label: 'Technology', icon: 'cpu' },
-  { id: 'society', label: 'Society', icon: 'users' },
-]

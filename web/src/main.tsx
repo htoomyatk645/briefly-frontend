@@ -4,7 +4,7 @@ import { App } from './App'
 import { ThemeProvider } from './theme/ThemeProvider'
 import './index.css'
 
-const syncSystemTheme = () => {
+const syncInitialTheme = () => {
   const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'dark'
     : 'light'
@@ -12,11 +12,7 @@ const syncSystemTheme = () => {
   document.documentElement.style.colorScheme = theme
 }
 
-syncSystemTheme()
-
-window
-  .matchMedia('(prefers-color-scheme: dark)')
-  .addEventListener('change', syncSystemTheme)
+syncInitialTheme()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
