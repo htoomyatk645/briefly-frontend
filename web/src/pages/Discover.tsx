@@ -1,18 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useState } from 'react'
 import { BrowseChannels } from '../components/BrowseChannels'
-import { JumpRightIn } from '../components/discover/JumpRightIn'
-import { SectionReveal } from '../components/motion/SectionReveal'
 import { categories } from '../data/discoverData'
 import { transition } from '../styles/motion'
-import '../components/discover/discover-mosaic.css'
 import '../styles/discover-layout.css'
 
-export type DiscoverProps = {
-  onTileSelect?: (id: string) => void
-}
-
-export const Discover = ({ onTileSelect }: DiscoverProps) => {
+export const Discover = () => {
   const prefersReducedMotion = useReducedMotion()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
@@ -46,15 +39,9 @@ export const Discover = ({ onTileSelect }: DiscoverProps) => {
           <p className="discover-page__filter-label">
             Showing {categories.find((c) => c.id === activeCategory)?.label ?? activeCategory}
           </p>
-        ) : null}
-
-        {onTileSelect ? (
-          <SectionReveal id="discover-mosaic">
-            <JumpRightIn onTileSelect={onTileSelect} />
-          </SectionReveal>
         ) : (
           <p className="discover-page__placeholder">
-            Select a highlight to start listening.
+            Select a category to explore.
           </p>
         )}
       </section>

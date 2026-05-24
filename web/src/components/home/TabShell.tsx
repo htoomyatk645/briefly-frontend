@@ -64,7 +64,7 @@ export const TabShell = ({
           />
         )
       case 'discover':
-        return <Discover onTileSelect={handleTileSelect} />
+        return <Discover />
       case 'saved':
         return <PlaceholderScreen label="Saved" />
       case 'account':
