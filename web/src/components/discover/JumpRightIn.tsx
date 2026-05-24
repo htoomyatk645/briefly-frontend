@@ -426,17 +426,18 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
 
   return (
     <section className="home-section jump-right-in" aria-labelledby="jump-right-in-heading">
-      <div
-        className={[
-          'discover__mosaic-region',
-          isCommitting ? 'discover__mosaic-region--committing' : '',
-          fadeOverlay ? 'discover__mosaic-region--fade-out' : '',
-        ]
-          .filter(Boolean)
-          .join(' ')}
-        ref={mosaicRegionRef}
-        aria-busy={isLoading}
-      >
+      <div className="discover__mosaic-portal">
+        <div
+          className={[
+            'discover__mosaic-region',
+            isCommitting ? 'discover__mosaic-region--committing' : '',
+            fadeOverlay ? 'discover__mosaic-region--fade-out' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          ref={mosaicRegionRef}
+          aria-busy={isLoading}
+        >
         {isLoading ? (
           <div className="discover__mosaic-loading" role="status" aria-label="Loading mosaic">
             <div className="discover__mosaic-skeleton" aria-hidden />
@@ -477,6 +478,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
             </div>
           </>
         )}
+        </div>
       </div>
 
       <div className="home-section__head jump-right-in__head">

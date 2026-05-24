@@ -70,11 +70,20 @@
   text-align: center;
 }
 
-.discover__mosaic-region {
+.discover__mosaic-portal {
   flex-shrink: 0;
   width: 100%;
   max-width: calc(100vw - 32px);
   aspect-ratio: 1;
+  border-radius: 50%;
+  filter:
+    drop-shadow(0 4px 10px hsl(0 0% 0% / 0.1))
+    drop-shadow(0 16px 40px hsl(0 0% 0% / 0.18));
+}
+
+.discover__mosaic-region {
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   position: relative;
   display: flex;
