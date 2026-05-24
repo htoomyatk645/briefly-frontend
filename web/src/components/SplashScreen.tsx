@@ -147,7 +147,7 @@ export const SplashScreen = ({ onGetStarted, onSignIn }: SplashScreenProps) => {
             fontWeight: fontWeight.medium,
             fontSize: 15,
             lineHeight: '20px',
-            color: colors.bg.primary,
+            color: colors.onPrimary,
             backgroundColor: colors.accent.primary,
             border: 'none',
             borderRadius: radius.md,

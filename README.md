@@ -45,9 +45,10 @@ npm run dev:mobile
 
 | Token | Value |
 |-------|-------|
-| Primary bg | `#0C0F14` |
-| Accent | `#B8FF3C` |
-| Warm accent | `#FF6640` |
+| Primary bg (light) | `hsl(40 20% 97%)` warm cream |
+| Primary bg (dark) | `hsl(20 6% 7%)` warm near-black |
+| Accent (light) | `#C9184A` pink-red |
+| Accent (dark) | `#FF6B8E` pink |
 | Display font | Fraunces |
 | Body font | Geist |
 

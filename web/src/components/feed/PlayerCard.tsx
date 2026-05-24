@@ -14,7 +14,7 @@ import { ShopSheet } from './player/ShopSheet'
 import { TranscriptSheet } from './player/TranscriptSheet'
 import type { PlaybackSpeed } from './player/playerStorage'
 import './player/player-interactions.css'
-import { useCoverGradient } from './useCoverGradient'
+import { useCoverColor } from './useCoverColor'
 import { formatRemaining, formatTime } from './usePlayback'
 
 type PlayerCardProps = {
@@ -41,13 +41,13 @@ type PlayerCardProps = {
 
 const PlayIcon = () => (
   <svg className="player-card__play-icon" viewBox="0 0 24 24" aria-hidden>
-    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="#C9184A" />
+    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="var(--primary)" />
   </svg>
 )
 
 const PauseIcon = () => (
   <svg className="player-card__play-icon" viewBox="0 0 24 24" aria-hidden>
-    <path d="M7 6h3.5v12H7V6zm6.5 0H17v12h-3.5V6z" fill="#C9184A" />
+    <path d="M7 6h3.5v12H7V6zm6.5 0H17v12h-3.5V6z" fill="var(--primary)" />
   </svg>
 )
 
@@ -84,7 +84,7 @@ export const PlayerCard = ({
 
   const products = getProductsForEpisode(episode.id)
   const hasProducts = products.length > 0
-  const coverGradient = useCoverGradient(episode.coverSrc)
+  const coverColor = useCoverColor(episode.coverSrc)
 
   useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
 
@@ -120,7 +120,7 @@ export const PlayerCard = ({
     <>
       <article
         className="player-card player-card--adaptive"
-        style={{ background: coverGradient }}
+        style={{ background: coverColor }}
         aria-label={`Now playing: ${episode.episodeTitle}`}
       >
         <div className="player-card__grabber" aria-hidden />
@@ -139,7 +139,7 @@ export const PlayerCard = ({
               <div className="player-card__rail" role="toolbar" aria-label="Player actions">
                 <button
                   type="button"
-                  className={`player-card__rail-btn feed-glass${!hasProducts ? ' player-card__rail-btn--inactive' : ''}`}
+                  className={`player-card__rail-btn feed-surface${!hasProducts ? ' player-card__rail-btn--inactive' : ''}`}
                   aria-label="Products mentioned in episode"
                   aria-disabled={!hasProducts}
                   onClick={() => hasProducts && setShopOpen(true)}
@@ -148,7 +148,7 @@ export const PlayerCard = ({
                 </button>
                 <button
                   type="button"
-                  className={`player-card__rail-btn feed-glass${saved ? ' player-card__rail-btn--saved' : ''}`}
+                  className={`player-card__rail-btn feed-surface${saved ? ' player-card__rail-btn--saved' : ''}`}
                   onClick={handleSave}
                   aria-label={saved ? 'Remove from saved' : 'Save episode'}
                   aria-pressed={saved}
@@ -161,7 +161,7 @@ export const PlayerCard = ({
                 </button>
                 <button
                   type="button"
-                  className="player-card__rail-btn feed-glass"
+                  className="player-card__rail-btn feed-surface"
                   onClick={() => setSpeedOpen(true)}
                   aria-label={`Playback speed ${playbackRate}x`}
                   aria-haspopup="menu"
@@ -171,7 +171,7 @@ export const PlayerCard = ({
                 </button>
                 <button
                   type="button"
-                  className="player-card__rail-btn feed-glass"
+                  className="player-card__rail-btn feed-surface"
                   aria-label="Choose audio output"
                   onClick={() => setOutputOpen(true)}
                 >
@@ -179,7 +179,7 @@ export const PlayerCard = ({
                 </button>
                 <button
                   type="button"
-                  className="player-card__rail-btn feed-glass"
+                  className="player-card__rail-btn feed-surface"
                   aria-label="More options"
                   aria-haspopup="menu"
                   aria-expanded={moreOpen}

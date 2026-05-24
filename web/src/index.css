@@ -4,7 +4,7 @@
 
 :root {
   --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Geist', 'Inter', sans-serif;
+  --font-body: 'Geist', sans-serif;
   --duration-entrance: 360ms;
 }
 

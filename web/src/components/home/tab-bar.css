@@ -28,11 +28,9 @@
   gap: 0.125rem;
   padding: 0.3rem 0.35rem;
   border-radius: 9999px;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .tab-bar__pill--default {
@@ -46,9 +44,9 @@
   min-width: 0;
   height: 2.75rem;
   border-radius: 2rem;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  box-shadow: var(--feed-glass-shadow);
+  background: var(--feed-surface-bg);
+  border: 1px solid var(--feed-surface-border);
+  box-shadow: var(--feed-surface-shadow);
 }
 
 .tab-bar__item {
@@ -80,10 +78,9 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  box-shadow: var(--feed-glass-shadow);
-  backdrop-filter: var(--feed-blur);
+  background: var(--feed-surface-bg);
+  border: 1px solid var(--feed-surface-border);
+  box-shadow: var(--feed-surface-shadow);
 }
 
 .tab-bar__item--active {
@@ -103,10 +100,9 @@
   width: 3.25rem;
   height: 2.5rem;
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  box-shadow: var(--feed-glass-shadow);
-  backdrop-filter: var(--feed-blur);
+  background: var(--feed-surface-bg);
+  border: 1px solid var(--feed-surface-border);
+  box-shadow: var(--feed-surface-shadow);
 }
 
 .tab-bar__item:focus-visible {
@@ -176,9 +172,7 @@
   padding-bottom: max(0.35rem, env(safe-area-inset-bottom, 0px));
   gap: 0.35rem;
   pointer-events: auto;
-  background: rgba(15, 15, 15, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--feed-bg);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
