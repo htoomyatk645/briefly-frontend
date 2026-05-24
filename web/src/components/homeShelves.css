@@ -21,7 +21,7 @@
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: hsl(0 0% 50%);
+  color: var(--text-muted);
 }
 
 .home-shelf__scroller {
@@ -178,19 +178,27 @@
   height: 40px;
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid hsl(0 0% 100% / 0.1);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  background: hsl(0 0% 100% / 0.07);
-  color: hsl(0 0% 100%);
+  background: var(--surface);
+  color: var(--text);
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
 }
 
 .browse-channels__chip--active {
   border-color: transparent;
-  background: #c9184a;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: none;
+}
+
+.browse-channels__chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .browse-channels__chip-icon {
