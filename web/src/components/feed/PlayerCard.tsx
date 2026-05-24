@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useId, useState, type ChangeEvent } from 'react'
 import { AnimatedNumber } from '../motion/AnimatedNumber'
 import { transition } from '../../styles/motion'
@@ -72,6 +72,7 @@ export const PlayerCard = ({
   onMoreAction,
   onShowPage,
 }: PlayerCardProps) => {
+  const prefersReducedMotion = useReducedMotion()
   const progressId = useId()
   const [playPulse, setPlayPulse] = useState(false)
   const [shopOpen, setShopOpen] = useState(false)
@@ -128,13 +129,27 @@ export const PlayerCard = ({
         <div className="player-card__body">
           <div className="player-card__upper">
             <div className="player-card__art-row">
-              <div className="player-card__art-frame">
-                <img
-                  src={episode.coverSrc}
-                  alt={`${episode.showName} artwork`}
-                  className="player-card__art"
-                />
-              </div>
+              {prefersReducedMotion ? (
+                <div className="player-card__art-frame">
+                  <img
+                    src={episode.coverSrc}
+                    alt={`${episode.showName} artwork`}
+                    className="player-card__art"
+                  />
+                </div>
+              ) : (
+                <motion.div
+                  layoutId={`player-artwork-${episode.id}`}
+                  className="player-card__art-frame"
+                  transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <img
+                    src={episode.coverSrc}
+                    alt={`${episode.showName} artwork`}
+                    className="player-card__art"
+                  />
+                </motion.div>
+              )}
 
               <div className="player-card__rail" role="toolbar" aria-label="Player actions">
                 <button

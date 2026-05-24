@@ -1,4 +1,4 @@
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, LayoutGroup } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AppHeader } from '../AppHeader'
 import { RouteTransition } from '../motion/RouteTransition'
@@ -82,16 +82,18 @@ export const TabShell = ({
           {showAppHeader ? (
             <AppHeader scrollContainerRef={scrollRef} layoutKey={activeTab} />
           ) : null}
-          <AnimatePresence mode="wait">
-            <RouteTransition
-              key={activeTab}
-              routeKey={activeTab}
-              className="app-page-body"
-              fillViewport={false}
-            >
-              {renderTab()}
-            </RouteTransition>
-          </AnimatePresence>
+          <LayoutGroup id="tab-shell-layout">
+            <AnimatePresence mode="popLayout">
+              <RouteTransition
+                key={activeTab}
+                routeKey={activeTab}
+                className="app-page-body"
+                fillViewport={false}
+              >
+                {renderTab()}
+              </RouteTransition>
+            </AnimatePresence>
+          </LayoutGroup>
         </div>
       </div>
       <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
