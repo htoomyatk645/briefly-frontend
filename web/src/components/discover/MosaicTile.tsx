@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArtworkPlaceholder } from '../home/ArtworkPlaceholder'
 import type { MosaicItem } from './discoverData'
+import { clearMosaicLayoutHandoff, setMosaicLayoutHandoff } from './mosaicHandoff'
 
 type MosaicTileProps = {
   item: MosaicItem
@@ -22,9 +23,9 @@ export const MosaicTile = ({
   const handleClick = () => {
     const lensScale = getLensScale(item.id)
     if (lensScale > 1.45) {
-      sessionStorage.setItem('briefly-mosaic-layout-id', `mosaic-${item.id}`)
+      setMosaicLayoutHandoff(item.id)
     } else {
-      sessionStorage.removeItem('briefly-mosaic-layout-id')
+      clearMosaicLayoutHandoff()
     }
     onSelect(item.id)
   }

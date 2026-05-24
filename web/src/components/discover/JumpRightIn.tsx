@@ -1,6 +1,7 @@
 import { useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { MosaicEmptyTile, MosaicTile } from './MosaicTile'
+import { MOSAIC_ONBOARDED_KEY } from './mosaicHandoff'
 import { MOSAIC_ITEMS } from './discoverData'
 import '../../styles/sections.css'
 import './discover-mosaic.css'
@@ -12,6 +13,9 @@ const WHEEL_SENSITIVITY = 0.002
 const PINCH_SENSITIVITY = 0.012
 const LENS_ZOOM_THRESHOLD = 1.15
 const LENS_FOCUS_SCALE = 1.3
+const ONBOARD_DELAY_MS = 600
+const ONBOARD_PULSE_MS = 1200
+const ONBOARD_PEAK_ZOOM = 1.4
 
 type JumpRightInProps = {
   onTileSelect: (id: string) => void
@@ -49,6 +53,8 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
   const tileRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
   const lensScaleRef = useRef<Map<string, number>>(new Map())
   const lensRafRef = useRef<number | null>(null)
+  const onboardRafRef = useRef<number | null>(null)
+  const userZoomedRef = useRef(false)
   const prefersReducedMotion = useReducedMotion()
 
   const clampZoom = (z: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, z))
@@ -70,6 +76,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     const region = mosaicRegionRef.current
     if (!region || tileRefs.current.size === 0) return
 
+    // Transformed viewport + tile centers via getBoundingClientRect (not offsetLeft/Top).
     const regionRect = region.getBoundingClientRect()
     const vp = {
       x: regionRect.left + regionRect.width / 2,
@@ -91,6 +98,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     }> = []
 
     tileRefs.current.forEach((el, id) => {
+      // Post-transform screen coordinates include wrapper scale and per-tile lens scale.
       const rect = el.getBoundingClientRect()
       const tileX = rect.left + rect.width / 2
       const tileY = rect.top + rect.height / 2
@@ -130,16 +138,25 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     })
   }, [applyLens])
 
+  const setZoomFromUser = useCallback(
+    (updater: (prev: number) => number) => {
+      userZoomedRef.current = true
+      localStorage.setItem(MOSAIC_ONBOARDED_KEY, '1')
+      setZoom(updater)
+      setHintVisible(false)
+      scheduleLensUpdate()
+    },
+    [scheduleLensUpdate],
+  )
+
   const handleWheel = useCallback(
     (e: WheelEvent) => {
       if (!e.ctrlKey && Math.abs(e.deltaY) > 0) {
         e.preventDefault()
-        setZoom((prev) => clampZoom(prev - e.deltaY * WHEEL_SENSITIVITY))
-        setHintVisible(false)
-        scheduleLensUpdate()
+        setZoomFromUser((prev) => clampZoom(prev - e.deltaY * WHEEL_SENSITIVITY))
       }
     },
-    [scheduleLensUpdate],
+    [setZoomFromUser],
   )
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
@@ -159,12 +176,10 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
         const dist = Math.hypot(dx, dy)
         const delta = (dist - lastTouchDist.current) * PINCH_SENSITIVITY
         lastTouchDist.current = dist
-        setZoom((prev) => clampZoom(prev + delta))
-        setHintVisible(false)
-        scheduleLensUpdate()
+        setZoomFromUser((prev) => clampZoom(prev + delta))
       }
     },
-    [scheduleLensUpdate],
+    [setZoomFromUser],
   )
 
   const handleTouchEnd = useCallback(() => {
@@ -225,8 +240,58 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
       if (lensRafRef.current !== null) {
         cancelAnimationFrame(lensRafRef.current)
       }
+      if (onboardRafRef.current !== null) {
+        cancelAnimationFrame(onboardRafRef.current)
+      }
     }
   }, [scheduleLensUpdate])
+
+  useEffect(() => {
+    if (prefersReducedMotion) return
+    if (localStorage.getItem(MOSAIC_ONBOARDED_KEY)) return
+
+    let delayTimer: number | undefined
+    let cancelled = false
+
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2
+
+    delayTimer = window.setTimeout(() => {
+      if (userZoomedRef.current || cancelled) return
+
+      const start = performance.now()
+
+      const tick = (now: number) => {
+        if (cancelled || userZoomedRef.current) return
+
+        const elapsed = now - start
+        if (elapsed >= ONBOARD_PULSE_MS) {
+          setZoom(MIN_ZOOM)
+          localStorage.setItem(MOSAIC_ONBOARDED_KEY, '1')
+          scheduleLensUpdate()
+          onboardRafRef.current = null
+          return
+        }
+
+        const phase = elapsed / ONBOARD_PULSE_MS
+        const envelope = phase < 0.5 ? easeInOut(phase * 2) : easeInOut((1 - phase) * 2)
+        setZoom(1 + (ONBOARD_PEAK_ZOOM - 1) * envelope)
+        scheduleLensUpdate()
+        onboardRafRef.current = requestAnimationFrame(tick)
+      }
+
+      onboardRafRef.current = requestAnimationFrame(tick)
+    }, ONBOARD_DELAY_MS)
+
+    return () => {
+      cancelled = true
+      if (delayTimer !== undefined) window.clearTimeout(delayTimer)
+      if (onboardRafRef.current !== null) {
+        cancelAnimationFrame(onboardRafRef.current)
+        onboardRafRef.current = null
+      }
+    }
+  }, [prefersReducedMotion, scheduleLensUpdate])
 
   const rows = buildRows(MOSAIC_ITEMS, COLS)
   const isEmpty = MOSAIC_ITEMS.length === 0
