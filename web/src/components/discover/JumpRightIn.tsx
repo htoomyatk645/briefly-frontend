@@ -485,7 +485,6 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
         <h2 id="jump-right-in-heading" className="section-heading">
           Jump Right In
         </h2>
-        <p className="section-subtitle">Drag and pinch to explore the mosaic</p>
       </div>
     </section>
   )
