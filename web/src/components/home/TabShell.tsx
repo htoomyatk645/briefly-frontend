@@ -64,7 +64,7 @@ export const TabShell = ({
           />
         )
       case 'discover':
-        return <Discover />
+        return <Discover onTileSelect={handleTileSelect} />
       case 'saved':
         return <PlaceholderScreen label="Saved" />
       case 'account':
@@ -73,12 +73,15 @@ export const TabShell = ({
   }
 
   const isFeed = activeTab === 'feed'
+  const showAppHeader = activeTab !== 'home' && activeTab !== 'feed'
 
   return (
     <div className={`tab-shell${isFeed ? ' tab-shell--feed' : ''}`}>
       <div className="tab-shell__content">
         <div className="app-page-scroll" ref={scrollRef}>
-          <AppHeader scrollContainerRef={scrollRef} layoutKey={activeTab} />
+          {showAppHeader ? (
+            <AppHeader scrollContainerRef={scrollRef} layoutKey={activeTab} />
+          ) : null}
           <AnimatePresence mode="wait">
             <RouteTransition
               key={activeTab}

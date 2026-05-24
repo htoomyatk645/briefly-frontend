@@ -4,6 +4,8 @@ import './homeShelves.css'
 
 export type BrowseChannelsProps = {
   categories: BrowseCategory[]
+  activeId?: string | null
+  onSelect?: (id: string) => void
 }
 
 const CategoryIcon = ({ name }: { name: BrowseCategory['icon'] }) => {
@@ -96,12 +98,20 @@ const CategoryIcon = ({ name }: { name: BrowseCategory['icon'] }) => {
   }
 }
 
-export const BrowseChannels = ({ categories }: BrowseChannelsProps) => {
-  const [activeId, setActiveId] = useState<string | null>(null)
+export const BrowseChannels = ({
+  categories,
+  activeId: activeIdProp,
+  onSelect,
+}: BrowseChannelsProps) => {
+  const [internalActiveId, setInternalActiveId] = useState<string | null>(null)
+  const isControlled = activeIdProp !== undefined
+  const activeId = isControlled ? activeIdProp : internalActiveId
 
   const handleSelect = (category: BrowseCategory) => {
-    setActiveId(category.id)
-    console.log('Selected category:', category.id, category.label)
+    if (!isControlled) {
+      setInternalActiveId(category.id)
+    }
+    onSelect?.(category.id)
   }
 
   return (

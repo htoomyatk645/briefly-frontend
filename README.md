@@ -62,14 +62,14 @@ Full token reference: `web/src/tokens.ts` and `web/docs/figma-audit.md`.
 - Podcast import (Apple Podcasts / Spotify)
 
 ### Home
-- Three-section layout: Jump Right In, Pulse, Continue Listening
-- Compact color-tinted horizontal resume cards
-- Explore Channels chip row with sticky frosted positioning
-- App header with account menu and system theme sync
+- Sticky Explore Channels chip row above the Briefly header
+- Jump Right In mosaic, Pulse shelf, Continue Listening (compact color-tinted cards)
+- The Edit editorial pick, For you today feed, and New from your shows sections
+- App header with account menu on secondary tabs; home uses inline sticky header
 
 ### Discover
 - Dedicated Discover tab with category browse chips
-- Mosaic tile components (Jump Right In)
+- Jump Right In mosaic grid for browsing highlights
 
 ### Feed / Player
 - Full-screen clip feed with playback controls
