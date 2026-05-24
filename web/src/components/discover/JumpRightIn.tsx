@@ -69,6 +69,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
   const lastPinchDist = useRef<number | null>(null)
   const wasPinching = useRef(false)
   const pinchSessionZoomedIn = useRef(false)
+  const pinchStartZoom = useRef<number | null>(null)
   const centeredItemId = useRef<string | null>(null)
   const hasAlignedGrid = useRef(false)
 
@@ -283,7 +284,9 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
     if (
       !wasPinching.current ||
       !pinchSessionZoomedIn.current ||
-      zoom.current < AUTO_COMMIT_ZOOM
+      zoom.current < AUTO_COMMIT_ZOOM ||
+      pinchStartZoom.current === null ||
+      zoom.current <= pinchStartZoom.current
     ) {
       return
     }
@@ -331,6 +334,9 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
       if (pointers.current.size >= 2) {
         wasPinching.current = true
         lastPinchDist.current = getPinchDist()
+        if (pinchStartZoom.current === null) {
+          pinchStartZoom.current = zoom.current
+        }
       }
     },
     [getPinchDist],
@@ -349,7 +355,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
 
         const dist = getPinchDist()
         if (dist !== null && lastPinchDist.current !== null) {
-          const delta = (dist - lastPinchDist.current) * PINCH_SENSITIVITY
+          const delta = (lastPinchDist.current - dist) * PINCH_SENSITIVITY
           if (delta > 0) pinchSessionZoomedIn.current = true
           lastPinchDist.current = dist
           zoom.current = clampZoom(zoom.current + delta)
@@ -381,6 +387,7 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
         attemptPinchCommit()
         wasPinching.current = false
         pinchSessionZoomedIn.current = false
+        pinchStartZoom.current = null
         lastPinchDist.current = null
         return
       }
