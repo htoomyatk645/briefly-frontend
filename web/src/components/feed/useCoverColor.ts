@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
+import { colors } from '../../tokens'
 
-const FALLBACK_GRADIENT =
-  'linear-gradient(160deg, #5bc8d4 0%, #3aafbf 35%, #2196a8 65%, #1a7b9a 100%)'
+const FALLBACK_COLOR = colors.feed.bg
 
 type Rgb = { r: number; g: number; b: number }
 
-const gradientCache = new Map<string, string>()
+const colorCache = new Map<string, string>()
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
@@ -42,51 +42,7 @@ function rgbToHue(r: number, g: number, b: number) {
   return ((h * 60) + 360) % 360
 }
 
-function mix(a: Rgb, b: Rgb, t: number): Rgb {
-  return {
-    r: a.r + (b.r - a.r) * t,
-    g: a.g + (b.g - a.g) * t,
-    b: a.b + (b.b - a.b) * t,
-  }
-}
-
-function lighten(c: Rgb, amount: number): Rgb {
-  return mix(c, { r: 255, g: 255, b: 255 }, amount)
-}
-
-function darken(c: Rgb, amount: number): Rgb {
-  return mix(c, { r: 0, g: 0, b: 0 }, amount)
-}
-
-function boostSaturation(c: Rgb, factor: number): Rgb {
-  const l = luminance(c) * 255
-  const s = saturation(c)
-  if (s < 0.05) return c
-  const targetS = clamp(s * factor, 0, 1)
-  const gray = l
-  return {
-    r: gray + (c.r - gray) * (targetS / s),
-    g: gray + (c.g - gray) * (targetS / s),
-    b: gray + (c.b - gray) * (targetS / s),
-  }
-}
-
-function buildGradientFromColors(colors: Rgb[]): string {
-  if (colors.length === 0) return FALLBACK_GRADIENT
-
-  const sorted = [...colors].sort((a, b) => luminance(b) - luminance(a))
-  const vibrant = sorted.find((c) => saturation(c) > 0.12) ?? sorted[0]
-  const anchor = boostSaturation(vibrant, 1.15)
-
-  const top = lighten(anchor, 0.28)
-  const midHigh = lighten(anchor, 0.08)
-  const midLow = darken(anchor, 0.12)
-  const bottom = darken(anchor, 0.32)
-
-  return `linear-gradient(160deg, ${rgbToHex(top)} 0%, ${rgbToHex(midHigh)} 35%, ${rgbToHex(midLow)} 65%, ${rgbToHex(bottom)} 100%)`
-}
-
-function extractPalette(data: Uint8ClampedArray): Rgb[] {
+function extractDominantColor(data: Uint8ClampedArray): Rgb | null {
   const buckets = new Map<
     number,
     { r: number; g: number; b: number; count: number; satSum: number }
@@ -133,15 +89,16 @@ function extractPalette(data: Uint8ClampedArray): Rgb[] {
       b += data[i + 2]
       n += 1
     }
-    if (n === 0) return []
-    return [{ r: r / n, g: g / n, b: b / n }]
+    if (n === 0) return null
+    return { r: r / n, g: g / n, b: b / n }
   }
 
-  return ranked.slice(0, 4).map(({ r, g, b }) => ({ r, g, b }))
+  const { r, g, b } = ranked[0]
+  return { r, g, b }
 }
 
-async function extractGradientFromCover(coverSrc: string): Promise<string> {
-  const cached = gradientCache.get(coverSrc)
+async function extractColorFromCover(coverSrc: string): Promise<string> {
+  const cached = colorCache.get(coverSrc)
   if (cached) return cached
 
   try {
@@ -164,35 +121,35 @@ async function extractGradientFromCover(coverSrc: string): Promise<string> {
     canvas.width = size
     canvas.height = size
     const ctx = canvas.getContext('2d', { willReadFrequently: true })
-    if (!ctx) return FALLBACK_GRADIENT
+    if (!ctx) return FALLBACK_COLOR
 
     ctx.drawImage(img, 0, 0, size, size)
     const { data } = ctx.getImageData(0, 0, size, size)
-    const palette = extractPalette(data)
-    const gradient = buildGradientFromColors(palette)
+    const dominant = extractDominantColor(data)
+    const color = dominant ? rgbToHex(dominant) : FALLBACK_COLOR
 
-    gradientCache.set(coverSrc, gradient)
-    return gradient
+    colorCache.set(coverSrc, color)
+    return color
   } catch {
-    return FALLBACK_GRADIENT
+    return FALLBACK_COLOR
   }
 }
 
-export function useCoverGradient(coverSrc: string) {
-  const [gradient, setGradient] = useState(
-    () => gradientCache.get(coverSrc) ?? FALLBACK_GRADIENT,
+export function useCoverColor(coverSrc: string) {
+  const [color, setColor] = useState(
+    () => colorCache.get(coverSrc) ?? FALLBACK_COLOR,
   )
 
   useEffect(() => {
     let cancelled = false
-    const cached = gradientCache.get(coverSrc)
+    const cached = colorCache.get(coverSrc)
     if (cached) {
-      setGradient(cached)
+      setColor(cached)
       return
     }
 
-    void extractGradientFromCover(coverSrc).then((next) => {
-      if (!cancelled) setGradient(next)
+    void extractColorFromCover(coverSrc).then((next) => {
+      if (!cancelled) setColor(next)
     })
 
     return () => {
@@ -200,5 +157,5 @@ export function useCoverGradient(coverSrc: string) {
     }
   }, [coverSrc])
 
-  return gradient
+  return color
 }

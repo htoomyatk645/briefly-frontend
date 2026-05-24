@@ -1,6 +1,6 @@
 /**
  * Briefly shared brand tokens
- * Source of truth for web + mobile
+ * Source of truth for web + mobile — Warm Editorial palette
  */
 
 export const colors = {
@@ -8,6 +8,10 @@ export const colors = {
   primaryHover: '#A01039',
   primarySoft: 'rgba(201, 24, 74, 0.08)',
   onPrimary: '#FFFFFF',
+
+  /** Dark mode primary accent */
+  primaryDark: '#FF6B8E',
+  primaryDarkHover: '#FFA3BB',
 
   neutral: {
     50: '#FAF8F8',
@@ -22,10 +26,9 @@ export const colors = {
     900: '#1F1818',
   },
 
+  /** Feed / player zone background */
   zoneDark: '#18110F',
-  playerGradientStart: '#0DA2D7',
-  playerGradientMid: '#0DA2D7',
-  playerGradientEnd: '#075571',
+  playerBg: '#18110F',
 
   white: '#FFFFFF',
   overlay: {
@@ -33,20 +36,21 @@ export const colors = {
     medium: 'rgba(255, 255, 255, 0.35)',
     strong: 'rgba(255, 255, 255, 0.7)',
     dark: 'rgba(0, 0, 0, 0.75)',
-    menu: 'rgba(20, 20, 20, 0.95)',
-    frosted: 'rgba(255, 255, 255, 0.15)',
+    menu: 'rgba(24, 17, 15, 0.95)',
     tabInactive: 'rgba(255, 255, 255, 0.5)',
     border: 'rgba(255, 255, 255, 0.3)',
     divider: 'rgba(255, 255, 255, 0.1)',
+    /** Solid tab bar surface (no glass) */
+    tabBar: 'rgba(24, 17, 15, 0.96)',
   },
-} as const;
+} as const
 
 export const radius = {
   card: 16,
   cardSm: 12,
   pill: 999,
   sheet: 40,
-} as const;
+} as const
 
 export const layout = {
   touchMin: 44,
@@ -57,7 +61,7 @@ export const layout = {
   iconButtonSize: 44,
   iconColumnGap: 14,
   carouselGap: 12,
-} as const;
+} as const
 
 export const motion = {
   easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
@@ -67,4 +71,4 @@ export const motion = {
     entrance: 360,
   },
   stagger: 40,
-} as const;
+} as const

@@ -1,5 +1,4 @@
 import { Feather } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { UpNextEpisode } from '@/src/mockData';
@@ -13,10 +12,7 @@ type UpNextCardProps = {
 export const UpNextCard = ({ episode, onQueue }: UpNextCardProps) => (
   <View style={styles.card}>
     <Image source={episode.artwork} style={styles.artwork} accessibilityLabel={episode.show} />
-    <LinearGradient
-      colors={['rgba(0,0,0,0)', colors.overlay.dark]}
-      style={styles.overlay}
-    />
+    <View style={styles.overlay} />
     <Text style={styles.title} numberOfLines={2}>
       {episode.title}
     </Text>
@@ -51,6 +47,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: 56,
+    backgroundColor: colors.overlay.dark,
   },
   title: {
     position: 'absolute',

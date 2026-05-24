@@ -12,11 +12,14 @@ This workspace is **Briefly Frontend** only.
 - Shared tokens: `packages/tokens/` and `web/src/tokens.ts`
 - Design canvases: `canvases/`
 
-## Design
-- Primary bg: #0C0F14, accent: #B8FF3C, warm: #FF6640
+## Design — Warm Editorial (canonical)
+- **Light:** warm cream bg `hsl(40 20% 97%)`, primary accent `#C9184A`
+- **Dark:** warm near-black bg `hsl(20 6% 7%)`, primary accent `#FF6B8E`
+- **Feed zone:** `#18110F` background
 - Fonts: Fraunces (display), Geist (body) — never Inter or Roboto as primary
-- No purple gradients, glassmorphism, pill CTAs, or gradient text
-- All colors/spacing from tokens.ts — no hardcoded values
+- **No glassmorphism, no gradients, no gradient text**
+- No purple gradients, no teal-on-dark, no Spotify-green
+- All colors/spacing from `tokens.ts` / `index.css` — no hardcoded hex values
 
 ## Motion
 - Easing: cubic-bezier(0.22, 1, 0.36, 1)

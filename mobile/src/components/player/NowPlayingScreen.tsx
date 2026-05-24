@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -50,10 +49,7 @@ export const NowPlayingScreen = () => {
         <UpNextCarousel />
       </View>
 
-      <LinearGradient
-        colors={[colors.playerGradientStart, colors.playerGradientEnd]}
-        style={styles.bottomZone}
-      >
+      <View style={styles.bottomZone}>
         <ScrollView
           contentContainerStyle={[styles.playerContent, { paddingBottom: tabBarPadding }]}
           showsVerticalScrollIndicator={false}
@@ -75,7 +71,7 @@ export const NowPlayingScreen = () => {
             onTogglePlay={actions.togglePlay}
           />
         </ScrollView>
-      </LinearGradient>
+      </View>
 
       <SpeedSelector
         visible={actions.showSpeedSelector}
@@ -107,6 +103,7 @@ const styles = StyleSheet.create({
   },
   bottomZone: {
     flex: 0.65,
+    backgroundColor: colors.playerBg,
     borderTopLeftRadius: radius.sheet,
     borderTopRightRadius: radius.sheet,
     overflow: 'hidden',

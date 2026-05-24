@@ -5,16 +5,14 @@
   padding-top: 12px;
   padding-bottom: 16px;
   padding-inline: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
 }
 
 :root[data-theme='light'] .discover-channels-sticky {
-  background: hsl(0 0% 100% / 0.7);
+  background: var(--bg-page);
 }
 
 :root[data-theme='dark'] .discover-channels-sticky {
-  background: hsl(0 0% 8% / 0.7);
+  background: var(--bg-page);
 }
 
 .discover-channels-sticky .home-shelf {
