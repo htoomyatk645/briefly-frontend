@@ -3,6 +3,7 @@ import { useId, useState, type ChangeEvent } from 'react'
 import { AnimatedNumber } from '../motion/AnimatedNumber'
 import { transition } from '../../styles/motion'
 import type { FeedEpisode } from './feedData'
+import { mosaicIdToFeedId } from './feedData'
 import { feedAssetsRemote } from './feedAssets'
 import { AudioOutputSheet } from './player/AudioOutputSheet'
 import { useBodyScrollLock } from './player/BottomSheet'
@@ -86,6 +87,14 @@ export const PlayerCard = ({
   const hasProducts = products.length > 0
   const coverGradient = useCoverGradient(episode.coverSrc)
 
+  const sharedArtworkLayoutId = (() => {
+    if (typeof window === 'undefined') return undefined
+    const stored = sessionStorage.getItem('briefly-mosaic-layout-id')
+    if (!stored) return undefined
+    const mosaicId = stored.replace(/^mosaic-/, '')
+    return mosaicIdToFeedId(mosaicId) === episode.id ? stored : undefined
+  })()
+
   useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
 
   const handleProgressChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -128,13 +137,16 @@ export const PlayerCard = ({
         <div className="player-card__body">
           <div className="player-card__upper">
             <div className="player-card__art-row">
-              <div className="player-card__art-frame">
+              <motion.div
+                className="player-card__art-frame"
+                layoutId={sharedArtworkLayoutId}
+              >
                 <img
                   src={episode.coverSrc}
                   alt={`${episode.showName} artwork`}
                   className="player-card__art"
                 />
-              </div>
+              </motion.div>
 
               <div className="player-card__rail" role="toolbar" aria-label="Player actions">
                 <button
