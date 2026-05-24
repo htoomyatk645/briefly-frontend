@@ -98,11 +98,16 @@
   display: none;
 }
 
-.up-next__card {
+.up-next__card-shell {
   flex: 0 0 130px;
   width: 130px;
-  height: 170px;
+  position: relative;
   scroll-snap-align: center;
+}
+
+.up-next__card {
+  width: 100%;
+  height: 170px;
   position: relative;
   display: block;
   padding: 0;
@@ -134,6 +139,28 @@
 }
 
 .up-next__card:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.65);
+  outline-offset: 2px;
+}
+
+.up-next__card-action {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.up-next__card-action:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.65);
   outline-offset: 2px;
 }
@@ -174,20 +201,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.up-next__card-action {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
-  z-index: 2;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: hsl(0 0% 100% / 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .up-next__card-action-icon {
@@ -492,6 +505,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .up-next__card,
+  .up-next__card-action,
   .up-next__dot,
   .player-card__rail-btn,
   .player-card--adaptive {

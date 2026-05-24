@@ -1,25 +1,39 @@
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FeedEpisode } from './feedData'
 import { feedAssetsRemote } from './feedAssets'
 
 const CARD_WIDTH = 130
 const CARD_GAP = 10
+const CARD_EXIT_OFFSET = CARD_WIDTH + CARD_GAP
+const EXIT_MS = 280
+const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
 type UpNextCarouselProps = {
   items: FeedEpisode[]
   queueDepth: number
+  nowPlayingId: string
   onSelect: (id: string) => void
+  onQueue: (id: string) => void
 }
 
-export const UpNextCarousel = ({ items, onSelect }: UpNextCarouselProps) => {
+export const UpNextCarousel = ({
+  items,
+  nowPlayingId,
+  onSelect,
+  onQueue,
+}: UpNextCarouselProps) => {
+  const prefersReducedMotion = useReducedMotion()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollIndex, setScrollIndex] = useState(0)
   const [displayItems, setDisplayItems] = useState(items)
+  const [visibleItems, setVisibleItems] = useState(items)
   const [isLoading, setIsLoading] = useState(false)
-  const itemsKeyRef = useRef('')
+  const pendingQueueIdRef = useRef<string | null>(null)
+  const queueTimerRef = useRef<number | null>(null)
+  const prevNowPlayingIdRef = useRef(nowPlayingId)
   const isFirstMount = useRef(true)
 
-  const itemsKey = items.map((item) => item.id).join('|')
   const dotCount = Math.min(items.length, 8)
   const hasOverflow = items.length > 8
 
@@ -30,41 +44,94 @@ export const UpNextCarousel = ({ items, onSelect }: UpNextCarouselProps) => {
   }, [])
 
   useEffect(() => {
+    return () => {
+      if (queueTimerRef.current != null) window.clearTimeout(queueTimerRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
     if (isFirstMount.current) {
       isFirstMount.current = false
-      itemsKeyRef.current = itemsKey
+      prevNowPlayingIdRef.current = nowPlayingId
       setDisplayItems(items)
+      setVisibleItems(items)
       resetScroll()
       return
     }
 
-    if (itemsKey === itemsKeyRef.current) return
+    const nowPlayingChanged = nowPlayingId !== prevNowPlayingIdRef.current
+    if (nowPlayingChanged) {
+      prevNowPlayingIdRef.current = nowPlayingId
+      pendingQueueIdRef.current = null
+      if (queueTimerRef.current != null) {
+        window.clearTimeout(queueTimerRef.current)
+        queueTimerRef.current = null
+      }
+      setIsLoading(true)
 
-    setIsLoading(true)
+      const frame = requestAnimationFrame(() => {
+        setDisplayItems(items)
+        setVisibleItems(items)
+        setIsLoading(false)
+        resetScroll()
+      })
 
-    const frame = requestAnimationFrame(() => {
-      setDisplayItems(items)
-      itemsKeyRef.current = itemsKey
-      setIsLoading(false)
-      resetScroll()
-    })
+      return () => cancelAnimationFrame(frame)
+    }
 
-    return () => cancelAnimationFrame(frame)
-  }, [items, itemsKey, resetScroll])
+    setDisplayItems(items)
+    if (!pendingQueueIdRef.current) {
+      setVisibleItems(items)
+    }
+  }, [items, nowPlayingId, resetScroll])
 
   const updateIndexFromScroll = useCallback(() => {
     const el = scrollRef.current
     if (!el) return
     const idx = Math.round((el.scrollLeft + CARD_WIDTH / 2) / (CARD_WIDTH + CARD_GAP))
-    setScrollIndex(Math.min(Math.max(0, idx), displayItems.length - 1))
-  }, [displayItems.length])
+    setScrollIndex(Math.min(Math.max(0, idx), visibleItems.length - 1))
+  }, [visibleItems.length])
 
-  const scrollToIndex = useCallback((index: number) => {
-    const el = scrollRef.current
-    if (!el || index >= displayItems.length) return
-    el.scrollTo({ left: index * (CARD_WIDTH + CARD_GAP), behavior: 'smooth' })
-    setScrollIndex(index)
-  }, [displayItems.length])
+  const scrollToIndex = useCallback(
+    (index: number) => {
+      const el = scrollRef.current
+      if (!el || index >= visibleItems.length) return
+      el.scrollTo({ left: index * (CARD_WIDTH + CARD_GAP), behavior: 'smooth' })
+      setScrollIndex(index)
+    },
+    [visibleItems.length],
+  )
+
+  const handleQueueStart = useCallback(
+    (id: string) => {
+      if (displayItems[0]?.id === id) {
+        onQueue(id)
+        return
+      }
+
+      pendingQueueIdRef.current = id
+      setVisibleItems((prev) => prev.filter((item) => item.id !== id))
+
+      const delay = prefersReducedMotion ? 0 : EXIT_MS
+      if (queueTimerRef.current != null) window.clearTimeout(queueTimerRef.current)
+
+      queueTimerRef.current = window.setTimeout(() => {
+        queueTimerRef.current = null
+        if (pendingQueueIdRef.current !== id) return
+        pendingQueueIdRef.current = null
+        onQueue(id)
+      }, delay)
+    },
+    [displayItems, onQueue, prefersReducedMotion],
+  )
+
+  const layoutTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.22, ease: EASE_OUT }
+
+  const exitTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.28, ease: EASE_OUT }
 
   const isEmpty = displayItems.length === 0
 
@@ -90,27 +157,57 @@ export const UpNextCarousel = ({ items, onSelect }: UpNextCarouselProps) => {
               </p>
             </div>
           ) : (
-            displayItems.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                role="listitem"
-                className="up-next__card"
-                onClick={() => onSelect(item.id)}
-                aria-label={`Play next: ${item.episodeTitle}`}
-              >
-                <img src={item.coverSrc} alt="" className="up-next__card-cover" />
-                <div className="up-next__card-scrim" aria-hidden />
-                <p className="up-next__card-title">{item.episodeTitle}</p>
-                <span className="up-next__card-action" aria-hidden>
-                  <img
-                    src={feedAssetsRemote.controls.chevron}
-                    alt=""
-                    className="up-next__card-action-icon"
-                  />
-                </span>
-              </button>
-            ))
+            <AnimatePresence mode="popLayout" initial={false}>
+              {visibleItems.map((item) => (
+                <motion.div
+                  key={item.id}
+                  role="listitem"
+                  layout={!prefersReducedMotion}
+                  initial={false}
+                  className="up-next__card-shell"
+                  exit={
+                    prefersReducedMotion
+                      ? { opacity: 0, transition: exitTransition }
+                      : { x: CARD_EXIT_OFFSET, opacity: 0, transition: exitTransition }
+                  }
+                  transition={{
+                    layout: layoutTransition,
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="up-next__card"
+                    onClick={() => onSelect(item.id)}
+                    aria-label={`Play next: ${item.episodeTitle}`}
+                  >
+                    <img src={item.coverSrc} alt="" className="up-next__card-cover" />
+                    <div className="up-next__card-scrim" aria-hidden />
+                    <p className="up-next__card-title">{item.episodeTitle}</p>
+                  </button>
+                  <motion.button
+                    type="button"
+                    className="up-next__card-action"
+                    aria-label={`Queue ${item.episodeTitle} as next without switching`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleQueueStart(item.id)
+                    }}
+                    whileTap={
+                      prefersReducedMotion
+                        ? undefined
+                        : { scale: 0.92, backgroundColor: 'hsla(0, 0%, 100%, 0.4)' }
+                    }
+                    transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                  >
+                    <img
+                      src={feedAssetsRemote.controls.chevron}
+                      alt=""
+                      className="up-next__card-action-icon"
+                    />
+                  </motion.button>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           )}
         </div>
       </div>

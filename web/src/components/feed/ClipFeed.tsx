@@ -5,6 +5,7 @@ import {
   getEpisodeById,
   getUpNextItems,
   mosaicIdToFeedId,
+  promoteUpNextItem,
 } from './feedData'
 import type { MoreMenuAction } from './player/MoreMenu'
 import {
@@ -35,6 +36,7 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) =>
   const [savedIds, setSavedIds] = useState(() => readSavedEpisodeIds())
   const [followedShows, setFollowedShows] = useState(() => readFollowedShowIds())
   const [toast, setToast] = useState<string | null>(null)
+  const [queueOrder, setQueueOrder] = useState<string[] | null>(null)
   const autoPlayNext = useRef(false)
 
   const nowPlaying = useMemo(
@@ -42,7 +44,17 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) =>
     [nowPlayingId],
   )
 
-  const upNextItems = useMemo(() => getUpNextItems(nowPlayingId), [nowPlayingId])
+  const upNextItems = useMemo(() => {
+    const base = getUpNextItems(nowPlayingId)
+    if (!queueOrder) return base
+    return queueOrder
+      .map((id) => base.find((e) => e.id === id))
+      .filter((e): e is NonNullable<typeof e> => e != null)
+  }, [nowPlayingId, queueOrder])
+
+  useEffect(() => {
+    setQueueOrder(null)
+  }, [nowPlayingId])
 
   const showToast = useCallback((msg: string) => {
     setToast(msg)
@@ -82,6 +94,12 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) =>
     },
     [onPlayEpisode, playback],
   )
+
+  const queueFromUpNext = useCallback((id: string) => {
+    const base = getUpNextItems(nowPlayingId)
+    const next = promoteUpNextItem(base, id)
+    setQueueOrder(next.map((e) => e.id))
+  }, [nowPlayingId])
 
   const goNext = useCallback(() => {
     playNextInQueue()
@@ -157,7 +175,9 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) =>
       <UpNextCarousel
         items={upNextItems}
         queueDepth={upNextItems.length}
+        nowPlayingId={nowPlayingId}
         onSelect={selectFromUpNext}
+        onQueue={queueFromUpNext}
       />
 
       <PlayerCard

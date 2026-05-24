@@ -103,3 +103,11 @@ export const DEFAULT_FEED_ID = FEED_QUEUE[0].id
 export function getUpNextItems(nowPlayingId: string): FeedEpisode[] {
   return FEED_QUEUE.filter((e) => e.id !== nowPlayingId)
 }
+
+/** Move an episode to the front of the Up Next list without changing now playing. */
+export function promoteUpNextItem(items: FeedEpisode[], id: string): FeedEpisode[] {
+  const hit = items.find((e) => e.id === id)
+  if (!hit) return items
+  if (items[0]?.id === id) return items
+  return [hit, ...items.filter((e) => e.id !== id)]
+}
