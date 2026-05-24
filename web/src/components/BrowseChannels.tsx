@@ -115,10 +115,7 @@ export const BrowseChannels = ({
   }
 
   return (
-    <section className="home-shelf browse-channels" aria-labelledby="browse-channels-heading">
-      <h2 id="browse-channels-heading" className="home-shelf__label">
-        Browse Channels
-      </h2>
+    <section className="home-shelf browse-channels" aria-label="Browse channels">
       <div className="home-shelf__scroller" role="list">
         {categories.map((category) => {
           const isActive = activeId === category.id
