@@ -426,6 +426,12 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
 
   return (
     <section className="home-section jump-right-in" aria-labelledby="jump-right-in-heading">
+      <div className="home-section__head jump-right-in__head">
+        <h2 id="jump-right-in-heading" className="section-heading">
+          Jump Right In
+        </h2>
+      </div>
+
       <div className="discover__mosaic-portal">
         <div
           className={[
@@ -479,12 +485,6 @@ export const JumpRightIn = ({ onTileSelect }: JumpRightInProps) => {
           </>
         )}
         </div>
-      </div>
-
-      <div className="home-section__head jump-right-in__head">
-        <h2 id="jump-right-in-heading" className="section-heading">
-          Jump Right In
-        </h2>
       </div>
     </section>
   )
