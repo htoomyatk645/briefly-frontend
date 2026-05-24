@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion'
-import { useId, useState, type ChangeEvent } from 'react'
+import { useEffect, useId, useState, type ChangeEvent } from 'react'
 import { AnimatedNumber } from '../motion/AnimatedNumber'
 import { transition } from '../../styles/motion'
 import type { FeedEpisode } from './feedData'
+import { mosaicIdToFeedId } from './feedData'
 import { feedAssetsRemote } from './feedAssets'
+import {
+  MOSAIC_LAYOUT_STORAGE_KEY,
+  clearMosaicLayoutHandoff,
+} from '../discover/mosaicHandoff'
 import { AudioOutputSheet } from './player/AudioOutputSheet'
 import { useBodyScrollLock } from './player/BottomSheet'
 import { getProductsForEpisode, MOCK_OUTPUTS } from './player/playerMocks'
@@ -51,6 +56,9 @@ const PauseIcon = () => (
   </svg>
 )
 
+/** Route transition (240ms) + shared layout animation buffer */
+const LAYOUT_HANDOFF_CLEAR_MS = 1000
+
 export const PlayerCard = ({
   episode,
   isPlaying,
@@ -85,6 +93,35 @@ export const PlayerCard = ({
   const products = getProductsForEpisode(episode.id)
   const hasProducts = products.length > 0
   const coverGradient = useCoverGradient(episode.coverSrc)
+
+  const sharedArtworkLayoutId = (() => {
+    if (typeof window === 'undefined') return undefined
+    const stored = sessionStorage.getItem(MOSAIC_LAYOUT_STORAGE_KEY)
+    if (!stored) return undefined
+    const mosaicId = stored.replace(/^mosaic-/, '')
+    return mosaicIdToFeedId(mosaicId) === episode.id ? stored : undefined
+  })()
+
+  useEffect(() => {
+    if (sharedArtworkLayoutId) return
+
+    const stored = sessionStorage.getItem(MOSAIC_LAYOUT_STORAGE_KEY)
+    if (stored) clearMosaicLayoutHandoff()
+  }, [sharedArtworkLayoutId])
+
+  useEffect(() => {
+    if (!sharedArtworkLayoutId) return
+
+    const fallbackTimer = window.setTimeout(() => {
+      clearMosaicLayoutHandoff()
+    }, LAYOUT_HANDOFF_CLEAR_MS)
+
+    return () => window.clearTimeout(fallbackTimer)
+  }, [sharedArtworkLayoutId])
+
+  const handleSharedLayoutComplete = () => {
+    if (sharedArtworkLayoutId) clearMosaicLayoutHandoff()
+  }
 
   useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
 
@@ -128,13 +165,18 @@ export const PlayerCard = ({
         <div className="player-card__body">
           <div className="player-card__upper">
             <div className="player-card__art-row">
-              <div className="player-card__art-frame">
+              <motion.div
+                className="player-card__art-frame"
+                layoutId={sharedArtworkLayoutId}
+                transition={transition.base}
+                onLayoutAnimationComplete={handleSharedLayoutComplete}
+              >
                 <img
                   src={episode.coverSrc}
                   alt={`${episode.showName} artwork`}
                   className="player-card__art"
                 />
-              </div>
+              </motion.div>
 
               <div className="player-card__rail" role="toolbar" aria-label="Player actions">
                 <button

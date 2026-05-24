@@ -109,6 +109,12 @@
   gap: var(--tile-gap);
   padding: 0.5rem;
   width: fit-content;
+  opacity: 0;
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mosaic-grid--visible {
+  opacity: 1;
 }
 
 .mosaic-row {
@@ -122,6 +128,8 @@
 
 /* Tile */
 .mosaic-tile {
+  --lens-scale: 1;
+  --lens-opacity: 1;
   position: relative;
   width: var(--tile-size);
   height: var(--tile-size);
@@ -131,24 +139,67 @@
   border-radius: var(--radius-sm);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 120ms cubic-bezier(0.22, 1, 0.36, 1),
+  transform: scale(var(--lens-scale));
+  opacity: var(--lens-opacity);
+  transition:
+    transform 80ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 80ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 
-.mosaic-tile:hover {
-  transform: scale(1.06);
+.mosaic-tile--lensed {
+  z-index: 10;
   box-shadow: var(--shadow-md);
-  z-index: 1;
+}
+
+.mosaic-tile--center {
+  z-index: 11;
+  box-shadow: var(--shadow-md);
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.mosaic-tile--empty {
+  cursor: default;
+  background: var(--surface-alt);
+  border: 1px dashed var(--border-strong);
+}
+
+.mosaic-tile__empty-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.mosaic-tile__empty-mark {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 1.25rem;
+  color: var(--text-muted);
+}
+
+.mosaic-tile__artwork-wrap {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.mosaic-tile:hover:not(.mosaic-tile--empty) {
+  transform: scale(calc(var(--lens-scale) * 1.06));
+  box-shadow: var(--shadow-md);
+  z-index: 12;
 }
 
 .mosaic-tile:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--focus-ring);
-  z-index: 2;
+  z-index: 13;
 }
 
-.mosaic-tile:active {
-  transform: scale(0.97);
+.mosaic-tile:active:not(.mosaic-tile--empty) {
+  transform: scale(calc(var(--lens-scale) * 0.97));
 }
 
 .mosaic-tile__artwork {
@@ -166,6 +217,7 @@
 .mosaic-tile__overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -233,7 +285,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mosaic-tile {
+    transition: box-shadow 120ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mosaic-grid {
     transition: none;
+    opacity: 1;
+  }
+  .mosaic-grid--visible {
+    opacity: 1;
   }
   .discover__zoom-wrapper {
     transition: none;
