@@ -1,36 +1,64 @@
+import { forwardRef } from 'react'
+import { motion } from 'framer-motion'
 import { ArtworkPlaceholder } from '../home/ArtworkPlaceholder'
+import { mosaicIdToFeedId } from '../feed/feedData'
 import type { MosaicItem } from './discoverData'
 
-type MosaicTileProps = {
+export type MosaicTileProps = {
   item: MosaicItem
-  zoom: number
+  layoutIdActive?: boolean
+  isTransitionSource?: boolean
   onSelect: (id: string) => void
 }
 
-export const MosaicTile = ({ item, zoom, onSelect }: MosaicTileProps) => {
-  const labelOpacity = Math.max(0, Math.min(1, (zoom - 1.4) / 0.6))
+export const MosaicTile = forwardRef<HTMLButtonElement, MosaicTileProps>(
+  function MosaicTile(
+    { item, layoutIdActive = false, isTransitionSource = false, onSelect },
+    ref,
+  ) {
+    const feedArtId = mosaicIdToFeedId(item.id)
+    const layoutId = layoutIdActive ? `player-artwork-${feedArtId}` : undefined
 
-  return (
-    <button
-      type="button"
-      className="mosaic-tile"
-      onClick={() => onSelect(item.id)}
-      aria-label={`${item.showName}: ${item.episodeTitle}`}
-    >
-      <ArtworkPlaceholder
-        tone={item.artworkTone}
-        coverSrc={item.coverSrc}
-        size="md"
-        className="mosaic-tile__artwork"
-      />
-      <div
-        className="mosaic-tile__overlay"
-        style={{ opacity: labelOpacity }}
-        aria-hidden={labelOpacity < 0.1}
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={[
+          'mosaic-tile',
+          isTransitionSource ? 'mosaic-tile--transition-source' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        data-item-id={item.id}
+        onClick={() => onSelect(item.id)}
+        aria-label={`${item.showName}: ${item.episodeTitle}`}
       >
-        <span className="mosaic-tile__show">{item.showName}</span>
-        <span className="mosaic-tile__title">{item.episodeTitle}</span>
-      </div>
-    </button>
-  )
-}
+        {layoutId ? (
+          <motion.div
+            layoutId={layoutId}
+            className="mosaic-tile__artwork-wrap"
+            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <ArtworkPlaceholder
+              tone={item.artworkTone}
+              coverSrc={item.coverSrc}
+              size="md"
+              className="mosaic-tile__artwork"
+              label={`${item.showName}: ${item.episodeTitle}`}
+            />
+          </motion.div>
+        ) : (
+          <div className="mosaic-tile__artwork-wrap">
+            <ArtworkPlaceholder
+              tone={item.artworkTone}
+              coverSrc={item.coverSrc}
+              size="md"
+              className="mosaic-tile__artwork"
+              label={`${item.showName}: ${item.episodeTitle}`}
+            />
+          </div>
+        )}
+      </button>
+    )
+  },
+)
