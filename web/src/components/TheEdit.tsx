@@ -39,20 +39,29 @@ export const TheEdit = ({ pick, onPlay }: TheEditProps) => {
         whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
         transition={pressSpring}
       >
-        <span className="the-edit__frame">
-          <span className="the-edit__inner">
-            <img
-              src={pick.coverSrc}
-              alt=""
-              className="the-edit__art"
-            />
-            <span className="the-edit__copy">
-              <span className="the-edit__title">{pick.title}</span>
-              <span className="the-edit__meta">{pick.episodeMeta}</span>
-              <span className="the-edit__show">{pick.showName}</span>
-              <span className="the-edit__play">
-                <span className="the-edit__play-label">Play</span>
-                <PlayIcon />
+        <span className="the-edit__wrap">
+          <img
+            src="/home/the-edit-microphone.svg"
+            alt=""
+            className="the-edit__mic"
+            width={72}
+            height={138}
+          />
+          <span className="the-edit__frame">
+            <span className="the-edit__inner">
+              <img
+                src={pick.coverSrc}
+                alt=""
+                className="the-edit__art"
+              />
+              <span className="the-edit__copy">
+                <span className="the-edit__title">{pick.title}</span>
+                <span className="the-edit__meta">{pick.episodeMeta}</span>
+                <span className="the-edit__show">{pick.showName}</span>
+                <span className="the-edit__play">
+                  <span className="the-edit__play-label">Play</span>
+                  <PlayIcon />
+                </span>
               </span>
             </span>
           </span>
