@@ -125,7 +125,6 @@ export const ContinueListeningSection = ({
         <h2 id="continue-listening-heading" className="section-heading">
           Continue listening
         </h2>
-        <p className="section-subtitle">Pick up where you paused</p>
       </div>
 
       {loading ? (
