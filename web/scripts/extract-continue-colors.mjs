@@ -15,6 +15,9 @@ const COVERS = [
   'acquired.jpg',
   'hard-fork.jpg',
   'radiolab.jpg',
+  'crime-junkie.jpg',
+  'planet-money.jpg',
+  'smartless.jpg',
 ]
 
 function rgbToHsl(r, g, b) {

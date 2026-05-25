@@ -5,8 +5,6 @@ import { pressSpring, transition } from '../../styles/motion'
 import '../../styles/sections.css'
 import './continue-listening.css'
 
-const RING_RADIUS = 32
-const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS
 const SKELETON_COUNT = 3
 
 export type ContinueListeningCardProps = {
@@ -32,8 +30,6 @@ export const ContinueListeningCard = ({
     '--continue-card-s': s,
   } as CSSProperties
 
-  const progressOffset = RING_CIRCUMFERENCE * (1 - item.progress)
-
   return (
     <motion.button
       type="button"
@@ -44,42 +40,24 @@ export const ContinueListeningCard = ({
       whileTap={allowMotion ? { scale: 0.97 } : undefined}
       transition={pressSpring}
     >
-      <div className="continue-listening-card__art-wrap" aria-hidden>
-        <svg
-          className="continue-listening-card__ring"
-          viewBox="0 0 68 68"
-          width={68}
-          height={68}
-        >
-          <circle
-            className="continue-listening-card__ring-track"
-            cx={34}
-            cy={34}
-            r={RING_RADIUS}
-          />
-          <circle
-            className="continue-listening-card__ring-fill"
-            cx={34}
-            cy={34}
-            r={RING_RADIUS}
-            strokeDasharray={RING_CIRCUMFERENCE}
-            strokeDashoffset={progressOffset}
-          />
-        </svg>
-        <img
-          src={item.coverSrc}
-          alt=""
-          className="continue-listening-card__art"
-          width={64}
-          height={64}
-        />
-      </div>
+      <img
+        src={item.coverSrc}
+        alt=""
+        className="continue-listening-card__art"
+        width={132}
+        height={132}
+      />
       <span className="continue-listening-card__body">
-        <span className="continue-listening-card__show">{item.showName}</span>
-        <span className="continue-listening-card__title">{item.episodeTitle}</span>
-        <span className="continue-listening-card__time-remaining">
-          {item.timeRemaining}
+        <span className="continue-listening-card__progress" aria-hidden>
+          <span
+            className="continue-listening-card__progress-fill"
+            style={{ width: `${Math.round(item.progress * 100)}%` }}
+          />
         </span>
+        <span className="continue-listening-card__progress-label">
+          {item.progressLabel}
+        </span>
+        <span className="continue-listening-card__title">{item.episodeTitle}</span>
       </span>
     </motion.button>
   )
@@ -125,7 +103,6 @@ export const ContinueListeningSection = ({
         <h2 id="continue-listening-heading" className="section-heading">
           Continue listening
         </h2>
-        <p className="section-subtitle">Pick up where you paused</p>
       </div>
 
       {loading ? (
