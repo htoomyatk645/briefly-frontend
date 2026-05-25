@@ -10,6 +10,7 @@
     "extract-colors": "node scripts/extract-continue-colors.mjs"
   },
   "dependencies": {
+    "@briefly/tokens": "*",
     "framer-motion": "^12.39.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

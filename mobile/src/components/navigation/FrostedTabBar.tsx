@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import type { BottomTabBarProps } from 'expo-router/build/react-navigation/bottom-tabs/types';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,8 +21,7 @@ export const FrostedTabBar = ({ state, descriptors, navigation }: BottomTabBarPr
 
   return (
     <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 8) }]}>
-      <BlurView intensity={80} tint="light" style={styles.blur}>
-        <View style={styles.tint} />
+      <View style={styles.bar}>
         <View style={styles.row}>
           {state.routes.map((route, index) => {
             const focused = state.index === index;
@@ -65,7 +63,7 @@ export const FrostedTabBar = ({ state, descriptors, navigation }: BottomTabBarPr
             );
           })}
         </View>
-      </BlurView>
+      </View>
     </View>
   );
 };
@@ -77,14 +75,11 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  blur: {
+  bar: {
     overflow: 'hidden',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.overlay.border,
-  },
-  tint: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: colors.overlay.frosted,
+    backgroundColor: colors.zoneDark,
   },
   row: {
     flexDirection: 'row',
@@ -99,7 +94,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   label: {
-    fontFamily: fonts.body,
+    fontFamily: fonts.bodyMedium,
     fontSize: 10,
   },
   activeDot: {
@@ -108,6 +103,6 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 999,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.white,
   },
 });

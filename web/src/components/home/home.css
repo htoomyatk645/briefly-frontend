@@ -361,11 +361,7 @@
 .featured-card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    transparent 35%,
-    var(--overlay-strong) 100%
-  );
+  background: color-mix(in srgb, var(--overlay-strong) 72%, transparent);
   pointer-events: none;
 }
 

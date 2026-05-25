@@ -127,7 +127,7 @@
   width: 72%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--surface-2, #1a1f28);
+  background: var(--surface);
   animation: mosaic-skeleton-pulse 1.2s ease-in-out infinite;
 }
 

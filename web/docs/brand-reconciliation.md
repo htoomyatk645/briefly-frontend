@@ -164,4 +164,14 @@ Before any reconciliation code runs, choose:
 
 ---
 
-*This document will be updated after the palette decision. No source files were modified in Phase 1 except the creation of this audit.*
+## Phase 2 resolution (May 25, 2026)
+
+**Decision:** Palette B (warm pink/cream runtime). Pill shapes permitted. Gradients and glassmorphism prohibited.
+
+**Token architecture chosen:**
+1. `@briefly/tokens` (`packages/tokens/colors.ts`) — single source of truth for brand color literals
+2. `web/src/index.css` — runtime CSS custom properties mirroring `theme.light` / `theme.dark`
+3. `web/src/tokens.ts` — web spacing, typography, motion; re-exports package colors + theme
+4. `.cursor/rules/briefly.mdc` — agent constraints aligned to the above
+
+**Status:** ✅ Reconciled. Deprecated Palette A values removed from `web/src/**`. Glass and gradient treatments replaced with solid surfaces.

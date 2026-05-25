@@ -9,14 +9,33 @@ This workspace is **Briefly Frontend** only.
 ## Structure
 - Web prototype: `web/` (React + Vite + Framer Motion)
 - Mobile app: `mobile/` (Expo + React Native)
-- Shared tokens: `packages/tokens/` and `web/src/tokens.ts`
+- Shared tokens: `packages/tokens/` (`@briefly/tokens`) — **single source of truth for brand colors**
+- Web design tokens: `web/src/tokens.ts` (spacing, typography, motion; imports colors from `@briefly/tokens`)
+- Runtime CSS variables: `web/src/index.css` (mirrors `@briefly/tokens` theme values)
 - Design canvases: `canvases/`
 
-## Design
-- Primary bg: #0C0F14, accent: #B8FF3C, warm: #FF6640
+## Design — Palette B (canonical)
+
+**Light theme**
+- Page bg: `hsl(40 20% 97%)`, surface: `#FFFFFF`
+- Primary brand / CTA: `#C9184A`, hover: `#A01039`
+- Text: `#1F1818`, secondary: `#4B3C3C`, muted: `#A99898`
+
+**Dark theme**
+- Page bg: `hsl(20 6% 7%)`, surface: `#221917`
+- Primary brand / CTA: `#FF6B8E`, hover: `#FFA3BB`
+- Text: `#FAF8F8`, secondary: `#E3DBDB`, muted: `#705453`
+
+**Feed / player zone:** `#18110F` background, player surface `#221917`
+
 - Fonts: Fraunces (display), Geist (body) — never Inter or Roboto as primary
-- No purple gradients, glassmorphism, pill CTAs, or gradient text
-- All colors/spacing from tokens.ts — no hardcoded values
+- All colors from `@briefly/tokens` or CSS variables derived from them — no hardcoded brand hex in components
+
+## Visual treatment restrictions
+
+**Allowed:** pill shapes (tab bar, chips, badges), radius up to 16px on cards, 999px on pills
+
+**Not allowed:** gradient fills, glassmorphism (`backdrop-filter` / blur overlays), gradient text, purple decorative gradients
 
 ## Motion
 - Easing: cubic-bezier(0.22, 1, 0.36, 1)

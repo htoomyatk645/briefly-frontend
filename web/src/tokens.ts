@@ -1,44 +1,16 @@
 /**
- * Briefly Design Tokens
- * 
- * Source of truth for all design tokens. Synced with Figma Design System.
- * Figma file: https://www.figma.com/design/sgYL7Xf5yATgTVaaKkDETk
- * 
- * @see /docs/figma-audit.md for full token documentation
+ * Briefly Design Tokens — Web
+ *
+ * Brand colors: import from @briefly/tokens (single source of truth).
+ * Runtime CSS variables: web/src/index.css (mirrors theme.light / theme.dark).
+ *
+ * @see /docs/figma-audit.md
+ * @see /docs/brand-reconciliation.md
  */
 
-// =============================================================================
-// COLORS
-// =============================================================================
+import { colors as brandColors, theme as brandTheme } from '@briefly/tokens'
 
-export const colors = {
-  // Backgrounds
-  bg: {
-    primary: '#0C0F14',
-    surface1: '#13171E',
-    surface2: '#1A1F28',
-    surface3: '#232A36',
-  },
-
-  // Accents
-  accent: {
-    primary: '#B8FF3C',  // Acid chartreuse - use purposefully, not decoratively
-    warm: '#FF6640',     // Burnt orange - for active play states, progress, error
-  },
-
-  // Text
-  text: {
-    primary: '#F2F0EB',
-    secondary: '#8A9099',
-    muted: '#4E5561',
-  },
-
-  // Borders
-  border: {
-    subtle: 'rgba(255, 255, 255, 0.06)',
-    default: 'rgba(255, 255, 255, 0.12)',
-  },
-} as const;
+export { brandColors as colors, brandTheme as theme }
 
 // =============================================================================
 // SPACING
@@ -58,7 +30,7 @@ export const spacing = {
   16: 64,
   20: 80,
   24: 96,
-} as const;
+} as const
 
 // =============================================================================
 // RADIUS
@@ -66,11 +38,11 @@ export const spacing = {
 
 export const radius = {
   none: 0,
-  sm: 4,
-  md: 8,    // Max for CTAs per brand spec
-  lg: 12,
-  full: 9999,
-} as const;
+  sm: 10,
+  md: 16,
+  lg: 24,
+  pill: 9999,
+} as const
 
 // =============================================================================
 // TYPOGRAPHY
@@ -80,57 +52,43 @@ export const fontFamily = {
   display: "'Fraunces', serif",
   body: "'Geist', sans-serif",
   mono: "'Geist Mono', monospace",
-} as const;
+} as const
 
 export const fontSize = {
-  // Display (Fraunces)
   hero: 48,
   h1: 32,
   h2: 28,
   h3: 24,
   pullquote: 24,
-
-  // Body (Geist)
   lg: 18,
   base: 16,
   sm: 14,
   xs: 12,
-
-  // Labels
   labelLg: 16,
   labelBase: 14,
   labelSm: 12,
   labelXs: 10,
-
-  // Code
   codeBase: 14,
   codeSm: 12,
-} as const;
+} as const
 
 export const lineHeight = {
-  // Display
   hero: 56,
   h1: 40,
   h2: 36,
   h3: 32,
   pullquote: 34,
-
-  // Body
   lg: 28,
   base: 24,
   sm: 20,
   xs: 16,
-
-  // Labels
   labelLg: 20,
   labelBase: 18,
   labelSm: 16,
   labelXs: 12,
-
-  // Code
   codeBase: 22,
   codeSm: 18,
-} as const;
+} as const
 
 export const fontWeight = {
   light: 300,
@@ -138,13 +96,13 @@ export const fontWeight = {
   medium: 500,
   semibold: 600,
   bold: 700,
-} as const;
+} as const
 
 export const letterSpacing = {
-  tight: '-0.02em',  // Display text (Fraunces)
-  normal: '0',       // Body text
-  wide: '0.5px',     // Overlines, badges
-} as const;
+  tight: '-0.02em',
+  normal: '0',
+  wide: '0.5px',
+} as const
 
 // =============================================================================
 // MOTION
@@ -152,90 +110,71 @@ export const letterSpacing = {
 
 export const motion = {
   easing: {
-    default: 'cubic-bezier(0.22, 1, 0.36, 1)',  // ease-out-quint
+    default: 'cubic-bezier(0.22, 1, 0.36, 1)',
   },
   duration: {
-    micro: 120,      // Micro-interactions
-    transition: 240, // UI transitions
-    entrance: 360,   // Screen entrances
+    micro: 120,
+    transition: 240,
+    entrance: 360,
   },
-} as const;
+} as const
 
 // =============================================================================
-// SHADOWS (Effect Styles)
+// SHADOWS
 // =============================================================================
 
 export const shadows = {
   subtle: '0 2px 8px rgba(0, 0, 0, 0.06)',
-  medium: '0 4px 16px rgba(0, 0, 0, 0.12)',
-  strong: '0 8px 32px rgba(0, 0, 0, 0.24)',
-} as const;
+  medium: '0 8px 24px rgba(0, 0, 0, 0.08)',
+  strong: '0 12px 36px rgba(0, 0, 0, 0.1)',
+} as const
 
 // =============================================================================
-// CSS CUSTOM PROPERTIES
+// CSS CUSTOM PROPERTIES (documentation / tooling — runtime uses index.css)
 // =============================================================================
+
+function themeBlock(mode: 'light' | 'dark', selector: string) {
+  const t = brandTheme[mode]
+  return `
+  ${selector} {
+    --bg-page: ${t.bgPage};
+    --bg-content: ${t.bg};
+    --bg: ${t.bg};
+    --surface: ${t.surface};
+    --surface-alt: ${t.surfaceAlt};
+    --primary: ${t.primary};
+    --primary-hover: ${t.primaryHover};
+    --primary-soft: ${t.primarySoft};
+    --on-primary: ${t.onPrimary};
+    --text: ${t.text};
+    --text-secondary: ${t.textSecondary};
+    --text-muted: ${t.textMuted};
+    --border: ${t.border};
+    --border-strong: ${t.borderStrong};
+    --focus-ring: ${t.focusRing};
+  }`
+}
 
 export const cssVariables = `
   :root {
-    /* Colors - Backgrounds */
-    --color-bg-primary: ${colors.bg.primary};
-    --color-surface-1: ${colors.bg.surface1};
-    --color-surface-2: ${colors.bg.surface2};
-    --color-surface-3: ${colors.bg.surface3};
-
-    /* Colors - Accents */
-    --color-accent-primary: ${colors.accent.primary};
-    --color-accent-warm: ${colors.accent.warm};
-
-    /* Colors - Text */
-    --color-text-primary: ${colors.text.primary};
-    --color-text-secondary: ${colors.text.secondary};
-    --color-text-muted: ${colors.text.muted};
-
-    /* Colors - Borders */
-    --color-border-subtle: ${colors.border.subtle};
-    --color-border-default: ${colors.border.default};
-
-    /* Spacing */
-    --space-0: ${spacing[0]}px;
-    --space-1: ${spacing[1]}px;
-    --space-2: ${spacing[2]}px;
-    --space-3: ${spacing[3]}px;
-    --space-4: ${spacing[4]}px;
-    --space-5: ${spacing[5]}px;
-    --space-6: ${spacing[6]}px;
-    --space-8: ${spacing[8]}px;
-    --space-10: ${spacing[10]}px;
-    --space-12: ${spacing[12]}px;
-    --space-16: ${spacing[16]}px;
-    --space-20: ${spacing[20]}px;
-    --space-24: ${spacing[24]}px;
-
-    /* Radius */
-    --radius-none: ${radius.none}px;
-    --radius-sm: ${radius.sm}px;
-    --radius-md: ${radius.md}px;
-    --radius-lg: ${radius.lg}px;
-    --radius-full: ${radius.full}px;
-
-    /* Typography */
     --font-display: ${fontFamily.display};
     --font-body: ${fontFamily.body};
     --font-mono: ${fontFamily.mono};
-
-    /* Motion */
+    --radius-sm: ${radius.sm}px;
+    --radius-md: ${radius.md}px;
+    --radius-lg: ${radius.lg}px;
+    --radius-pill: ${radius.pill}px;
     --ease-default: ${motion.easing.default};
     --duration-micro: ${motion.duration.micro}ms;
     --duration-transition: ${motion.duration.transition}ms;
     --duration-entrance: ${motion.duration.entrance}ms;
+    --feed-bg: ${brandColors.zoneDark};
+    --feed-player-surface: ${brandColors.feedPlayerSurface};
   }
-`;
+  ${themeBlock('light', ":root[data-theme='light']")}
+  ${themeBlock('dark', ":root[data-theme='dark']")}
+`
 
-// =============================================================================
-// TYPE DEFINITIONS
-// =============================================================================
-
-export type ColorToken = keyof typeof colors.bg | keyof typeof colors.accent | keyof typeof colors.text | keyof typeof colors.border;
-export type SpacingToken = keyof typeof spacing;
-export type RadiusToken = keyof typeof radius;
-export type FontSizeToken = keyof typeof fontSize;
+export type SpacingToken = keyof typeof spacing
+export type RadiusToken = keyof typeof radius
+export type FontSizeToken = keyof typeof fontSize

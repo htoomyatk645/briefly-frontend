@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  colors,
+  theme,
   fontFamily,
   fontWeight,
   motion,
@@ -69,7 +69,7 @@ export const SplashScreen = ({ onGetStarted, onSignIn }: SplashScreenProps) => {
   return (
     <main
       style={{
-        backgroundColor: colors.bg.primary,
+        backgroundColor: theme.dark.bgPage,
         minHeight: '100dvh',
         display: 'flex',
         flexDirection: 'column',
@@ -88,7 +88,7 @@ export const SplashScreen = ({ onGetStarted, onSignIn }: SplashScreenProps) => {
           fontSize: 60,
           lineHeight: 1,
           fontVariationSettings: "'opsz' 144",
-          color: colors.text.primary,
+          color: theme.dark.text,
           margin: 0,
           opacity: showWordmark ? 1 : 0,
           transform: showWordmark ? 'scale(1)' : 'scale(0.94)',
@@ -110,7 +110,7 @@ export const SplashScreen = ({ onGetStarted, onSignIn }: SplashScreenProps) => {
           fontSize: 15,
           lineHeight: '22px',
           letterSpacing: '0.04em',
-          color: colors.text.secondary,
+          color: theme.dark.textSecondary,
           margin: 0,
           marginTop: spacing[4],
           opacity: showTagline ? 1 : 0,
@@ -147,8 +147,8 @@ export const SplashScreen = ({ onGetStarted, onSignIn }: SplashScreenProps) => {
             fontWeight: fontWeight.medium,
             fontSize: 15,
             lineHeight: '20px',
-            color: colors.bg.primary,
-            backgroundColor: colors.accent.primary,
+            color: theme.dark.onPrimary,
+            backgroundColor: theme.dark.primary,
             border: 'none',
             borderRadius: radius.md,
             padding: `${spacing[3]}px ${spacing[6]}px`,
@@ -178,7 +178,7 @@ export const SplashScreen = ({ onGetStarted, onSignIn }: SplashScreenProps) => {
             fontWeight: fontWeight.regular,
             fontSize: 15,
             lineHeight: '20px',
-            color: signInHover ? colors.text.primary : colors.text.secondary,
+            color: signInHover ? theme.dark.text : theme.dark.textSecondary,
             backgroundColor: 'transparent',
             border: 'none',
             padding: `${spacing[2]}px ${spacing[4]}px`,

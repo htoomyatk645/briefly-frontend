@@ -1,192 +1,116 @@
 # Briefly Design System Audit
 
 **Figma File:** [Briefly Design System](https://www.figma.com/design/sgYL7Xf5yATgTVaaKkDETk)  
-**Audit Date:** May 18, 2026  
-**Status:** ✅ Ready for development
+**Audit Date:** May 25, 2026 (reconciled to Palette B)  
+**Status:** ✅ Canonical tokens aligned — `@briefly/tokens` + `web/src/index.css`
+
+---
+
+## Token authority
+
+| Layer | File | Role |
+|-------|------|------|
+| **1 — Source of truth** | `packages/tokens/colors.ts` (`@briefly/tokens`) | Brand color literals for web + mobile |
+| **2 — Web design system** | `web/src/tokens.ts` | Spacing, typography, motion; imports colors from package |
+| **3 — Runtime CSS** | `web/src/index.css` | CSS custom properties consumed by components |
+| **4 — Agent rules** | `.cursor/rules/briefly.mdc` | Cursor prompt constraints |
 
 ---
 
 ## 1. Color Tokens
 
-### Collection: Colors (Mode: Dark)
+### Light theme
 
-| Token Name | Hex Value | Scopes | CSS Variable |
-|------------|-----------|--------|--------------|
-| `bg/primary` | `#0C0F14` | FRAME_FILL | `var(--color-bg-primary)` |
-| `bg/surface-1` | `#13171E` | FRAME_FILL | `var(--color-surface-1)` |
-| `bg/surface-2` | `#1A1F28` | FRAME_FILL | `var(--color-surface-2)` |
-| `bg/surface-3` | `#232A36` | FRAME_FILL | `var(--color-surface-3)` |
-| `accent/primary` | `#B8FF3C` | FRAME_FILL, SHAPE_FILL, TEXT_FILL | `var(--color-accent-primary)` |
-| `accent/warm` | `#FF6640` | FRAME_FILL, SHAPE_FILL, TEXT_FILL | `var(--color-accent-warm)` |
-| `text/primary` | `#F2F0EB` | TEXT_FILL | `var(--color-text-primary)` |
-| `text/secondary` | `#8A9099` | TEXT_FILL | `var(--color-text-secondary)` |
-| `text/muted` | `#4E5561` | TEXT_FILL | `var(--color-text-muted)` |
-| `border/subtle` | `rgba(255,255,255,0.06)` | STROKE_COLOR | `var(--color-border-subtle)` |
-| `border/default` | `rgba(255,255,255,0.12)` | STROKE_COLOR | `var(--color-border-default)` |
+| Token Name | Value | CSS Variable |
+|------------|-------|--------------|
+| `bg/page` | `hsl(40 20% 97%)` | `var(--bg-page)` |
+| `bg/surface` | `#FFFFFF` | `var(--surface)` |
+| `bg/surface-alt` | `#F1ECEC` | `var(--surface-alt)` |
+| `brand/primary` | `#C9184A` | `var(--primary)` |
+| `brand/primary-hover` | `#A01039` | `var(--primary-hover)` |
+| `text/primary` | `#1F1818` | `var(--text)` |
+| `text/secondary` | `#4B3C3C` | `var(--text-secondary)` |
+| `text/muted` | `#A99898` | `var(--text-muted)` |
+| `border/default` | `#E3DBDB` | `var(--border)` |
+| `border/strong` | `#C9BFBF` | `var(--border-strong)` |
+
+### Dark theme
+
+| Token Name | Value | CSS Variable |
+|------------|-------|--------------|
+| `bg/page` | `hsl(20 6% 7%)` | `var(--bg-page)` |
+| `bg/surface` | `#221917` | `var(--surface)` |
+| `bg/surface-alt` | `#261A18` | `var(--surface-alt)` |
+| `brand/primary` | `#FF6B8E` | `var(--primary)` |
+| `brand/primary-hover` | `#FFA3BB` | `var(--primary-hover)` |
+| `text/primary` | `#FAF8F8` | `var(--text)` |
+| `text/secondary` | `#E3DBDB` | `var(--text-secondary)` |
+| `text/muted` | `#705453` | `var(--text-muted)` |
+| `border/default` | `#4E3835` | `var(--border)` |
+| `border/strong` | `#705453` | `var(--border-strong)` |
+
+### Feed / player zone (immersive dark context)
+
+| Token Name | Value | CSS Variable |
+|------------|-------|--------------|
+| `feed/bg` | `#18110F` | `var(--feed-bg)` |
+| `feed/player-surface` | `#221917` | `var(--feed-player-surface)` |
 
 ---
 
 ## 2. Spacing Tokens
 
-### Collection: Spacing (Mode: Default)
-
-| Token Name | Value (px) | CSS Variable |
-|------------|------------|--------------|
-| `space/0` | 0 | `var(--space-0)` |
-| `space/1` | 4 | `var(--space-1)` |
-| `space/2` | 8 | `var(--space-2)` |
-| `space/3` | 12 | `var(--space-3)` |
-| `space/4` | 16 | `var(--space-4)` |
-| `space/5` | 20 | `var(--space-5)` |
-| `space/6` | 24 | `var(--space-6)` |
-| `space/8` | 32 | `var(--space-8)` |
-| `space/10` | 40 | `var(--space-10)` |
-| `space/12` | 48 | `var(--space-12)` |
-| `space/16` | 64 | `var(--space-16)` |
-| `space/20` | 80 | `var(--space-20)` |
-| `space/24` | 96 | `var(--space-24)` |
-
-**Base unit:** 4px
+**Base unit:** 4px — see `web/src/tokens.ts` for full scale (`--space-0` through `--space-24` when exported).
 
 ---
 
 ## 3. Radius Tokens
 
-### Collection: Radius (Mode: Default)
-
-| Token Name | Value (px) | CSS Variable | Notes |
-|------------|------------|--------------|-------|
-| `radius/none` | 0 | `var(--radius-none)` | Sharp corners |
-| `radius/sm` | 4 | `var(--radius-sm)` | Subtle rounding |
-| `radius/md` | 8 | `var(--radius-md)` | **Max per brand spec** |
-| `radius/lg` | 12 | `var(--radius-lg)` | Use sparingly |
-| `radius/full` | 9999 | `var(--radius-full)` | Circular elements only |
-
-**Brand constraint:** Maximum 8px radius on CTAs. No rounded pill buttons.
+| Token Name | Value | CSS Variable | Notes |
+|------------|-------|--------------|-------|
+| `radius/sm` | 10px | `var(--radius-sm)` | Chips, small controls |
+| `radius/md` | 16px | `var(--radius-md)` | Cards |
+| `radius/lg` | 24px | `var(--radius-lg)` | Large surfaces |
+| `radius/pill` | 9999px | `var(--radius-pill)` | Tab bar, pill badges — **permitted** |
 
 ---
 
-## 4. Text Styles
+## 4. Typography
 
-### Display (Fraunces)
+| Role | Font | Use |
+|------|------|-----|
+| Display | Fraunces | Headlines, pull quotes |
+| Body | Geist | UI copy, labels |
+| Mono | Geist Mono | Code |
 
-| Style Name | Font | Size | Line Height | Letter Spacing | Use Case |
-|------------|------|------|-------------|----------------|----------|
-| `display/hero` | Fraunces Bold | 48px | 56px | -2% | Hero headlines |
-| `display/h1` | Fraunces SemiBold | 32px | 40px | -2% | Page titles |
-| `display/h2` | Fraunces SemiBold | 28px | 36px | -2% | Section headers |
-| `display/h3` | Fraunces SemiBold | 24px | 32px | -2% | Highlight headlines |
-| `display/pullquote` | Fraunces Regular | 24px | 34px | -2% | Pull quote cards |
-
-### Body (Geist)
-
-| Style Name | Font | Size | Line Height | Use Case |
-|------------|------|------|-------------|----------|
-| `body/lg` | Geist Regular | 18px | 28px | Large body text |
-| `body/base` | Geist Regular | 16px | 24px | Default body |
-| `body/sm` | Geist Regular | 14px | 20px | Small body text |
-| `body/xs` | Geist Regular | 12px | 16px | Captions, metadata |
-
-### Labels (Geist Medium/SemiBold)
-
-| Style Name | Font | Size | Line Height | Letter Spacing | Use Case |
-|------------|------|------|-------------|----------------|----------|
-| `label/lg` | Geist Medium | 16px | 20px | 0 | Large labels |
-| `label/base` | Geist Medium | 14px | 18px | 0 | Buttons, default labels |
-| `label/sm` | Geist Medium | 12px | 16px | 0 | Small labels, tags |
-| `label/xs` | Geist SemiBold | 10px | 12px | 0.5px | Overlines, badges |
-
-### Code (Geist Mono)
-
-| Style Name | Font | Size | Line Height | Use Case |
-|------------|------|------|-------------|----------|
-| `code/base` | Geist Mono Regular | 14px | 22px | Code blocks |
-| `code/sm` | Geist Mono Regular | 12px | 18px | Inline code |
+Never Inter or Roboto as primary typefaces.
 
 ---
 
-## 5. Components
+## 5. Visual treatment rules
 
-| Component | Type | Variants | Description |
-|-----------|------|----------|-------------|
-| **Button** | Component Set | 6 | Primary, Secondary, Ghost × Default, Hover states |
-| **Highlight Card** | Component | 1 | Core content unit with pull quote and accent line |
-| **Tab Bar Item** | Component Set | 2 | Active, Inactive states |
-| **Input Field** | Component Set | 3 | Default, Focused, Filled states |
-
-### Button Variants
-- `Variant=Primary, State=Default` - Acid chartreuse background, dark text
-- `Variant=Primary, State=Hover` - 90% opacity
-- `Variant=Secondary, State=Default` - Surface-2 background
-- `Variant=Secondary, State=Hover` - Surface-3 background
-- `Variant=Ghost, State=Default` - Transparent, muted text
-- `Variant=Ghost, State=Hover` - Surface-1 background
-
-### Highlight Card
-- Signature detail: 2px vertical accent line on left edge
-- Pull quote in Fraunces Regular
-- Metadata in Geist Regular
+| Treatment | Status |
+|-----------|--------|
+| Pill shapes (tab bar, chips) | ✅ Allowed |
+| Gradient fills | ❌ Not allowed |
+| Glassmorphism (`backdrop-filter`) | ❌ Not allowed |
+| Gradient text | ❌ Not allowed |
+| Purple decorative gradients | ❌ Not allowed |
 
 ---
 
-## 6. Grid & Spacing Definitions
+## 6. Verification checklist
 
-### Mobile Grid (375px)
-- Columns: 4
-- Gutter: 16px (space/4)
-- Margin: 16px (space/4)
-
-### Tablet Grid (768px)
-- Columns: 8
-- Gutter: 24px (space/6)
-- Margin: 32px (space/8)
-
-### Desktop Grid (1440px)
-- Columns: 12
-- Gutter: 24px (space/6)
-- Margin: 80px (space/20)
-
-### Section Spacing
-- Minimum card separation: 32px (space/8)
-- Section padding desktop: 80px (space/20)
-- Section padding mobile: 48px (space/12)
+- [x] Single palette (Palette B) across `@briefly/tokens`, `index.css`, and Cursor rules
+- [x] Light and dark themes documented
+- [x] No gradient or glass tokens in canonical set
+- [x] Pill radius permitted and documented
+- [x] Fraunces display + Geist body
+- [x] Brand hex literals only in `packages/tokens/colors.ts`
 
 ---
 
-## 7. Consistency Audit
+## 7. Related docs
 
-### ✅ No Issues Found
-
-All tokens are properly:
-- Named with consistent slash-delimited hierarchy
-- Scoped to appropriate property pickers
-- Linked to CSS variables for code handoff
-- Following brand specifications
-
-### Token Naming Convention
-```
-category/name
-├── bg/primary, bg/surface-1, bg/surface-2, bg/surface-3
-├── accent/primary, accent/warm
-├── text/primary, text/secondary, text/muted
-├── border/subtle, border/default
-├── space/0 through space/24
-└── radius/none, radius/sm, radius/md, radius/lg, radius/full
-```
-
----
-
-## 8. tokens.ts Mapping
-
-All Figma tokens map 1:1 to the code tokens. See `/src/tokens.ts` for the TypeScript implementation.
-
-### Verification Checklist
-- [x] All colors match brand spec hex values
-- [x] Spacing uses 4px base unit
-- [x] Radius capped at 8px for CTAs (per brand spec)
-- [x] Fraunces used for display only
-- [x] Geist used for body and labels
-- [x] Geist Mono used for code
-- [x] No gradient fills (brand prohibited)
-- [x] No glassmorphism (brand prohibited)
-- [x] Components use token bindings (not hardcoded values)
+- `web/docs/brand-reconciliation.md` — audit that led to this reconciliation
+- `web/src/tokens.ts` — web spacing, typography, motion

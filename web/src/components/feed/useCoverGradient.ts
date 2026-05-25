@@ -1,16 +1,13 @@
+import { theme } from '@briefly/tokens'
 import { useEffect, useState } from 'react'
-
-const FALLBACK_GRADIENT =
-  'linear-gradient(160deg, #5bc8d4 0%, #3aafbf 35%, #2196a8 65%, #1a7b9a 100%)'
 
 type Rgb = { r: number; g: number; b: number }
 
-const gradientCache = new Map<string, string>()
 const coverThemeCache = new Map<string, { background: string; accent: string }>()
 const coverThemePending = new Map<string, Promise<{ background: string; accent: string }>>()
 
 const CARD_BG_FALLBACK = 'hsl(215 45% 22%)'
-const THEME_ACCENT_FALLBACK = '#FF6640'
+const THEME_ACCENT_FALLBACK = theme.dark.primary
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
@@ -55,10 +52,6 @@ function mix(a: Rgb, b: Rgb, t: number): Rgb {
   }
 }
 
-function lighten(c: Rgb, amount: number): Rgb {
-  return mix(c, { r: 255, g: 255, b: 255 }, amount)
-}
-
 function darken(c: Rgb, amount: number): Rgb {
   return mix(c, { r: 0, g: 0, b: 0 }, amount)
 }
@@ -76,21 +69,6 @@ function boostSaturation(c: Rgb, factor: number): Rgb {
   }
 }
 
-function buildGradientFromColors(colors: Rgb[]): string {
-  if (colors.length === 0) return FALLBACK_GRADIENT
-
-  const sorted = [...colors].sort((a, b) => luminance(b) - luminance(a))
-  const vibrant = sorted.find((c) => saturation(c) > 0.12) ?? sorted[0]
-  const anchor = boostSaturation(vibrant, 1.15)
-
-  const top = lighten(anchor, 0.28)
-  const midHigh = lighten(anchor, 0.08)
-  const midLow = darken(anchor, 0.12)
-  const bottom = darken(anchor, 0.32)
-
-  return `linear-gradient(160deg, ${rgbToHex(top)} 0%, ${rgbToHex(midHigh)} 35%, ${rgbToHex(midLow)} 65%, ${rgbToHex(bottom)} 100%)`
-}
-
 function buildThemeAccentFromColors(colors: Rgb[]): string {
   if (colors.length === 0) return THEME_ACCENT_FALLBACK
 
@@ -98,7 +76,7 @@ function buildThemeAccentFromColors(colors: Rgb[]): string {
   let accent = boostSaturation(main, 1.32)
 
   const lum = luminance(accent)
-  if (lum < 0.5) accent = lighten(accent, clamp(0.54 - lum, 0.1, 0.42))
+  if (lum < 0.5) accent = mix(accent, { r: 255, g: 255, b: 255 }, clamp(0.54 - lum, 0.1, 0.42))
   if (luminance(accent) > 0.78) accent = darken(accent, 0.14)
 
   return rgbToHex(accent)
@@ -207,13 +185,13 @@ async function extractCoverThemeFromCover(
       ctx.drawImage(img, 0, 0, size, size)
       const { data } = ctx.getImageData(0, 0, size, size)
       const palette = extractPalette(data)
-      const theme = {
+      const next = {
         background: buildCardBackgroundFromColors(palette),
         accent: buildThemeAccentFromColors(palette),
       }
 
-      coverThemeCache.set(coverSrc, theme)
-      return theme
+      coverThemeCache.set(coverSrc, next)
+      return next
     } catch {
       return { background: CARD_BG_FALLBACK, accent: THEME_ACCENT_FALLBACK }
     } finally {
@@ -223,54 +201,6 @@ async function extractCoverThemeFromCover(
 
   coverThemePending.set(coverSrc, promise)
   return promise
-}
-
-async function extractCardBackgroundFromCover(coverSrc: string): Promise<string> {
-  const theme = await extractCoverThemeFromCover(coverSrc)
-  return theme.background
-}
-
-async function extractThemeAccentFromCover(coverSrc: string): Promise<string> {
-  const theme = await extractCoverThemeFromCover(coverSrc)
-  return theme.accent
-}
-
-async function extractGradientFromCover(coverSrc: string): Promise<string> {
-  const cached = gradientCache.get(coverSrc)
-  if (cached) return cached
-
-  try {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.decoding = 'async'
-    img.src = coverSrc
-
-    await new Promise<void>((resolve, reject) => {
-      if (img.complete && img.naturalWidth > 0) {
-        resolve()
-        return
-      }
-      img.onload = () => resolve()
-      img.onerror = () => reject(new Error('cover load failed'))
-    })
-
-    const size = 48
-    const canvas = document.createElement('canvas')
-    canvas.width = size
-    canvas.height = size
-    const ctx = canvas.getContext('2d', { willReadFrequently: true })
-    if (!ctx) return FALLBACK_GRADIENT
-
-    ctx.drawImage(img, 0, 0, size, size)
-    const { data } = ctx.getImageData(0, 0, size, size)
-    const palette = extractPalette(data)
-    const gradient = buildGradientFromColors(palette)
-
-    gradientCache.set(coverSrc, gradient)
-    return gradient
-  } catch {
-    return FALLBACK_GRADIENT
-  }
 }
 
 export function useCoverCardBackground(coverSrc: string) {
@@ -286,8 +216,8 @@ export function useCoverCardBackground(coverSrc: string) {
       return
     }
 
-    void extractCardBackgroundFromCover(coverSrc).then((next) => {
-      if (!cancelled) setBackground(next)
+    void extractCoverThemeFromCover(coverSrc).then((next) => {
+      if (!cancelled) setBackground(next.background)
     })
 
     return () => {
@@ -311,8 +241,8 @@ export function useCoverThemeAccent(coverSrc: string) {
       return
     }
 
-    void extractThemeAccentFromCover(coverSrc).then((next) => {
-      if (!cancelled) setAccent(next)
+    void extractCoverThemeFromCover(coverSrc).then((next) => {
+      if (!cancelled) setAccent(next.accent)
     })
 
     return () => {
@@ -321,29 +251,4 @@ export function useCoverThemeAccent(coverSrc: string) {
   }, [coverSrc])
 
   return accent
-}
-
-export function useCoverGradient(coverSrc: string) {
-  const [gradient, setGradient] = useState(
-    () => gradientCache.get(coverSrc) ?? FALLBACK_GRADIENT,
-  )
-
-  useEffect(() => {
-    let cancelled = false
-    const cached = gradientCache.get(coverSrc)
-    if (cached) {
-      setGradient(cached)
-      return
-    }
-
-    void extractGradientFromCover(coverSrc).then((next) => {
-      if (!cancelled) setGradient(next)
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [coverSrc])
-
-  return gradient
 }

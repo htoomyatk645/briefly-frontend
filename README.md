@@ -43,15 +43,15 @@ npm run dev:mobile
 
 ## Design system
 
-| Token | Value |
-|-------|-------|
-| Primary bg | `#0C0F14` |
-| Accent | `#B8FF3C` |
-| Warm accent | `#FF6640` |
-| Display font | Fraunces |
-| Body font | Geist |
+| Token | Light | Dark |
+|-------|-------|------|
+| Page bg | `hsl(40 20% 97%)` | `hsl(20 6% 7%)` |
+| Primary / CTA | `#C9184A` | `#FF6B8E` |
+| Text | `#1F1818` | `#FAF8F8` |
+| Display font | Fraunces | Fraunces |
+| Body font | Geist | Geist |
 
-Full token reference: `web/src/tokens.ts` and `web/docs/figma-audit.md`.
+Full token reference: `packages/tokens/colors.ts`, `web/src/index.css`, and `web/docs/figma-audit.md`.
 
 ## What's built so far
 

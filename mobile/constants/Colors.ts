@@ -1,19 +1,21 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+import { colors, theme } from '@briefly/tokens'
+
+const tintColorLight = colors.primary
+const tintColorDark = theme.dark.primary
 
 export default {
   light: {
-    text: '#000',
-    background: '#fff',
+    text: theme.light.text,
+    background: theme.light.bgPage,
     tint: tintColorLight,
-    tabIconDefault: '#ccc',
+    tabIconDefault: theme.light.textMuted,
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#fff',
-    background: '#000',
+    text: theme.dark.text,
+    background: theme.dark.bgPage,
     tint: tintColorDark,
-    tabIconDefault: '#ccc',
+    tabIconDefault: theme.dark.textMuted,
     tabIconSelected: tintColorDark,
   },
-};
+}
