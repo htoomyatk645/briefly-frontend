@@ -17,8 +17,6 @@ import './player/player-interactions.css'
 import { useCoverCardBackground } from './useCoverGradient'
 import { formatRemaining, formatTime } from './usePlayback'
 
-const ACCENT_WARM = '#FF6640'
-
 type PlayerCardProps = {
   episode: FeedEpisode
   isPlaying: boolean
@@ -42,14 +40,14 @@ type PlayerCardProps = {
 }
 
 const PlayIcon = () => (
-  <svg className="player-card__play-icon" viewBox="0 0 24 24" aria-hidden>
-    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill={ACCENT_WARM} />
+  <svg className="player-card__play-icon player-card__play-icon--hero" viewBox="0 0 24 24" aria-hidden>
+    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="currentColor" />
   </svg>
 )
 
 const PauseIcon = () => (
-  <svg className="player-card__play-icon" viewBox="0 0 24 24" aria-hidden>
-    <path d="M7 6h3.5v12H7V6zm6.5 0H17v12h-3.5V6z" fill={ACCENT_WARM} />
+  <svg className="player-card__play-icon player-card__play-icon--hero" viewBox="0 0 24 24" aria-hidden>
+    <path d="M7 6h3.5v12H7V6zm6.5 0H17v12h-3.5V6z" fill="currentColor" />
   </svg>
 )
 
@@ -66,8 +64,8 @@ export const PlayerCard = ({
   onSeek,
   onRewind15,
   onForward30,
-  onPrev,
-  onNext,
+  onPrev: _onPrev,
+  onNext: _onNext,
   onSetSpeed,
   onToggleSaved,
   onToggleFollow,
@@ -237,49 +235,6 @@ export const PlayerCard = ({
           </div>
 
           <div className="player-card__lower">
-            <div className="player-card__controls" role="group" aria-label="Playback controls">
-              <button
-                type="button"
-                className="player-card__ctrl player-card__ctrl--track"
-                onClick={onPrev}
-                aria-label="Previous episode"
-              >
-                <img src={feedAssetsRemote.controls.skipStart} alt="" />
-              </button>
-              <button
-                type="button"
-                className="player-card__ctrl player-card__ctrl--skip"
-                onClick={onRewind15}
-                aria-label="Rewind 15 seconds"
-              >
-                <img src={feedAssetsRemote.controls.rewind15} alt="" />
-              </button>
-              <button
-                type="button"
-                className={`player-card__ctrl player-card__ctrl--play${playPulse ? ' player-card__ctrl--play--pulse' : ''}`}
-                onClick={handlePlay}
-                aria-label={isPlaying ? 'Pause' : 'Play'}
-              >
-                {isPlaying ? <PauseIcon /> : <PlayIcon />}
-              </button>
-              <button
-                type="button"
-                className="player-card__ctrl player-card__ctrl--skip"
-                onClick={onForward30}
-                aria-label="Forward 30 seconds"
-              >
-                <img src={feedAssetsRemote.controls.forward30} alt="" />
-              </button>
-              <button
-                type="button"
-                className="player-card__ctrl player-card__ctrl--track"
-                onClick={onNext}
-                aria-label="Next episode"
-              >
-                <img src={feedAssetsRemote.controls.skipEnd} alt="" />
-              </button>
-            </div>
-
             <div className="player-card__progress">
               <label htmlFor={progressId} className="visually-hidden">
                 Playback position
@@ -310,6 +265,55 @@ export const PlayerCard = ({
                   format={(t) => formatRemaining(t, duration)}
                 />
               </div>
+            </div>
+
+            <div className="player-card__controls" role="group" aria-label="Playback controls">
+              <button
+                type="button"
+                className="player-card__ctrl player-card__ctrl--speed"
+                onClick={() => setSpeedOpen(true)}
+                aria-label={`Playback speed ${playbackRate}x`}
+                aria-haspopup="menu"
+                aria-expanded={speedOpen}
+              >
+                {playbackRate}x
+              </button>
+
+              <div className="player-card__controls-core">
+                <button
+                  type="button"
+                  className="player-card__ctrl player-card__ctrl--skip"
+                  onClick={onRewind15}
+                  aria-label="Rewind 15 seconds"
+                >
+                  <img src={feedAssetsRemote.controls.rewind15} alt="" />
+                </button>
+                <button
+                  type="button"
+                  className={`player-card__ctrl player-card__ctrl--play${isPlaying ? '' : ' player-card__ctrl--play-ready'}${playPulse ? ' player-card__ctrl--play--pulse' : ''}`}
+                  onClick={handlePlay}
+                  aria-label={isPlaying ? 'Pause' : 'Play'}
+                >
+                  {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                </button>
+                <button
+                  type="button"
+                  className="player-card__ctrl player-card__ctrl--skip"
+                  onClick={onForward30}
+                  aria-label="Forward 30 seconds"
+                >
+                  <img src={feedAssetsRemote.controls.forward30} alt="" />
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="player-card__ctrl player-card__ctrl--output"
+                aria-label="Choose audio output"
+                onClick={() => setOutputOpen(true)}
+              >
+                <img src={feedAssetsRemote.actions.airpods} alt="" />
+              </button>
             </div>
           </div>
         </div>
