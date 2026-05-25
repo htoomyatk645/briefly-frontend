@@ -318,6 +318,8 @@ export const PlayerCard = ({
       />
       <AudioOutputSheet
         open={outputOpen}
+        episode={episode}
+        themeStyle={playerStyle}
         outputs={MOCK_OUTPUTS.map((o) => ({ ...o, active: o.id === activeOutputId }))}
         activeId={activeOutputId}
         onSelect={setActiveOutputId}

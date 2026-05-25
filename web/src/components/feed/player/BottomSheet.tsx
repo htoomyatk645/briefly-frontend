@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { transition } from '../../../styles/motion'
 import './player-interactions.css'
@@ -8,10 +8,22 @@ type BottomSheetProps = {
   title: string
   onClose: () => void
   children: ReactNode
+  variant?: 'default' | 'plain'
+  className?: string
+  sheetStyle?: CSSProperties
 }
 
-export const BottomSheet = ({ open, title, onClose, children }: BottomSheetProps) => {
+export const BottomSheet = ({
+  open,
+  title,
+  onClose,
+  children,
+  variant = 'default',
+  className,
+  sheetStyle,
+}: BottomSheetProps) => {
   const prefersReducedMotion = useReducedMotion()
+  const sheetClassName = ['player-sheet', className].filter(Boolean).join(' ')
 
   return (
     <AnimatePresence>
@@ -28,7 +40,8 @@ export const BottomSheet = ({ open, title, onClose, children }: BottomSheetProps
             onClick={onClose}
           />
           <motion.div
-            className="player-sheet"
+            className={sheetClassName}
+            style={sheetStyle}
             role="dialog"
             aria-modal="true"
             aria-label={title}
@@ -42,12 +55,14 @@ export const BottomSheet = ({ open, title, onClose, children }: BottomSheetProps
             transition={transition.slow}
           >
             <div className="player-sheet__handle" aria-hidden />
-            <header className="player-sheet__head">
-              <h3 className="player-sheet__title">{title}</h3>
-              <button type="button" className="player-sheet__close" onClick={onClose}>
-                Done
-              </button>
-            </header>
+            {variant === 'default' ? (
+              <header className="player-sheet__head">
+                <h3 className="player-sheet__title">{title}</h3>
+                <button type="button" className="player-sheet__close" onClick={onClose}>
+                  Done
+                </button>
+              </header>
+            ) : null}
             <div className="player-sheet__body">{children}</div>
           </motion.div>
         </>
