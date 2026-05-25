@@ -87,7 +87,6 @@ export const UpNextCarousel = ({
 }: UpNextCarouselProps) => {
   const prefersReducedMotion = useReducedMotion()
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [scrollIndex, setScrollIndex] = useState(0)
   const [displayItems, setDisplayItems] = useState(items)
   const [visibleItems, setVisibleItems] = useState(items)
   const [isLoading, setIsLoading] = useState(false)
@@ -98,11 +97,7 @@ export const UpNextCarousel = ({
   const prevNowPlayingIdRef = useRef(nowPlayingId)
   const isFirstMount = useRef(true)
 
-  const dotCount = Math.min(items.length, 8)
-  const hasOverflow = items.length > 8
-
   const resetScroll = useCallback(() => {
-    setScrollIndex(0)
     const el = scrollRef.current
     if (el) el.scrollLeft = 0
   }, [])
@@ -120,8 +115,6 @@ export const UpNextCarousel = ({
       gap: Number.isFinite(gap) ? gap : CARD_GAP,
     })
   }, [])
-
-  const getCardStride = useCallback(() => cardStride, [cardStride])
 
   useEffect(() => {
     return () => {
@@ -175,25 +168,6 @@ export const UpNextCarousel = ({
     return () => ro.disconnect()
   }, [visibleItems, displayItems.length, measureTrack])
 
-  const updateIndexFromScroll = useCallback(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const { width, gap } = getCardStride()
-    const idx = Math.round((el.scrollLeft + width / 2) / (width + gap))
-    setScrollIndex(Math.min(Math.max(0, idx), visibleItems.length - 1))
-  }, [getCardStride, visibleItems.length])
-
-  const scrollToIndex = useCallback(
-    (index: number) => {
-      const el = scrollRef.current
-      if (!el || index >= visibleItems.length) return
-      const { width, gap } = getCardStride()
-      el.scrollTo({ left: index * (width + gap), behavior: 'smooth' })
-      setScrollIndex(index)
-    },
-    [getCardStride, visibleItems.length],
-  )
-
   const handleQueueStart = useCallback(
     (id: string) => {
       if (displayItems[0]?.id === id) {
@@ -237,7 +211,6 @@ export const UpNextCarousel = ({
         <div
           className={`up-next__track${centerTrack ? ' up-next__track--centered' : ''}`}
           ref={scrollRef}
-          onScroll={updateIndexFromScroll}
           role="list"
           aria-label="Up next queue"
           data-loading={isLoading || undefined}
@@ -284,34 +257,6 @@ export const UpNextCarousel = ({
           )}
         </div>
       </div>
-
-      {!isEmpty && dotCount > 0 ? (
-        <div className="up-next__dots" role="tablist" aria-label={`${items.length} episodes in queue`}>
-          {Array.from({ length: dotCount }, (_, i) => {
-            const isEllipsis = hasOverflow && i === 7
-
-            if (isEllipsis) {
-              return (
-                <span key="ellipsis" className="up-next__dot-ellipsis" aria-hidden>
-                  …
-                </span>
-              )
-            }
-
-            return (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                className={`up-next__dot${i === scrollIndex ? ' up-next__dot--active' : ''}`}
-                aria-selected={i === scrollIndex}
-                aria-label={`Queue position ${i + 1} of ${items.length}`}
-                onClick={() => scrollToIndex(i)}
-              />
-            )
-          })}
-        </div>
-      ) : null}
     </section>
   )
 }

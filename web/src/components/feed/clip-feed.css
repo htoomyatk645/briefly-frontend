@@ -54,11 +54,11 @@
 
 /* —— Up Next — fixed 260px —— */
 .up-next {
-  flex: 0 0 260px;
-  height: 260px;
-  max-height: 260px;
-  min-height: 260px;
-  padding: 0.75rem 0 0.5rem;
+  flex: 0 0 230px;
+  height: 230px;
+  max-height: 230px;
+  min-height: 230px;
+  padding: 0.75rem 0 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -236,41 +236,6 @@
   display: block;
   flex-shrink: 0;
   pointer-events: none;
-}
-
-.up-next__dots {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.4rem;
-}
-
-.up-next__dot {
-  padding: 0;
-  border: none;
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: hsl(0 0% 100% / 0.35);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.up-next__dot--active {
-  width: 16px;
-  height: 4px;
-  background: hsl(0 0% 100%);
-  border-radius: 999px;
-}
-
-.up-next__dot-ellipsis {
-  flex-shrink: 0;
-  font-size: 11px;
-  line-height: 1;
-  color: hsl(0 0% 100% / 0.35);
-  user-select: none;
 }
 
 @media (max-width: 390px) {
@@ -569,7 +534,6 @@
 @media (prefers-reduced-motion: reduce) {
   .up-next__card,
   .up-next__card-action,
-  .up-next__dot,
   .player-card__rail-btn,
   .player-card--adaptive {
     transition: none;
