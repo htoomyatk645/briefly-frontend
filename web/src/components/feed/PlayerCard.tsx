@@ -188,16 +188,6 @@ export const PlayerCard = ({
               </button>
               <button
                 type="button"
-                className="player-card__toolbar-btn"
-                onClick={() => setSpeedOpen(true)}
-                aria-label={`Playback speed ${playbackRate}x`}
-                aria-haspopup="menu"
-                aria-expanded={speedOpen}
-              >
-                <img src={feedAssetsRemote.actions.speed} alt="" />
-              </button>
-              <button
-                type="button"
                 className={`player-card__toolbar-btn${hasProducts ? '' : ' player-card__toolbar-btn--inactive'}`}
                 aria-label="Products mentioned in episode"
                 aria-haspopup="dialog"
