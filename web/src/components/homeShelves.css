@@ -72,11 +72,7 @@
   flex-shrink: 0;
   width: 4px;
   border-radius: 999px;
-  background: hsl(0 0% 0% / 0.12);
-}
-
-:root[data-theme='dark'] .pulse-card__accent {
-  background: hsl(0 0% 100% / 0.2);
+  background: var(--primary);
 }
 
 .pulse-card__art {
