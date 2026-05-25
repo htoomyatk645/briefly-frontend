@@ -114,7 +114,6 @@ export const PulseShelf = ({ episodes, onPlay, loading = false }: PulseShelfProp
         <h2 id="pulse-shelf-heading" className="section-heading">
           Pulse
         </h2>
-        <p className="section-subtitle">Shows people are talking about</p>
       </div>
 
       {loading ? (
