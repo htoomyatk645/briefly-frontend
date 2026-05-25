@@ -198,6 +198,10 @@
   padding-bottom: 1rem;
 }
 
+.the-edit .home-section__head {
+  text-align: center;
+}
+
 .the-edit__card {
   display: flex;
   width: 100%;
