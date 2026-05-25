@@ -575,8 +575,8 @@
 }
 
 .player-card__ctrl--play {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 4.5rem;
+  height: 4.5rem;
   border-radius: 0;
   padding: 0;
   background: transparent;
@@ -585,15 +585,15 @@
   color: var(--feed-text-primary);
 }
 
-.player-card__play-icon--hero {
-  width: 3.5rem;
-  height: 3.5rem;
-  display: block;
-}
-
 .player-card__play-icon {
   width: 1.35rem;
   height: 1.35rem;
+  display: block;
+}
+
+.player-card__play-icon.player-card__play-icon--hero {
+  width: 4.25rem;
+  height: 4.25rem;
   display: block;
 }
 
