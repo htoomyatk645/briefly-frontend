@@ -1,7 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { FeedCardTone, FeedEpisode } from './feedData'
-import { feedAssets } from './feedAssets'
 import { useCoverCardBackground } from './useCoverGradient'
 
 const CARD_WIDTH = 130
@@ -29,6 +28,19 @@ type UpNextCardProps = {
   onQueueStart: (id: string) => void
   prefersReducedMotion: boolean | null
 }
+
+const UpNextChevronIcon = () => (
+  <svg className="up-next__card-action-icon" viewBox="0 0 16 16" aria-hidden>
+    <path
+      d="M5.5 3.5L10.5 8L5.5 12.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
 
 const UpNextCard = ({ item, onSelect, onQueueStart, prefersReducedMotion }: UpNextCardProps) => {
   const coverBackground = useCoverCardBackground(item.coverSrc)
@@ -61,7 +73,7 @@ const UpNextCard = ({ item, onSelect, onQueueStart, prefersReducedMotion }: UpNe
         whileTap={prefersReducedMotion ? undefined : { scale: 0.92 }}
         transition={{ type: 'spring', stiffness: 320, damping: 22 }}
       >
-        <img src={feedAssets.controls.chevron} alt="" className="up-next__card-action-icon" />
+        <UpNextChevronIcon />
       </motion.button>
     </>
   )
