@@ -3,7 +3,7 @@ import { useId, useState, type ChangeEvent, type CSSProperties } from 'react'
 import { AnimatedNumber } from '../motion/AnimatedNumber'
 import { transition } from '../../styles/motion'
 import type { FeedEpisode } from './feedData'
-import { feedAssetsRemote } from './feedAssets'
+import { feedAssets } from './feedAssets'
 import { AudioOutputSheet } from './player/AudioOutputSheet'
 import { useBodyScrollLock } from './player/BottomSheet'
 import { getProductsForEpisode, MOCK_OUTPUTS } from './player/playerMocks'
@@ -14,7 +14,7 @@ import { ShopSheet } from './player/ShopSheet'
 import { TranscriptSheet } from './player/TranscriptSheet'
 import type { PlaybackSpeed } from './player/playerStorage'
 import './player/player-interactions.css'
-import { useCoverCardBackground, useCoverThemeAccent } from './useCoverGradient'
+import { useCoverCardBackground, useCoverGradient, useCoverThemeAccent } from './useCoverGradient'
 import { formatRemaining, formatTime } from './usePlayback'
 
 type PlayerCardProps = {
@@ -86,16 +86,18 @@ export const PlayerCard = ({
   const products = getProductsForEpisode(episode.id)
   const hasProducts = products.length > 0
   const coverTint = useCoverCardBackground(episode.coverSrc)
+  const coverGradient = useCoverGradient(episode.coverSrc)
   const themeAccent = useCoverThemeAccent(episode.coverSrc)
 
   const playerStyle = {
     '--player-cover-tint': coverTint,
+    '--player-cover-gradient': coverGradient,
     '--player-theme-accent': themeAccent,
   } as CSSProperties
 
   const outputIconStyle = {
-    WebkitMaskImage: `url(${feedAssetsRemote.actions.airpods})`,
-    maskImage: `url(${feedAssetsRemote.actions.airpods})`,
+    WebkitMaskImage: `url(${feedAssets.actions.airpods})`,
+    maskImage: `url(${feedAssets.actions.airpods})`,
   } as CSSProperties
 
   useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
@@ -181,7 +183,7 @@ export const PlayerCard = ({
                 aria-pressed={saved}
               >
                 <img
-                  src={feedAssetsRemote.actions.bookmark}
+                  src={feedAssets.actions.bookmark}
                   alt=""
                   className={`player-card__bookmark-icon${saved ? ' player-card__bookmark-icon--filled' : ''}${saveAnim ? ' player-card__bookmark-icon--spring' : ''}`}
                 />
@@ -195,7 +197,7 @@ export const PlayerCard = ({
                 disabled={!hasProducts}
                 onClick={() => hasProducts && setShopOpen(true)}
               >
-                <img src={feedAssetsRemote.actions.bag} alt="" />
+                <img src={feedAssets.actions.bag} alt="" />
               </button>
               <button
                 type="button"
@@ -205,7 +207,7 @@ export const PlayerCard = ({
                 aria-expanded={moreOpen}
                 onClick={() => setMoreOpen(true)}
               >
-                <img src={feedAssetsRemote.actions.more} alt="" />
+                <img src={feedAssets.actions.more} alt="" />
               </button>
             </header>
           </div>
@@ -266,7 +268,7 @@ export const PlayerCard = ({
                   onClick={onRewind15}
                   aria-label="Rewind 15 seconds"
                 >
-                  <img src={feedAssetsRemote.controls.rewind15} alt="" />
+                  <img src={feedAssets.controls.rewind15} alt="" />
                 </button>
                 <button
                   type="button"
@@ -282,7 +284,7 @@ export const PlayerCard = ({
                   onClick={onForward30}
                   aria-label="Forward 30 seconds"
                 >
-                  <img src={feedAssetsRemote.controls.forward30} alt="" />
+                  <img src={feedAssets.controls.forward30} alt="" />
                 </button>
               </div>
 
