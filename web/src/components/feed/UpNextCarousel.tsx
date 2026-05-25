@@ -6,7 +6,6 @@ import { useCoverCardBackground } from './useCoverGradient'
 
 const CARD_WIDTH = 130
 const CARD_GAP = 10
-const CARD_EXIT_OFFSET = CARD_WIDTH + CARD_GAP
 const EXIT_MS = 280
 const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
@@ -81,6 +80,7 @@ export const UpNextCarousel = ({
   const [visibleItems, setVisibleItems] = useState(items)
   const [isLoading, setIsLoading] = useState(false)
   const [centerTrack, setCenterTrack] = useState(false)
+  const [cardStride, setCardStride] = useState({ width: CARD_WIDTH, gap: CARD_GAP })
   const pendingQueueIdRef = useRef<string | null>(null)
   const queueTimerRef = useRef<number | null>(null)
   const prevNowPlayingIdRef = useRef(nowPlayingId)
@@ -95,11 +95,21 @@ export const UpNextCarousel = ({
     if (el) el.scrollLeft = 0
   }, [])
 
-  const updateCenterTrack = useCallback(() => {
+  const measureTrack = useCallback(() => {
     const el = scrollRef.current
     if (!el) return
     setCenterTrack(el.scrollWidth <= el.clientWidth + 1)
+    const shell = el.querySelector<HTMLElement>('.up-next__card-shell')
+    if (!shell) return
+    const trackStyles = getComputedStyle(el)
+    const gap = parseFloat(trackStyles.columnGap || trackStyles.gap || `${CARD_GAP}`)
+    setCardStride({
+      width: shell.offsetWidth,
+      gap: Number.isFinite(gap) ? gap : CARD_GAP,
+    })
   }, [])
+
+  const getCardStride = useCallback(() => cardStride, [cardStride])
 
   useEffect(() => {
     return () => {
@@ -144,30 +154,32 @@ export const UpNextCarousel = ({
   }, [items, nowPlayingId, resetScroll])
 
   useEffect(() => {
-    updateCenterTrack()
+    measureTrack()
     const el = scrollRef.current
     if (!el) return
 
-    const ro = new ResizeObserver(updateCenterTrack)
+    const ro = new ResizeObserver(measureTrack)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [visibleItems, displayItems.length, updateCenterTrack])
+  }, [visibleItems, displayItems.length, measureTrack])
 
   const updateIndexFromScroll = useCallback(() => {
     const el = scrollRef.current
     if (!el) return
-    const idx = Math.round((el.scrollLeft + CARD_WIDTH / 2) / (CARD_WIDTH + CARD_GAP))
+    const { width, gap } = getCardStride()
+    const idx = Math.round((el.scrollLeft + width / 2) / (width + gap))
     setScrollIndex(Math.min(Math.max(0, idx), visibleItems.length - 1))
-  }, [visibleItems.length])
+  }, [getCardStride, visibleItems.length])
 
   const scrollToIndex = useCallback(
     (index: number) => {
       const el = scrollRef.current
       if (!el || index >= visibleItems.length) return
-      el.scrollTo({ left: index * (CARD_WIDTH + CARD_GAP), behavior: 'smooth' })
+      const { width, gap } = getCardStride()
+      el.scrollTo({ left: index * (width + gap), behavior: 'smooth' })
       setScrollIndex(index)
     },
-    [visibleItems.length],
+    [getCardStride, visibleItems.length],
   )
 
   const handleQueueStart = useCallback(
@@ -238,7 +250,11 @@ export const UpNextCarousel = ({
                   exit={
                     prefersReducedMotion
                       ? { opacity: 0, transition: exitTransition }
-                      : { x: CARD_EXIT_OFFSET, opacity: 0, transition: exitTransition }
+                      : {
+                          x: cardStride.width + cardStride.gap,
+                          opacity: 0,
+                          transition: exitTransition,
+                        }
                   }
                   transition={{
                     layout: layoutTransition,
