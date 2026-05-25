@@ -1,4 +1,3 @@
-import { colors } from '../../../packages/tokens/colors'
 import { colors as brieflyColors } from '../tokens'
 import { PLAYER_EPISODES, PODCAST_COVERS } from './podcastCatalog'
 
@@ -134,10 +133,10 @@ export const pulseEpisodes: PulseEpisode[] = [
 
 export const editorialPick: EditorialPick = {
   id: 'edit-1',
-  title: 'Sleep, stress, and the science of showing up rested',
-  coverSrc: PODCAST_COVERS.huberman,
-  showName: PLAYER_EPISODES.huberman.showName,
-  episodeMeta: 'S: 01 | EPS: 12',
-  innerColor: colors.neutral[800],
+  title: 'How having a purpose changes the course of human enjoyment in life.',
+  coverSrc: PODCAST_COVERS.jayShetty,
+  showName: 'On Purpose with Jay Shetty',
+  episodeMeta: 'S: 06 | EPS: 22',
+  innerColor: '#121212',
   frameColor: brieflyColors.accent.warm,
 }
