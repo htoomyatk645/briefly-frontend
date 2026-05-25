@@ -142,39 +142,50 @@ export const PlayerCard = ({
 
         <div className="player-card__body">
           <div className="player-card__hero">
-            {prefersReducedMotion ? (
-              <div className="player-card__art-frame">
-                {artwork}
-                {hasProducts ? (
-                  <button
-                    type="button"
-                    className="player-card__shop-badge"
-                    aria-label="Products mentioned in episode"
-                    onClick={() => setShopOpen(true)}
-                  >
-                    <img src={feedAssetsRemote.actions.bag} alt="" />
-                  </button>
-                ) : null}
-              </div>
-            ) : (
-              <motion.div
-                layoutId={`player-artwork-${episode.id}`}
-                className="player-card__art-frame"
-                transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+            <div className="player-card__hero-main">
+              {prefersReducedMotion ? (
+                <div className="player-card__art-frame">
+                  {artwork}
+                  {hasProducts ? (
+                    <button
+                      type="button"
+                      className="player-card__shop-badge"
+                      aria-label="Products mentioned in episode"
+                      onClick={() => setShopOpen(true)}
+                    >
+                      <img src={feedAssetsRemote.actions.bag} alt="" />
+                    </button>
+                  ) : null}
+                </div>
+              ) : (
+                <motion.div
+                  layoutId={`player-artwork-${episode.id}`}
+                  className="player-card__art-frame"
+                  transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {artwork}
+                  {hasProducts ? (
+                    <button
+                      type="button"
+                      className="player-card__shop-badge"
+                      aria-label="Products mentioned in episode"
+                      onClick={() => setShopOpen(true)}
+                    >
+                      <img src={feedAssetsRemote.actions.bag} alt="" />
+                    </button>
+                  ) : null}
+                </motion.div>
+              )}
+
+              <button
+                type="button"
+                className="player-card__source"
+                aria-label={`Show: ${episode.showName}`}
+                onClick={() => onShowPage?.(episode.showId)}
               >
-                {artwork}
-                {hasProducts ? (
-                  <button
-                    type="button"
-                    className="player-card__shop-badge"
-                    aria-label="Products mentioned in episode"
-                    onClick={() => setShopOpen(true)}
-                  >
-                    <img src={feedAssetsRemote.actions.bag} alt="" />
-                  </button>
-                ) : null}
-              </motion.div>
-            )}
+                <span className="player-card__source-text">{episode.showName.toUpperCase()}</span>
+              </button>
+            </div>
 
             <header className="player-card__toolbar" role="toolbar" aria-label="Player actions">
               <button
@@ -222,14 +233,6 @@ export const PlayerCard = ({
           </div>
 
           <div className="player-card__meta">
-            <button
-              type="button"
-              className="player-card__source"
-              aria-label={`Show: ${episode.showName}`}
-              onClick={() => onShowPage?.(episode.showId)}
-            >
-              <span className="player-card__source-text">{episode.showName.toUpperCase()}</span>
-            </button>
             <h2 className="player-card__title">{episode.episodeTitle}</h2>
           </div>
 
