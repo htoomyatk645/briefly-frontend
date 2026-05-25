@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import type { CSSProperties } from 'react'
 import type { PulseEpisode } from '../data/homeData'
 import { AnimatedNumber } from './motion/AnimatedNumber'
 import { pressSpring, transition } from '../styles/motion'
@@ -13,15 +14,21 @@ export type PulseShelfProps = {
 
 function accentHeight(score: number) {
   const clamped = Math.min(100, Math.max(0, score))
-  return 24 + (clamped / 100) * 32
+  return (24 + (clamped / 100) * 32) * 1.3
+}
+
+function parseDominantColor(hsl: string): { h: string; s: string } {
+  const match = hsl.match(/hsl\(\s*([\d.]+)\s+([\d.]+)%/)
+  if (!match) return { h: '0', s: '0%' }
+  return { h: match[1], s: `${match[2]}%` }
 }
 
 function parseListenerCount(label: string): { count: number; suffix: string } | null {
-  const match = label.match(/^([\d.]+)k\s+(.*)$/)
+  const match = label.match(/^([\d.]+)k\s+(.+)$/i)
   if (!match) return null
   return {
     count: Number.parseFloat(match[1]),
-    suffix: `k ${match[2]}`,
+    suffix: 'k Listening Now',
   }
 }
 
@@ -53,11 +60,17 @@ type PulseCardProps = {
 
 const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
   const parsed = parseListenerCount(episode.trendLabel)
+  const { h, s } = parseDominantColor(episode.dominantColor)
+  const tintStyle = {
+    '--pulse-card-h': h,
+    '--pulse-card-s': s,
+  } as CSSProperties
 
   return (
     <motion.button
       type="button"
       className="pulse-card"
+      style={tintStyle}
       onClick={() => onPlay?.(episode.id)}
       aria-label={`Play ${episode.episodeTitle} from ${episode.showName}`}
       whileTap={allowMotion ? { scale: 0.97 } : undefined}
@@ -72,8 +85,8 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
         src={episode.coverSrc}
         alt=""
         className="pulse-card__art"
-        width={64}
-        height={64}
+        width={72}
+        height={72}
       />
       <span className="pulse-card__body">
         <span className="pulse-card__title">{episode.episodeTitle}</span>
@@ -84,7 +97,7 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
             aria-hidden
           />
           {parsed ? (
-            <>
+            <span className="pulse-card__trend-label">
               <AnimatedNumber
                 value={parsed.count}
                 format={(n) =>
@@ -92,7 +105,7 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
                 }
               />
               {parsed.suffix}
-            </>
+            </span>
           ) : (
             episode.trendLabel
           )}
@@ -114,7 +127,6 @@ export const PulseShelf = ({ episodes, onPlay, loading = false }: PulseShelfProp
         <h2 id="pulse-shelf-heading" className="section-heading">
           Pulse
         </h2>
-        <p className="section-subtitle">Shows people are talking about</p>
       </div>
 
       {loading ? (

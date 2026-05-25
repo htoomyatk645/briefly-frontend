@@ -358,13 +358,16 @@
   height: 2.75rem;
   padding: 0;
   border: 1px solid var(--player-theme-border);
-  border-radius: 8px;
+  border-radius: 50%;
   background: var(--player-theme-soft);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition:
