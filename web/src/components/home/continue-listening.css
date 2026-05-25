@@ -20,24 +20,20 @@
 }
 
 .continue-listening-card {
+  position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 10px;
-  width: 160px;
-  height: 96px;
-  padding: 0;
-  padding-left: 12px;
-  border: none;
-  border-radius: 14px;
+  width: 152px;
+  min-height: 244px;
+  padding: 10px;
+  border: 1px solid hsl(0 0% 100% / 0.14);
+  border-radius: 16px;
   overflow: hidden;
-  background: hsl(var(--continue-card-h) var(--continue-card-s) 92%);
-  color: var(--text);
+  background: hsl(var(--continue-card-h, 220) var(--continue-card-s, 30%) 20%);
+  color: var(--mix-highlight);
   text-align: left;
   cursor: pointer;
-}
-
-:root[data-theme='dark'] .continue-listening-card {
-  background: hsl(var(--continue-card-h) var(--continue-card-s) 22%);
 }
 
 .continue-listening-card:focus-visible {
@@ -45,95 +41,76 @@
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
-.continue-listening-card__art-wrap {
-  position: relative;
-  flex-shrink: 0;
-  width: 68px;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.continue-listening-card__ring {
-  position: absolute;
-  inset: 0;
-  transform: rotate(-90deg);
-}
-
-.continue-listening-card__ring-track,
-.continue-listening-card__ring-fill {
-  fill: none;
-  stroke-width: 2;
-}
-
-.continue-listening-card__ring-track {
-  stroke: hsl(0 0% 100% / 0.3);
-}
-
-.continue-listening-card__ring-fill {
-  stroke: var(--primary);
-  stroke-linecap: round;
-}
-
 .continue-listening-card__art {
-  position: relative;
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 8px;
   object-fit: cover;
 }
 
 .continue-listening-card__body {
-  flex: 1;
-  min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-  padding-right: 10px;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 28px;
 }
 
-.continue-listening-card__show {
+.continue-listening-card__progress {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.25);
+  overflow: hidden;
+}
+
+.continue-listening-card__progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--mix-highlight);
+}
+
+.continue-listening-card__progress-label {
   margin: 0;
   font-family: var(--font-body, 'Geist', sans-serif);
   font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: hsl(0 0% 100% / 0.72);
+  text-align: right;
 }
 
 .continue-listening-card__title {
   margin: 0;
   font-family: var(--font-display, 'Fraunces', Georgia, serif);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--text);
+  color: var(--mix-highlight);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.continue-listening-card__time-remaining {
-  margin: 0;
-  font-family: var(--font-body, 'Geist', sans-serif);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.continue-listening-card__play {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--mix-highlight);
+  color: hsl(var(--continue-card-h, 220) var(--continue-card-s, 30%) 20%);
 }
 
 .continue-listening-card--skeleton {
   background: var(--surface-alt);
+  border-color: transparent;
   pointer-events: none;
   animation: continue-skeleton-pulse 1.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
@@ -141,9 +118,11 @@
 .continue-listening-card--ghost {
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  min-height: 244px;
   cursor: default;
   background: var(--surface-alt);
+  border-color: var(--border);
+  color: var(--text-muted);
 }
 
 .continue-listening-card__ghost-text {
