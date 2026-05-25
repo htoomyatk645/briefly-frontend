@@ -1,119 +1,264 @@
 import type React from 'react'
-import { feedAssetsRemote } from '../feed/feedAssets'
+import { motion, useReducedMotion } from 'framer-motion'
 import './tab-bar.css'
 
-export type TabId = 'home' | 'feed' | 'discover' | 'saved' | 'account'
+export type TabId = 'home' | 'library' | 'feed' | 'discover' | 'search'
 
 type TabBarProps = {
   activeTab: TabId
   onTabChange: (tab: TabId) => void
+  feedIsPlaying?: boolean
 }
 
-const HomeIcon = () => (
-  <svg className="tab-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path
-      d="M4 11.5L12 5l8 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1v-8.5z"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinejoin="round"
-    />
-  </svg>
-)
+const ICON_STROKE = 1.75
+const EASE = [0.22, 1, 0.36, 1] as const
 
-const LibraryIcon = () => (
-  <svg className="tab-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path d="M5 6.5h4v11H5V6.5zm10 0h4v11h-4V6.5z" stroke="currentColor" strokeWidth={1.5} />
-  </svg>
-)
+type TabIconProps = {
+  filled: boolean
+  animate?: boolean
+}
 
-const FeedIcon = () => (
-  <svg className="tab-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <rect x={5} y={8} width={3} height={10} rx={1} fill="currentColor" />
-    <rect x={10.5} y={5} width={3} height={16} rx={1} fill="currentColor" />
-    <rect x={16} y={9} width={3} height={8} rx={1} fill="currentColor" />
-  </svg>
-)
+const iconPathTransition = (prefersReducedMotion: boolean | null, animate: boolean) => ({
+  duration: prefersReducedMotion || !animate ? 0 : 0.18,
+  ease: EASE,
+})
 
-const DiscoverIcon = () => (
-  <svg className="tab-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <circle cx={12} cy={12} r={9} stroke="currentColor" strokeWidth={1.5} />
-    <path d="M12 3a14 14 0 010 18M12 3a10 10 0 000 18M3 12h18" stroke="currentColor" strokeWidth={1.25} />
-  </svg>
-)
+const HomeIcon = ({ filled, animate = true }: TabIconProps) => {
+  const prefersReducedMotion = useReducedMotion()
 
-const SearchIcon = () => (
-  <svg className="tab-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <circle cx={11} cy={11} r={6.5} stroke="currentColor" strokeWidth={1.5} />
-    <path d="M16 16l5 5" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" />
-  </svg>
-)
+  return (
+    <svg className="tab-bar__icon" viewBox="0 0 24 24" aria-hidden>
+      <motion.path
+        d="M4 10.75L12 5l8 5.75V20a1.25 1.25 0 01-1.25 1.25H5.25A1.25 1.25 0 014 20V10.75z"
+        initial={false}
+        animate={{
+          fill: filled ? 'currentColor' : 'transparent',
+          stroke: 'currentColor',
+          strokeWidth: filled ? 0 : ICON_STROKE,
+        }}
+        transition={iconPathTransition(prefersReducedMotion, animate)}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+const bookPath = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) => `M${x} ${y}h${width}v${height}h-${width}V${y}z`
+
+const LibraryIcon = ({ filled, animate = true }: TabIconProps) => {
+  const prefersReducedMotion = useReducedMotion()
+  const books = [
+    bookPath(5, 10, 3.5, 8),
+    bookPath(10.25, 6, 3.5, 12),
+    bookPath(15.5, 11, 3.5, 7),
+  ]
+
+  return (
+    <svg className="tab-bar__icon" viewBox="0 0 24 24" aria-hidden>
+      {books.map((d) => (
+        <motion.path
+          key={d}
+          d={d}
+          initial={false}
+          animate={{
+            fill: filled ? 'currentColor' : 'transparent',
+            stroke: 'currentColor',
+            strokeWidth: filled ? 0 : ICON_STROKE,
+          }}
+          transition={iconPathTransition(prefersReducedMotion, animate)}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      ))}
+    </svg>
+  )
+}
+
+const FeedIcon = ({ filled, animate = true }: TabIconProps) => {
+  const prefersReducedMotion = useReducedMotion()
+  const bars = [
+    { x: 5, y: 10, h: 8 },
+    { x: 9.5, y: 6, h: 12 },
+    { x: 14, y: 9, h: 9 },
+    { x: 18.5, y: 7, h: 11 },
+  ]
+
+  return (
+    <svg className="tab-bar__icon" viewBox="0 0 24 24" aria-hidden>
+      {bars.map(({ x, y, h }) =>
+        filled ? (
+          <motion.rect
+            key={`${x}-${y}`}
+            x={x}
+            y={y}
+            width={2}
+            height={h}
+            rx={1}
+            initial={false}
+            animate={{ fill: 'currentColor' }}
+            transition={iconPathTransition(prefersReducedMotion, animate)}
+          />
+        ) : (
+          <motion.path
+            key={`${x}-${y}`}
+            d={`M${x + 1} ${y + h}V${y}`}
+            initial={false}
+            animate={{
+              fill: 'transparent',
+              stroke: 'currentColor',
+              strokeWidth: ICON_STROKE,
+            }}
+            transition={iconPathTransition(prefersReducedMotion, animate)}
+            strokeLinecap="round"
+          />
+        ),
+      )}
+    </svg>
+  )
+}
+
+const DiscoverIcon = ({ filled, animate = true }: TabIconProps) => {
+  const prefersReducedMotion = useReducedMotion()
+
+  return (
+    <svg className="tab-bar__icon" viewBox="0 0 24 24" aria-hidden>
+      {filled ? (
+        <motion.path
+          d="M12 3.5a8.5 8.5 0 110 17 8.5 8.5 0 010-17M15.2 8.8l-1.45 4.35-4.35 1.45 1.45-4.35z"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          initial={false}
+          animate={{ fill: 'currentColor', stroke: 'transparent', strokeWidth: 0 }}
+          transition={iconPathTransition(prefersReducedMotion, animate)}
+        />
+      ) : (
+        <>
+          <motion.circle
+            cx={12}
+            cy={12}
+            r={8.5}
+            initial={false}
+            animate={{
+              fill: 'transparent',
+              stroke: 'currentColor',
+              strokeWidth: ICON_STROKE,
+            }}
+            transition={iconPathTransition(prefersReducedMotion, animate)}
+          />
+          <motion.path
+            d="M15.2 8.8l-1.45 4.35-4.35 1.45 1.45-4.35z"
+            initial={false}
+            animate={{
+              fill: 'transparent',
+              stroke: 'currentColor',
+              strokeWidth: ICON_STROKE,
+            }}
+            transition={iconPathTransition(prefersReducedMotion, animate)}
+            strokeLinejoin="round"
+          />
+        </>
+      )}
+    </svg>
+  )
+}
+
+const SearchIcon = ({ filled, animate = true }: TabIconProps) => {
+  const prefersReducedMotion = useReducedMotion()
+
+  return (
+    <svg className="tab-bar__icon" viewBox="0 0 24 24" aria-hidden>
+      <motion.circle
+        cx={10.5}
+        cy={10.5}
+        r={5.75}
+        initial={false}
+        animate={{
+          fill: filled ? 'currentColor' : 'transparent',
+          stroke: 'currentColor',
+          strokeWidth: filled ? 0 : ICON_STROKE,
+        }}
+        transition={iconPathTransition(prefersReducedMotion, animate)}
+      />
+      <motion.path
+        d="M15 15l4.25 4.25"
+        initial={false}
+        animate={{
+          fill: 'transparent',
+          stroke: 'currentColor',
+          strokeWidth: ICON_STROKE,
+        }}
+        transition={iconPathTransition(prefersReducedMotion, animate)}
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
 
 type TabConfig = {
   id: TabId
   label: string
-  feedSrc?: string
-  Icon?: () => React.ReactNode
-  inPill?: boolean
-  cap?: 'left' | 'right'
+  Icon: (props: TabIconProps) => React.ReactElement
 }
 
 const tabs: TabConfig[] = [
-  { id: 'home', label: 'Home', feedSrc: feedAssetsRemote.tabs.home, Icon: HomeIcon, cap: 'left' },
-  { id: 'saved', label: 'Library', feedSrc: feedAssetsRemote.tabs.books, Icon: LibraryIcon, inPill: true },
-  { id: 'feed', label: 'Now playing', feedSrc: feedAssetsRemote.tabs.library, Icon: FeedIcon, inPill: true },
-  { id: 'discover', label: 'Discover', feedSrc: feedAssetsRemote.tabs.compass, Icon: DiscoverIcon, inPill: true },
-  { id: 'account', label: 'Search', feedSrc: feedAssetsRemote.tabs.search, Icon: SearchIcon, cap: 'right' },
+  { id: 'home', label: 'Home', Icon: HomeIcon },
+  { id: 'library', label: 'Library', Icon: LibraryIcon },
+  { id: 'feed', label: 'Now playing', Icon: FeedIcon },
+  { id: 'discover', label: 'Discover', Icon: DiscoverIcon },
+  { id: 'search', label: 'Search', Icon: SearchIcon },
 ]
 
-export const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {
-  const isFeedShell = activeTab === 'feed'
-  const pillTabs = tabs.filter((t) => t.inPill)
-  const leftCap = tabs.find((t) => t.cap === 'left')
-  const rightCap = tabs.find((t) => t.cap === 'right')
-
-  const renderBtn = (tab: TabConfig, extraClass = '') => (
-    <button
-      key={tab.id}
-      type="button"
-      role="tab"
-      className={`tab-bar__item${activeTab === tab.id ? ' tab-bar__item--active' : ''}${extraClass}`}
-      aria-selected={activeTab === tab.id}
-      aria-label={tab.label}
-      onClick={() => onTabChange(tab.id)}
-    >
-      <span className="tab-bar__icon-wrap">
-        {isFeedShell && tab.feedSrc ? (
-          <img src={tab.feedSrc} alt="" className="tab-bar__figma-icon" />
-        ) : (
-          tab.Icon?.()
-        )}
-      </span>
-      {activeTab === tab.id && tab.id === 'feed' && isFeedShell ? (
-        <span className="tab-bar__active-dot" aria-hidden />
-      ) : null}
-    </button>
-  )
-
-  if (!isFeedShell) {
-    return (
-      <nav className="tab-bar" role="tablist" aria-label="Main navigation">
-        <div className="tab-bar__pill tab-bar__pill--default">
-          {tabs.map((t) => renderBtn(t))}
-        </div>
-      </nav>
-    )
-  }
+export const TabBar = ({ activeTab, onTabChange, feedIsPlaying = false }: TabBarProps) => {
+  const prefersReducedMotion = useReducedMotion()
 
   return (
-    <nav className="tab-bar tab-bar--feed-shell" role="tablist" aria-label="Main navigation">
-      <div className="tab-bar__feed-row">
-        {leftCap ? renderBtn(leftCap, ' tab-bar__item--cap') : null}
-        <div className="tab-bar__pill tab-bar__pill--feed">
-          {pillTabs.map((t) => renderBtn(t))}
-        </div>
-        {rightCap ? renderBtn(rightCap, ' tab-bar__item--cap tab-bar__item--cap-right') : null}
+    <nav className="tab-bar" role="tablist" aria-label="Main navigation">
+      <div className="tab-bar__pill">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id
+          const isFeedPlaying = tab.id === 'feed' && isActive && feedIsPlaying
+          const Icon = tab.Icon
+
+          return (
+            <motion.button
+              key={tab.id}
+              type="button"
+              role="tab"
+              className={`tab-bar__item${isActive ? ' tab-bar__item--active' : ''}${isFeedPlaying ? ' tab-bar__item--feed-playing' : ''}`}
+              aria-selected={isActive}
+              aria-label={tab.label}
+              onClick={() => onTabChange(tab.id)}
+              whileTap={
+                prefersReducedMotion
+                  ? undefined
+                  : { scale: 0.92 }
+              }
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : { type: 'spring', stiffness: 320, damping: 22 }
+              }
+            >
+              <motion.span
+                className="tab-bar__icon-wrap"
+                animate={{ scale: isActive && !prefersReducedMotion ? 1.08 : 1 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.22,
+                  ease: EASE,
+                }}
+              >
+                <Icon filled={isActive} />
+              </motion.span>
+            </motion.button>
+          )
+        })}
       </div>
-      <div className="tab-bar__home-indicator" aria-hidden />
     </nav>
   )
 }

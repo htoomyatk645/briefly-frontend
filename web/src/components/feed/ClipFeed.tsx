@@ -22,6 +22,7 @@ import './clip-feed.css'
 type ClipFeedProps = {
   selectedEpisodeId?: string | null
   onPlayEpisode?: (id: string) => void
+  onPlaybackActiveChange?: (isPlaying: boolean) => void
 }
 
 function resolveInitialId(selectedEpisodeId?: string | null): string {
@@ -31,7 +32,7 @@ function resolveInitialId(selectedEpisodeId?: string | null): string {
   return mosaicIdToFeedId(selectedEpisodeId)
 }
 
-export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) => {
+export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveChange }: ClipFeedProps) => {
   const [nowPlayingId, setNowPlayingId] = useState(() => resolveInitialId(selectedEpisodeId))
   const [savedIds, setSavedIds] = useState(() => readSavedEpisodeIds())
   const [followedShows, setFollowedShows] = useState(() => readFollowedShowIds())
@@ -81,6 +82,10 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode }: ClipFeedProps) =>
       playback.play()
     }
   }, [nowPlayingId, playback])
+
+  useEffect(() => {
+    onPlaybackActiveChange?.(playback.isPlaying)
+  }, [playback.isPlaying, onPlaybackActiveChange])
 
   useEffect(() => {
     setNowPlayingId(resolveInitialId(selectedEpisodeId))

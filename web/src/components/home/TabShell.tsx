@@ -31,10 +31,17 @@ export const TabShell = ({
 
   const [activeTab, setActiveTab] = useState<TabId>(previewFeed ? 'feed' : 'home')
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null)
+  const [feedIsPlaying, setFeedIsPlaying] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollTo(0, 0)
+  }, [activeTab])
+
+  useEffect(() => {
+    if (activeTab !== 'feed') {
+      setFeedIsPlaying(false)
+    }
   }, [activeTab])
 
   const handleTileSelect = useCallback((id: string) => {
@@ -45,6 +52,10 @@ export const TabShell = ({
 
   const handleTabChange = useCallback((tab: TabId) => {
     setActiveTab(tab)
+  }, [])
+
+  const handleFeedPlaybackChange = useCallback((isPlaying: boolean) => {
+    setFeedIsPlaying(isPlaying)
   }, [])
 
   const renderTab = () => {
@@ -61,14 +72,15 @@ export const TabShell = ({
           <ClipFeed
             selectedEpisodeId={selectedEpisodeId}
             onPlayEpisode={onPlayEpisode}
+            onPlaybackActiveChange={handleFeedPlaybackChange}
           />
         )
       case 'discover':
         return <Discover />
-      case 'saved':
-        return <PlaceholderScreen label="Saved" />
-      case 'account':
-        return <PlaceholderScreen label="Account" />
+      case 'library':
+        return <PlaceholderScreen label="Library" />
+      case 'search':
+        return <PlaceholderScreen label="Search" />
     }
   }
 
@@ -96,7 +108,11 @@ export const TabShell = ({
           </LayoutGroup>
         </div>
       </div>
-      <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
+      <TabBar
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        feedIsPlaying={feedIsPlaying}
+      />
     </div>
   )
 }
