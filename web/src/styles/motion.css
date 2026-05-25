@@ -47,7 +47,7 @@ body,
 }
 
 .pulse-card__accent,
-.continue-listening-card__progress-fill,
+.continue-listening-card__ring-fill,
 .player-card__progress-fill {
   transition: width var(--motion-slow) var(--motion-ease);
 }
@@ -73,7 +73,7 @@ body,
   .player-more-menu,
   .placeholder-screen,
   .pulse-card__accent,
-  .continue-listening-card__progress-fill,
+  .continue-listening-card__ring-fill,
   .player-card__progress-fill {
     transition: none;
   }
