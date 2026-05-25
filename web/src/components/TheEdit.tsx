@@ -44,8 +44,8 @@ export const TheEdit = ({ pick, onPlay }: TheEditProps) => {
             src="/home/the-edit-microphone.svg"
             alt=""
             className="the-edit__mic"
-            width={72}
-            height={138}
+            width={80}
+            height={147}
           />
           <span className="the-edit__frame">
             <span className="the-edit__inner">

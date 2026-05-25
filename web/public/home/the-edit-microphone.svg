@@ -1,18 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 168" fill="none" aria-hidden="true">
-  <ellipse cx="44" cy="158" rx="22" ry="6" fill="#000" fill-opacity="0.18"/>
-  <path d="M44 92V148" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M28 148H60" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M18 72C18 48 28 28 44 22C60 28 70 48 70 72V88C70 98 62 106 52 108V118H36V108C26 106 18 98 18 88V72Z" fill="#C9184A" stroke="#111" stroke-width="2"/>
-  <path d="M24 72C24 52 32 36 44 31C56 36 64 52 64 72V86C64 94 58 100 50 102V112H38V102C30 100 24 94 24 86V72Z" fill="#E84D7A"/>
-  <ellipse cx="44" cy="30" rx="18" ry="14" fill="#1A1A1A" stroke="#111" stroke-width="2"/>
-  <path d="M30 30H58" stroke="#333" stroke-width="1.2" stroke-linecap="round"/>
-  <path d="M32 34H56" stroke="#333" stroke-width="1.2" stroke-linecap="round"/>
-  <path d="M34 38H54" stroke="#333" stroke-width="1.2" stroke-linecap="round"/>
-  <circle cx="44" cy="48" r="3.5" fill="#FF3B30" stroke="#111" stroke-width="1"/>
-  <circle cx="36" cy="58" r="4" fill="#111"/>
-  <circle cx="52" cy="58" r="4" fill="#111"/>
-  <path d="M10 78C10 66 18 56 28 52" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M78 78C78 66 70 56 60 52" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M10 78V92C10 102 16 110 24 112" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M78 78V92C78 102 72 110 64 112" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 220" fill="none" aria-hidden="true">
+  <ellipse cx="60" cy="212" rx="28" ry="7" fill="#000" fill-opacity="0.16"/>
+  <ellipse cx="60" cy="204" rx="34" ry="8" fill="#9E1238"/>
+  <ellipse cx="60" cy="200" rx="30" ry="7" fill="#C9184A"/>
+  <path d="M60 154C60 154 48 168 42 184C40 190 40 196 44 200H76C80 196 80 190 78 184C72 168 60 154 60 154Z" fill="#B01540"/>
+  <path d="M60 154C60 154 52 166 48 178C46 184 47 192 52 196H68C73 192 74 184 72 178C68 166 60 154 60 154Z" fill="#D63A66"/>
+  <path d="M58 154V118" stroke="#8E1034" stroke-width="4" stroke-linecap="round"/>
+  <path d="M14 92C14 68 28 46 48 36V28C48 20 54 14 60 14C66 14 72 20 72 28V36C92 46 106 68 106 92V104C106 118 96 130 82 134V146H38V134C24 130 14 118 14 104V92Z" fill="#C9184A" stroke="#1A1A1A" stroke-width="2"/>
+  <path d="M22 92C22 72 34 54 48 46V30C48 24 53 20 60 20C67 20 72 24 72 30V46C86 54 98 72 98 92V102C98 114 90 124 78 128V138H42V128C30 124 22 114 22 102V92Z" fill="#E84D7A"/>
+  <path d="M28 92C28 76 38 62 50 56V32C50 28 54 25 60 25C66 25 70 28 70 32V56C82 62 92 76 92 92V100C92 110 86 118 76 121V129H44V121C34 118 28 110 28 100V92Z" fill="#F06B90" fill-opacity="0.45"/>
+  <ellipse cx="60" cy="28" rx="22" ry="16" fill="#141414" stroke="#1A1A1A" stroke-width="2"/>
+  <path d="M38 28H82" stroke="#2A2A2A" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M40 32H80" stroke="#2A2A2A" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M42 36H78" stroke="#2A2A2A" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M44 40H74" stroke="#2A2A2A" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M46 44H72" stroke="#2A2A2A" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="60" cy="58" r="4" fill="#FF3B30" stroke="#1A1A1A" stroke-width="1.2"/>
+  <circle cx="50" cy="72" r="5.5" fill="#111"/>
+  <circle cx="70" cy="72" r="5.5" fill="#111"/>
+  <circle cx="50" cy="72" r="2" fill="#333"/>
+  <circle cx="70" cy="72" r="2" fill="#333"/>
+  <path d="M8 98C8 82 18 68 32 60" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M112 98C112 82 102 68 88 60" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M8 98V114C8 126 16 136 28 140" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M112 98V114C112 126 104 136 92 140" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="60" r="4" fill="#111" stroke="#1A1A1A" stroke-width="1.5"/>
+  <circle cx="88" cy="60" r="4" fill="#111" stroke="#1A1A1A" stroke-width="1.5"/>
 </svg>
