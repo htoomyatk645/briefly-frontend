@@ -151,16 +151,6 @@ export const PlayerCard = ({
               {prefersReducedMotion ? (
                 <div className="player-card__art-frame">
                   {artwork}
-                  {hasProducts ? (
-                    <button
-                      type="button"
-                      className="player-card__shop-badge"
-                      aria-label="Products mentioned in episode"
-                      onClick={() => setShopOpen(true)}
-                    >
-                      <img src={feedAssetsRemote.actions.bag} alt="" />
-                    </button>
-                  ) : null}
                 </div>
               ) : (
                 <motion.div
@@ -169,16 +159,6 @@ export const PlayerCard = ({
                   transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {artwork}
-                  {hasProducts ? (
-                    <button
-                      type="button"
-                      className="player-card__shop-badge"
-                      aria-label="Products mentioned in episode"
-                      onClick={() => setShopOpen(true)}
-                    >
-                      <img src={feedAssetsRemote.actions.bag} alt="" />
-                    </button>
-                  ) : null}
                 </motion.div>
               )}
 
@@ -218,11 +198,14 @@ export const PlayerCard = ({
               </button>
               <button
                 type="button"
-                className="player-card__toolbar-btn"
-                aria-label="Choose audio output"
-                onClick={() => setOutputOpen(true)}
+                className={`player-card__toolbar-btn${hasProducts ? '' : ' player-card__toolbar-btn--inactive'}`}
+                aria-label="Products mentioned in episode"
+                aria-haspopup="dialog"
+                aria-expanded={shopOpen}
+                disabled={!hasProducts}
+                onClick={() => hasProducts && setShopOpen(true)}
               >
-                <img src={feedAssetsRemote.actions.airpods} alt="" />
+                <img src={feedAssetsRemote.actions.bag} alt="" />
               </button>
               <button
                 type="button"
