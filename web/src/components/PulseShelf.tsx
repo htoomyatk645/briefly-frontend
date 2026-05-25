@@ -85,8 +85,8 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
         src={episode.coverSrc}
         alt=""
         className="pulse-card__art"
-        width={83}
-        height={83}
+        width={72}
+        height={72}
       />
       <span className="pulse-card__body">
         <span className="pulse-card__title">{episode.episodeTitle}</span>
