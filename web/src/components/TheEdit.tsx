@@ -1,4 +1,5 @@
 import type { EditorialPick } from '../data/homeData'
+import '../styles/sections.css'
 import './homeShelves.css'
 
 export type TheEditProps = {
@@ -7,10 +8,12 @@ export type TheEditProps = {
 }
 
 export const TheEdit = ({ pick, onPlay }: TheEditProps) => (
-  <section className="home-shelf the-edit" aria-labelledby="the-edit-heading">
-    <h2 id="the-edit-heading" className="home-shelf__label">
-      The Edit
-    </h2>
+  <section className="home-section the-edit" aria-labelledby="the-edit-heading">
+    <div className="home-section__head">
+      <h2 id="the-edit-heading" className="section-heading">
+        The Edit
+      </h2>
+    </div>
     <button
       type="button"
       className="the-edit__card"
