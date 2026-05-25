@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { useId, useState, type ChangeEvent } from 'react'
+import { useId, useState, type ChangeEvent, type CSSProperties } from 'react'
 import { AnimatedNumber } from '../motion/AnimatedNumber'
 import { transition } from '../../styles/motion'
 import type { FeedEpisode } from './feedData'
@@ -14,8 +14,10 @@ import { ShopSheet } from './player/ShopSheet'
 import { TranscriptSheet } from './player/TranscriptSheet'
 import type { PlaybackSpeed } from './player/playerStorage'
 import './player/player-interactions.css'
-import { useCoverGradient } from './useCoverGradient'
+import { useCoverCardBackground } from './useCoverGradient'
 import { formatRemaining, formatTime } from './usePlayback'
+
+const ACCENT_WARM = '#FF6640'
 
 type PlayerCardProps = {
   episode: FeedEpisode
@@ -41,13 +43,13 @@ type PlayerCardProps = {
 
 const PlayIcon = () => (
   <svg className="player-card__play-icon" viewBox="0 0 24 24" aria-hidden>
-    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="#C9184A" />
+    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill={ACCENT_WARM} />
   </svg>
 )
 
 const PauseIcon = () => (
   <svg className="player-card__play-icon" viewBox="0 0 24 24" aria-hidden>
-    <path d="M7 6h3.5v12H7V6zm6.5 0H17v12h-3.5V6z" fill="#C9184A" />
+    <path d="M7 6h3.5v12H7V6zm6.5 0H17v12h-3.5V6z" fill={ACCENT_WARM} />
   </svg>
 )
 
@@ -85,7 +87,11 @@ export const PlayerCard = ({
 
   const products = getProductsForEpisode(episode.id)
   const hasProducts = products.length > 0
-  const coverGradient = useCoverGradient(episode.coverSrc)
+  const coverTint = useCoverCardBackground(episode.coverSrc)
+
+  const playerStyle = {
+    '--player-cover-tint': coverTint,
+  } as CSSProperties
 
   useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
 
@@ -117,94 +123,105 @@ export const PlayerCard = ({
     onMoreAction(action)
   }
 
+  const artwork = (
+    <img
+      src={episode.coverSrc}
+      alt={`${episode.showName} artwork`}
+      className="player-card__art"
+    />
+  )
+
   return (
     <>
       <article
         className="player-card player-card--adaptive"
-        style={{ background: coverGradient }}
+        style={playerStyle}
         aria-label={`Now playing: ${episode.episodeTitle}`}
       >
         <div className="player-card__grabber" aria-hidden />
 
         <div className="player-card__body">
-          <div className="player-card__upper">
-            <div className="player-card__art-row">
-              {prefersReducedMotion ? (
-                <div className="player-card__art-frame">
-                  <img
-                    src={episode.coverSrc}
-                    alt={`${episode.showName} artwork`}
-                    className="player-card__art"
-                  />
-                </div>
-              ) : (
-                <motion.div
-                  layoutId={`player-artwork-${episode.id}`}
-                  className="player-card__art-frame"
-                  transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <img
-                    src={episode.coverSrc}
-                    alt={`${episode.showName} artwork`}
-                    className="player-card__art"
-                  />
-                </motion.div>
-              )}
+          <header className="player-card__toolbar" role="toolbar" aria-label="Player actions">
+            <button
+              type="button"
+              className={`player-card__toolbar-btn${saved ? ' player-card__toolbar-btn--saved' : ''}`}
+              onClick={handleSave}
+              aria-label={saved ? 'Remove from saved' : 'Save episode'}
+              aria-pressed={saved}
+            >
+              <img
+                src={feedAssetsRemote.actions.bookmark}
+                alt=""
+                className={`player-card__bookmark-icon${saved ? ' player-card__bookmark-icon--filled' : ''}${saveAnim ? ' player-card__bookmark-icon--spring' : ''}`}
+              />
+            </button>
+            <button
+              type="button"
+              className="player-card__toolbar-btn"
+              onClick={() => setSpeedOpen(true)}
+              aria-label={`Playback speed ${playbackRate}x`}
+              aria-haspopup="menu"
+              aria-expanded={speedOpen}
+            >
+              <img src={feedAssetsRemote.actions.speed} alt="" />
+            </button>
+            <button
+              type="button"
+              className="player-card__toolbar-btn"
+              aria-label="Choose audio output"
+              onClick={() => setOutputOpen(true)}
+            >
+              <img src={feedAssetsRemote.actions.airpods} alt="" />
+            </button>
+            <button
+              type="button"
+              className="player-card__toolbar-btn"
+              aria-label="More options"
+              aria-haspopup="menu"
+              aria-expanded={moreOpen}
+              onClick={() => setMoreOpen(true)}
+            >
+              <img src={feedAssetsRemote.actions.more} alt="" />
+            </button>
+          </header>
 
-              <div className="player-card__rail" role="toolbar" aria-label="Player actions">
-                <button
-                  type="button"
-                  className={`player-card__rail-btn feed-glass${!hasProducts ? ' player-card__rail-btn--inactive' : ''}`}
-                  aria-label="Products mentioned in episode"
-                  aria-disabled={!hasProducts}
-                  onClick={() => hasProducts && setShopOpen(true)}
-                >
-                  <img src={feedAssetsRemote.actions.bag} alt="" />
-                </button>
-                <button
-                  type="button"
-                  className={`player-card__rail-btn feed-glass${saved ? ' player-card__rail-btn--saved' : ''}`}
-                  onClick={handleSave}
-                  aria-label={saved ? 'Remove from saved' : 'Save episode'}
-                  aria-pressed={saved}
-                >
-                  <img
-                    src={feedAssetsRemote.actions.bookmark}
-                    alt=""
-                    className={`player-card__bookmark-icon${saved ? ' player-card__bookmark-icon--filled' : ''}${saveAnim ? ' player-card__bookmark-icon--spring' : ''}`}
-                  />
-                </button>
-                <button
-                  type="button"
-                  className="player-card__rail-btn feed-glass"
-                  onClick={() => setSpeedOpen(true)}
-                  aria-label={`Playback speed ${playbackRate}x`}
-                  aria-haspopup="menu"
-                  aria-expanded={speedOpen}
-                >
-                  <img src={feedAssetsRemote.actions.speed} alt="" />
-                </button>
-                <button
-                  type="button"
-                  className="player-card__rail-btn feed-glass"
-                  aria-label="Choose audio output"
-                  onClick={() => setOutputOpen(true)}
-                >
-                  <img src={feedAssetsRemote.actions.airpods} alt="" />
-                </button>
-                <button
-                  type="button"
-                  className="player-card__rail-btn feed-glass"
-                  aria-label="More options"
-                  aria-haspopup="menu"
-                  aria-expanded={moreOpen}
-                  onClick={() => setMoreOpen(true)}
-                >
-                  <img src={feedAssetsRemote.actions.more} alt="" />
-                </button>
+          <div className="player-card__hero">
+            {prefersReducedMotion ? (
+              <div className="player-card__art-frame">
+                {artwork}
+                {hasProducts ? (
+                  <button
+                    type="button"
+                    className="player-card__shop-badge"
+                    aria-label="Products mentioned in episode"
+                    onClick={() => setShopOpen(true)}
+                  >
+                    <img src={feedAssetsRemote.actions.bag} alt="" />
+                  </button>
+                ) : null}
               </div>
-            </div>
+            ) : (
+              <motion.div
+                layoutId={`player-artwork-${episode.id}`}
+                className="player-card__art-frame"
+                transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {artwork}
+                {hasProducts ? (
+                  <button
+                    type="button"
+                    className="player-card__shop-badge"
+                    aria-label="Products mentioned in episode"
+                    onClick={() => setShopOpen(true)}
+                  >
+                    <img src={feedAssetsRemote.actions.bag} alt="" />
+                  </button>
+                ) : null}
+              </motion.div>
+            )}
+          </div>
 
+          <div className="player-card__meta">
             <button
               type="button"
               className="player-card__source"
@@ -212,11 +229,7 @@ export const PlayerCard = ({
               onClick={() => onShowPage?.(episode.showId)}
             >
               <span className="player-card__source-text">{episode.showName.toUpperCase()}</span>
-              <span className="player-card__source-mark" aria-hidden>
-                ◉
-              </span>
             </button>
-
             <h2 className="player-card__title">{episode.episodeTitle}</h2>
           </div>
 

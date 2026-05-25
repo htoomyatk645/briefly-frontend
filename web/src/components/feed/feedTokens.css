@@ -12,6 +12,9 @@
     #1a7b9a 100%
   );
   --feed-player-radius: 2.75rem 2.75rem 0 0;
+  --feed-player-surface: #13171e;
+  --feed-accent-warm: #ff6640;
+  --feed-text-primary: #f2f0eb;
 
   --feed-up-purple: #6d62a7;
   --feed-up-navy: #16314e;

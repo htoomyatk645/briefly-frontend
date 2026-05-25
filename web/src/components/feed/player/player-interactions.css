@@ -243,7 +243,7 @@
 }
 
 /* Save spring */
-.player-card__rail-btn--saved .player-card__bookmark-icon {
+.player-card__toolbar-btn--saved .player-card__bookmark-icon {
   animation: bookmark-spring 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -280,7 +280,7 @@
   }
 }
 
-.player-card__rail-btn--inactive {
+.player-card__toolbar-btn--inactive {
   opacity: 0.42;
 }
 
@@ -300,7 +300,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .player-card__rail-btn--saved .player-card__bookmark-icon,
+  .player-card__toolbar-btn--saved .player-card__bookmark-icon,
   .player-card__ctrl--play--pulse {
     animation: none;
   }
