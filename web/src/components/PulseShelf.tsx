@@ -24,11 +24,11 @@ function parseDominantColor(hsl: string): { h: string; s: string } {
 }
 
 function parseListenerCount(label: string): { count: number; suffix: string } | null {
-  const match = label.match(/^([\d.]+)k\s+(.*)$/)
+  const match = label.match(/^([\d.]+)k\s+(.+)$/i)
   if (!match) return null
   return {
     count: Number.parseFloat(match[1]),
-    suffix: `k ${match[2]}`,
+    suffix: 'k Listening Now',
   }
 }
 
@@ -97,7 +97,7 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
             aria-hidden
           />
           {parsed ? (
-            <>
+            <span className="pulse-card__trend-label">
               <AnimatedNumber
                 value={parsed.count}
                 format={(n) =>
@@ -105,7 +105,7 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
                 }
               />
               {parsed.suffix}
-            </>
+            </span>
           ) : (
             episode.trendLabel
           )}

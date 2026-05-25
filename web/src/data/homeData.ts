@@ -88,7 +88,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'Our Field Trip to Google I/O + A Sit-Down With Sundar Pichai',
     coverSrc: PODCAST_COVERS.hardFork,
     trendScore: 92,
-    trendLabel: '14k listening now',
+    trendLabel: '14k Listening Now',
     dominantColor: 'hsl(59 79% 54%)',
   },
   {
@@ -97,7 +97,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'MURDERED: Hanna Harris',
     coverSrc: PODCAST_COVERS.crimeJunkie,
     trendScore: 78,
-    trendLabel: '9.2k listening now',
+    trendLabel: '9.2k Listening Now',
     dominantColor: 'hsl(276 72% 43%)',
   },
   {
@@ -106,7 +106,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'The Wubi Effect',
     coverSrc: PODCAST_COVERS.radiolab,
     trendScore: 61,
-    trendLabel: '5.1k listening now',
+    trendLabel: '5.1k Listening Now',
     dominantColor: 'hsl(6 100% 63%)',
   },
   {
@@ -115,7 +115,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'The Island No One Wants',
     coverSrc: PODCAST_COVERS.planetMoney,
     trendScore: 44,
-    trendLabel: '2.8k listening now',
+    trendLabel: '2.8k Listening Now',
     dominantColor: 'hsl(109 88% 9%)',
   },
   {
@@ -124,7 +124,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     episodeTitle: 'Adam Scott',
     coverSrc: PODCAST_COVERS.smartLess,
     trendScore: 31,
-    trendLabel: '1.4k listening now',
+    trendLabel: '1.4k Listening Now',
     dominantColor: 'hsl(24 36% 83%)',
   },
 ]

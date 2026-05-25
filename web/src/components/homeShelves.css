@@ -131,9 +131,14 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--primary);
-  white-space: nowrap;
+  min-width: 0;
+}
+
+.pulse-card__trend-label {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pulse-card__dot {
