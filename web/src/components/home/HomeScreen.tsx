@@ -44,9 +44,6 @@ export const HomeScreen = ({
   onNotifications,
   onProfile,
 }: HomeScreenProps) => {
-  const hasContinue =
-    showContinueListening && continueListeningEpisodes.length > 0
-
   return (
     <main className="home-screen" aria-label="Home feed">
       <header className="home-header">
@@ -75,7 +72,7 @@ export const HomeScreen = ({
       </header>
 
       <div className="home-scroll">
-        {hasContinue ? (
+        {showContinueListening ? (
           <ContinueListeningSection
             episodes={continueListeningEpisodes}
             onPress={onPlayEpisode}

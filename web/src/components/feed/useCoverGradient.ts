@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { colors } from '../../tokens'
 
+/** Figma node 23:31 player sheet gradient */
 const FALLBACK_GRADIENT =
-  'linear-gradient(160deg, #5bc8d4 0%, #3aafbf 35%, #2196a8 65%, #1a7b9a 100%)'
+  'linear-gradient(180deg, #0da2d7 27.885%, #0da2d7 59.615%, #075571 100%)'
 
 type Rgb = { r: number; g: number; b: number }
 
@@ -10,7 +12,7 @@ const coverThemeCache = new Map<string, { background: string; accent: string }>(
 const coverThemePending = new Map<string, Promise<{ background: string; accent: string }>>()
 
 const CARD_BG_FALLBACK = 'hsl(215 45% 22%)'
-const THEME_ACCENT_FALLBACK = '#FF6640'
+const THEME_ACCENT_FALLBACK = colors.accent.warm
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
@@ -85,10 +87,9 @@ function buildGradientFromColors(colors: Rgb[]): string {
 
   const top = lighten(anchor, 0.28)
   const midHigh = lighten(anchor, 0.08)
-  const midLow = darken(anchor, 0.12)
   const bottom = darken(anchor, 0.32)
 
-  return `linear-gradient(160deg, ${rgbToHex(top)} 0%, ${rgbToHex(midHigh)} 35%, ${rgbToHex(midLow)} 65%, ${rgbToHex(bottom)} 100%)`
+  return `linear-gradient(180deg, ${rgbToHex(top)} 28%, ${rgbToHex(midHigh)} 60%, ${rgbToHex(bottom)} 100%)`
 }
 
 function buildThemeAccentFromColors(colors: Rgb[]): string {

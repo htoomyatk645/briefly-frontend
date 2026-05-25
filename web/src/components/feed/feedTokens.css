@@ -1,33 +1,41 @@
 /**
- * Feed screen tokens
+ * Feed screen scoped tokens — aliases design system + Figma frame 23-31 specs.
  */
 .feed-screen,
 .tab-shell--feed {
+  /* Up Next zone background (Figma frame warm brown, not bg/primary) */
   --feed-bg: #18110f;
-  --feed-player-gradient: linear-gradient(
-    160deg,
-    #5bc8d4 0%,
-    #3aafbf 35%,
-    #2196a8 65%,
-    #1a7b9a 100%
-  );
-  --feed-player-radius: 2.75rem 2.75rem 0 0;
-  --feed-player-surface: #13171e;
-  --feed-accent-warm: #ff6640;
-  --feed-accent-primary: #b8ff3c;
-  --feed-text-primary: #f2f0eb;
-  --feed-text-secondary: #8a9099;
 
+  /* Player sheet — Figma node 23:31 gradient + corner radii */
+  --feed-player-gradient: linear-gradient(
+    180deg,
+    #0da2d7 27.885%,
+    #0da2d7 59.615%,
+    #075571 100%
+  );
+  --feed-player-radius-top: clamp(2.75rem, 18vw, 9.6875rem);
+  --feed-player-radius-bottom: clamp(2rem, 10vw, 4.6875rem);
+  --feed-player-radius: var(--feed-player-radius-top) var(--feed-player-radius-top)
+    var(--feed-player-radius-bottom) var(--feed-player-radius-bottom);
+  --feed-player-surface: var(--color-surface-1);
+
+  --feed-accent-warm: var(--color-accent-warm);
+  --feed-accent-primary: var(--color-accent-primary);
+  --feed-text-primary: var(--color-text-primary);
+  --feed-text-secondary: var(--color-text-secondary);
+
+  /* Up Next card tone fallbacks */
   --feed-up-purple: #6d62a7;
   --feed-up-navy: #16314e;
   --feed-up-crimson: #5e2329;
 
+  /* Feed-shell tab bar glass (Figma frame) */
   --feed-glass-bg: rgba(255, 255, 255, 0.14);
   --feed-glass-border: rgba(255, 255, 255, 0.26);
   --feed-glass-shadow: 0 -1px 2px rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.1);
   --feed-blur: blur(12px);
   --feed-text: #ffffff;
-  --feed-font: 'Geist', sans-serif;
+  --feed-font: var(--font-body);
   --feed-tab-bar-height: 5.25rem;
 }
 
