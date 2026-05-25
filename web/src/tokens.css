@@ -1,5 +1,57 @@
+/**
+ * Briefly design-system CSS custom properties.
+ * Values mirror web/src/tokens.ts — keep in sync when tokens change.
+ */
 :root {
-  --duration-normal: 240ms;
+  /* Colors — backgrounds */
+  --color-bg-primary: #0c0f14;
+  --color-surface-1: #13171e;
+  --color-surface-2: #1a1f28;
+  --color-surface-3: #232a36;
+
+  /* Colors — accents */
+  --color-accent-primary: #b8ff3c;
+  --color-accent-warm: #ff6640;
+
+  /* Colors — text */
+  --color-text-primary: #f2f0eb;
+  --color-text-secondary: #8a9099;
+  --color-text-muted: #4e5561;
+
+  /* Colors — borders */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-default: rgba(255, 255, 255, 0.12);
+
+  /* Spacing */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Radius */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Typography families */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  /* Motion */
+  --ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-micro: 120ms;
+  --duration-transition: 240ms;
   --duration-entrance: 360ms;
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }

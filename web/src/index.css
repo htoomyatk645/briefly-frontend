@@ -3,9 +3,7 @@
 @import './styles/motion.css';
 
 :root {
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Geist', 'Inter', sans-serif;
-  --duration-entrance: 360ms;
+  --font-body: 'Geist', sans-serif;
 }
 
 :root[data-theme='light'] {
