@@ -1,52 +1,26 @@
-@import '../feed/feedTokens.css';
-
 .tab-bar {
-  flex-shrink: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 0.75rem 0.35rem;
-  padding-bottom: max(0.35rem, env(safe-area-inset-bottom, 0px));
-  pointer-events: none;
-  gap: 0.35rem;
-}
-
-.tab-bar__feed-row {
-  pointer-events: auto;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  width: 100%;
-  max-width: 24rem;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+  pointer-events: none;
 }
 
 .tab-bar__pill {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 0.125rem;
-  padding: 0.3rem 0.35rem;
+  width: calc(100% - 32px);
+  height: 56px;
   border-radius: var(--radius-pill, 9999px);
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
-}
-
-.tab-bar__pill--default {
-  pointer-events: auto;
-  width: 100%;
-  max-width: 24rem;
-}
-
-.tab-bar__pill--feed {
-  flex: 1;
-  min-width: 0;
-  height: 2.75rem;
-  border-radius: var(--radius-pill, 9999px);
-  background: var(--feed-surface-raised);
-  border: 1px solid var(--feed-border-subtle);
-  box-shadow: var(--feed-shadow);
 }
 
 .tab-bar__item {
@@ -54,55 +28,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: none;
   border-radius: var(--radius-pill, 9999px);
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-}
-
-.tab-bar--feed-shell .tab-bar__item {
-  color: color-mix(in srgb, var(--feed-text) 40%, transparent);
-}
-
-.tab-bar__item--cap {
-  flex-shrink: 0;
-  width: 2.75rem;
-  height: 2.75rem;
-}
-
-.tab-bar--feed-shell .tab-bar__item--cap .tab-bar__icon-wrap {
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: var(--radius-pill, 9999px);
-  background: var(--feed-surface-raised);
-  border: 1px solid var(--feed-border-subtle);
-  box-shadow: var(--feed-shadow);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .tab-bar__item--active {
   color: var(--text);
 }
 
-.tab-bar--feed-shell .tab-bar__item--active {
-  color: var(--feed-text);
-}
-
-.tab-bar__item--active .tab-bar__icon-wrap {
-  background: color-mix(in srgb, var(--text) 12%, transparent);
-  border-radius: 0.65rem;
-}
-
-.tab-bar--feed-shell .tab-bar__pill--feed .tab-bar__item--active .tab-bar__icon-wrap {
-  width: 3.25rem;
-  height: 2.5rem;
-  border-radius: 1.15rem;
-  background: var(--feed-surface-raised);
-  border: 1px solid var(--feed-border-subtle);
-  box-shadow: var(--feed-shadow);
+.tab-bar__item--feed-playing {
+  color: var(--primary);
 }
 
 .tab-bar__item:focus-visible {
@@ -110,66 +53,25 @@
   box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
-.tab-bar--feed-shell .tab-bar__item:focus-visible {
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--feed-text) 35%, transparent);
-}
-
 .tab-bar__icon-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 24px;
+  height: 24px;
 }
 
 .tab-bar__icon {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.tab-bar__figma-icon {
-  width: 1.2rem;
-  height: 1.2rem;
-  object-fit: contain;
-}
-
-.tab-bar--feed-shell .tab-bar__item--active .tab-bar__figma-icon {
-  width: 1.35rem;
-  height: 1.35rem;
-}
-
-.tab-bar__active-dot {
-  position: absolute;
-  top: 0.15rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: var(--radius-pill, 9999px);
-  background: var(--feed-text);
-}
-
-.tab-shell--feed .tab-shell__content {
-  padding-bottom: 0;
-}
-
-.tab-shell--feed .tab-bar {
-  position: relative;
-  left: auto;
-  right: auto;
-  bottom: auto;
-  flex-shrink: 0;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  padding-bottom: max(0.35rem, env(safe-area-inset-bottom, 0px));
-  gap: 0.35rem;
-  pointer-events: auto;
-  background: var(--feed-bg);
-  border-top: 1px solid var(--feed-border-subtle);
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tab-bar__item {
-    transition: none;
+  .tab-bar__item,
+  .tab-bar__icon-wrap,
+  .tab-bar__icon path,
+  .tab-bar__icon circle {
+    transition: none !important;
   }
 }

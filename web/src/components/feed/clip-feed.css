@@ -10,6 +10,7 @@
   color: var(--feed-text);
   font-family: var(--feed-font);
   overflow: hidden;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
 }
 
 .tab-shell--feed {
