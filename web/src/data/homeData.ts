@@ -19,6 +19,8 @@ export type PulseEpisode = {
   coverSrc: string
   trendScore: number
   trendLabel: string
+  /** Build-time dominant color from cover art (color-thief). Hue/sat used for card tint. */
+  dominantColor: string
 }
 
 export type EditorialPick = {
@@ -78,6 +80,7 @@ export const continueListeningEpisodes: ContinueListeningEpisode[] = [
   },
 ]
 
+/** Dominant colors extracted via `node scripts/extract-continue-colors.mjs` (pulse covers) */
 export const pulseEpisodes: PulseEpisode[] = [
   {
     id: 'pulse-1',
@@ -86,6 +89,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     coverSrc: PODCAST_COVERS.hardFork,
     trendScore: 92,
     trendLabel: '14k listening now',
+    dominantColor: 'hsl(59 79% 54%)',
   },
   {
     id: 'pulse-2',
@@ -94,6 +98,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     coverSrc: PODCAST_COVERS.crimeJunkie,
     trendScore: 78,
     trendLabel: '9.2k listening now',
+    dominantColor: 'hsl(276 72% 43%)',
   },
   {
     id: 'pulse-3',
@@ -102,6 +107,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     coverSrc: PODCAST_COVERS.radiolab,
     trendScore: 61,
     trendLabel: '5.1k listening now',
+    dominantColor: 'hsl(6 100% 63%)',
   },
   {
     id: 'pulse-4',
@@ -110,6 +116,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     coverSrc: PODCAST_COVERS.planetMoney,
     trendScore: 44,
     trendLabel: '2.8k listening now',
+    dominantColor: 'hsl(109 88% 9%)',
   },
   {
     id: 'pulse-5',
@@ -118,6 +125,7 @@ export const pulseEpisodes: PulseEpisode[] = [
     coverSrc: PODCAST_COVERS.smartLess,
     trendScore: 31,
     trendLabel: '1.4k listening now',
+    dominantColor: 'hsl(24 36% 83%)',
   },
 ]
 
