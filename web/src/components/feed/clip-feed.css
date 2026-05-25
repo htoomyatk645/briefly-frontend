@@ -291,23 +291,25 @@
 }
 
 .player-card--adaptive {
-  transition: background 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+  --player-theme-soft: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent-warm)) 14%, transparent);
+  --player-theme-border: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent-warm)) 30%, transparent);
+  --player-theme-muted: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent-warm)) 18%, rgba(255, 255, 255, 0.06));
+  --player-theme-label: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent-warm)) 72%, #f2f0eb);
+  background: var(--player-cover-tint, var(--feed-player-surface));
+  transition:
+    background 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .player-card--adaptive::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--player-cover-tint, transparent);
-  opacity: 0.32;
-  pointer-events: none;
+  content: none;
 }
 
 .player-card--adaptive::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(12, 15, 20, 0.55) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(12, 15, 20, 0.52) 100%);
   pointer-events: none;
 }
 
@@ -317,7 +319,7 @@
   height: 0.22rem;
   margin: 0.5rem auto 0.25rem;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--player-theme-border);
   border: none;
   position: relative;
   z-index: 1;
@@ -352,9 +354,9 @@
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--player-theme-border);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--player-theme-soft);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -362,6 +364,9 @@
   box-sizing: border-box;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  transition:
+    background 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .player-card__toolbar-btn::before {
@@ -400,7 +405,7 @@
   flex-shrink: 0;
   width: 188px;
   height: 188px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--player-theme-border);
   border-radius: 8px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   overflow: hidden;
@@ -452,15 +457,19 @@
   align-items: center;
   padding: 5px 12px;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--player-theme-border);
+  background: var(--player-theme-soft);
+  color: var(--player-theme-label);
   font-family: var(--font-body, 'Geist', sans-serif);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.1em;
   cursor: pointer;
   max-width: min(100%, 16rem);
+  transition:
+    background 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .player-card__source-text {
@@ -614,7 +623,7 @@
 .player-card__progress-track {
   position: relative;
   height: 3px;
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--player-theme-muted);
   border: none;
   overflow: hidden;
   clip-path: polygon(
@@ -625,6 +634,7 @@
     calc(100% - 5px) 100%,
     5px 100%
   );
+  transition: background 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .player-card__progress-fill {
@@ -641,6 +651,7 @@
     100% 100%,
     5px 100%
   );
+  transition: background 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .player-card__slider {

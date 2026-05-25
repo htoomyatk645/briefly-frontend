@@ -94,9 +94,8 @@ function buildGradientFromColors(colors: Rgb[]): string {
 function buildThemeAccentFromColors(colors: Rgb[]): string {
   if (colors.length === 0) return THEME_ACCENT_FALLBACK
 
-  const bySat = [...colors].sort((a, b) => saturation(b) - saturation(a))
-  const vibrant = bySat.find((c) => saturation(c) > 0.12) ?? bySat[0]
-  let accent = boostSaturation(vibrant, 1.28)
+  const main = colors[0]
+  let accent = boostSaturation(main, 1.32)
 
   const lum = luminance(accent)
   if (lum < 0.5) accent = lighten(accent, clamp(0.54 - lum, 0.1, 0.42))
@@ -108,9 +107,8 @@ function buildThemeAccentFromColors(colors: Rgb[]): string {
 function buildCardBackgroundFromColors(colors: Rgb[]): string {
   if (colors.length === 0) return CARD_BG_FALLBACK
 
-  const sorted = [...colors].sort((a, b) => luminance(b) - luminance(a))
-  const vibrant = sorted.find((c) => saturation(c) > 0.1) ?? sorted[0]
-  const anchor = boostSaturation(vibrant, 1.12)
+  const main = colors[0]
+  const anchor = boostSaturation(main, 1.12)
   const toned = darken(anchor, 0.38)
   const h = rgbToHue(toned.r, toned.g, toned.b)
   const sat = clamp(saturation(toned) * 100 * 1.2, 12, 72)
