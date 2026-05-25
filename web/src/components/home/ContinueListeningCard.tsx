@@ -7,15 +7,6 @@ import './continue-listening.css'
 
 const SKELETON_COUNT = 3
 
-const PlayArrowIcon = () => (
-  <svg width={14} height={14} viewBox="0 0 14 14" fill="none" aria-hidden>
-    <path
-      d="M4 2.5 11 7 4 11.5V2.5z"
-      fill="currentColor"
-    />
-  </svg>
-)
-
 export type ContinueListeningCardProps = {
   item: ContinueListeningEpisode
   onPress?: (id: string) => void
@@ -67,9 +58,6 @@ export const ContinueListeningCard = ({
           {item.progressLabel}
         </span>
         <span className="continue-listening-card__title">{item.episodeTitle}</span>
-      </span>
-      <span className="continue-listening-card__play" aria-hidden>
-        <PlayArrowIcon />
       </span>
     </motion.button>
   )
