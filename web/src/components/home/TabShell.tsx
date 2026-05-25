@@ -88,7 +88,7 @@ export const TabShell = ({
                 key={activeTab}
                 routeKey={activeTab}
                 className="app-page-body"
-                fillViewport={false}
+                fillViewport={isFeed}
               >
                 {renderTab()}
               </RouteTransition>

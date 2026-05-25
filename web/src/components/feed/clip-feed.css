@@ -26,17 +26,21 @@
 }
 
 .tab-shell--feed .app-page-scroll {
+  display: flex;
+  flex-direction: column;
   overflow-y: hidden;
 }
 
 .tab-shell--feed .app-page-body {
-  flex: 1;
+  flex: 1 1 0;
   min-height: 0;
+  height: 100%;
 }
 
 .tab-shell--feed .feed-screen {
-  flex: 1;
+  flex: 1 1 0;
   min-height: 0;
+  height: 100%;
 }
 
 
@@ -274,7 +278,7 @@
 
 /* —— Player zone — fills remaining height —— */
 .player-card {
-  flex: 1;
+  flex: 1 1 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -374,11 +378,11 @@
 
 .player-card__hero {
   position: relative;
-  flex-shrink: 0;
+  flex: 1 1 0;
+  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
   padding: 0.25rem 3.5rem 0.5rem 1.25rem;
 }
 
