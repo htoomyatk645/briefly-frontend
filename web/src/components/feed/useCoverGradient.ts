@@ -6,6 +6,9 @@ const FALLBACK_GRADIENT =
 type Rgb = { r: number; g: number; b: number }
 
 const gradientCache = new Map<string, string>()
+const cardBackgroundCache = new Map<string, string>()
+
+const CARD_BG_FALLBACK = 'hsl(215 45% 22%)'
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))
@@ -86,6 +89,19 @@ function buildGradientFromColors(colors: Rgb[]): string {
   return `linear-gradient(160deg, ${rgbToHex(top)} 0%, ${rgbToHex(midHigh)} 35%, ${rgbToHex(midLow)} 65%, ${rgbToHex(bottom)} 100%)`
 }
 
+function buildCardBackgroundFromColors(colors: Rgb[]): string {
+  if (colors.length === 0) return CARD_BG_FALLBACK
+
+  const sorted = [...colors].sort((a, b) => luminance(b) - luminance(a))
+  const vibrant = sorted.find((c) => saturation(c) > 0.1) ?? sorted[0]
+  const anchor = boostSaturation(vibrant, 1.12)
+  const toned = darken(anchor, 0.38)
+  const h = rgbToHue(toned.r, toned.g, toned.b)
+  const sat = clamp(saturation(toned) * 100 * 1.2, 12, 72)
+  const light = clamp(luminance(toned) * 100, 18, 32)
+  return `hsl(${Math.round(h)} ${Math.round(sat)}% ${Math.round(light)}%)`
+}
+
 function extractPalette(data: Uint8ClampedArray): Rgb[] {
   const buckets = new Map<
     number,
@@ -140,6 +156,44 @@ function extractPalette(data: Uint8ClampedArray): Rgb[] {
   return ranked.slice(0, 4).map(({ r, g, b }) => ({ r, g, b }))
 }
 
+async function extractCardBackgroundFromCover(coverSrc: string): Promise<string> {
+  const cached = cardBackgroundCache.get(coverSrc)
+  if (cached) return cached
+
+  try {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.decoding = 'async'
+    img.src = coverSrc
+
+    await new Promise<void>((resolve, reject) => {
+      if (img.complete && img.naturalWidth > 0) {
+        resolve()
+        return
+      }
+      img.onload = () => resolve()
+      img.onerror = () => reject(new Error('cover load failed'))
+    })
+
+    const size = 48
+    const canvas = document.createElement('canvas')
+    canvas.width = size
+    canvas.height = size
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
+    if (!ctx) return CARD_BG_FALLBACK
+
+    ctx.drawImage(img, 0, 0, size, size)
+    const { data } = ctx.getImageData(0, 0, size, size)
+    const palette = extractPalette(data)
+    const background = buildCardBackgroundFromColors(palette)
+
+    cardBackgroundCache.set(coverSrc, background)
+    return background
+  } catch {
+    return CARD_BG_FALLBACK
+  }
+}
+
 async function extractGradientFromCover(coverSrc: string): Promise<string> {
   const cached = gradientCache.get(coverSrc)
   if (cached) return cached
@@ -176,6 +230,31 @@ async function extractGradientFromCover(coverSrc: string): Promise<string> {
   } catch {
     return FALLBACK_GRADIENT
   }
+}
+
+export function useCoverCardBackground(coverSrc: string) {
+  const [background, setBackground] = useState(
+    () => cardBackgroundCache.get(coverSrc) ?? CARD_BG_FALLBACK,
+  )
+
+  useEffect(() => {
+    let cancelled = false
+    const cached = cardBackgroundCache.get(coverSrc)
+    if (cached) {
+      setBackground(cached)
+      return
+    }
+
+    void extractCardBackgroundFromCover(coverSrc).then((next) => {
+      if (!cancelled) setBackground(next)
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [coverSrc])
+
+  return background
 }
 
 export function useCoverGradient(coverSrc: string) {

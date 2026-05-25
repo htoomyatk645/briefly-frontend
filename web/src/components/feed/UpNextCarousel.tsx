@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import type { FeedEpisode } from './feedData'
-import { feedAssetsRemote } from './feedAssets'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import type { FeedCardTone, FeedEpisode } from './feedData'
+import { feedAssets } from './feedAssets'
+import { useCoverCardBackground } from './useCoverGradient'
 
 const CARD_WIDTH = 130
 const CARD_GAP = 10
@@ -9,12 +10,62 @@ const CARD_EXIT_OFFSET = CARD_WIDTH + CARD_GAP
 const EXIT_MS = 280
 const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
+const TONE_BG: Record<FeedCardTone, string> = {
+  purple: 'var(--feed-up-purple)',
+  navy: 'var(--feed-up-navy)',
+  crimson: 'var(--feed-up-crimson)',
+}
+
 type UpNextCarouselProps = {
   items: FeedEpisode[]
   queueDepth: number
   nowPlayingId: string
   onSelect: (id: string) => void
   onQueue: (id: string) => void
+}
+
+type UpNextCardProps = {
+  item: FeedEpisode
+  onSelect: (id: string) => void
+  onQueueStart: (id: string) => void
+  prefersReducedMotion: boolean | null
+}
+
+const UpNextCard = ({ item, onSelect, onQueueStart, prefersReducedMotion }: UpNextCardProps) => {
+  const coverBackground = useCoverCardBackground(item.coverSrc)
+  const cardStyle = {
+    background: coverBackground || TONE_BG[item.cardTone],
+  } as CSSProperties
+
+  return (
+    <>
+      <button
+        type="button"
+        className="up-next__card"
+        style={cardStyle}
+        onClick={() => onSelect(item.id)}
+        aria-label={`Play next: ${item.episodeTitle}`}
+      >
+        <img src={item.coverSrc} alt="" className="up-next__card-art" />
+        <div className="up-next__card-body">
+          <p className="up-next__card-title">{item.episodeTitle}</p>
+        </div>
+      </button>
+      <motion.button
+        type="button"
+        className="up-next__card-action"
+        aria-label={`Queue ${item.episodeTitle} as next without switching`}
+        onClick={(e) => {
+          e.stopPropagation()
+          onQueueStart(item.id)
+        }}
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.92 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+      >
+        <img src={feedAssets.controls.chevron} alt="" className="up-next__card-action-icon" />
+      </motion.button>
+    </>
+  )
 }
 
 export const UpNextCarousel = ({
@@ -29,6 +80,7 @@ export const UpNextCarousel = ({
   const [displayItems, setDisplayItems] = useState(items)
   const [visibleItems, setVisibleItems] = useState(items)
   const [isLoading, setIsLoading] = useState(false)
+  const [centerTrack, setCenterTrack] = useState(false)
   const pendingQueueIdRef = useRef<string | null>(null)
   const queueTimerRef = useRef<number | null>(null)
   const prevNowPlayingIdRef = useRef(nowPlayingId)
@@ -41,6 +93,12 @@ export const UpNextCarousel = ({
     setScrollIndex(0)
     const el = scrollRef.current
     if (el) el.scrollLeft = 0
+  }, [])
+
+  const updateCenterTrack = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCenterTrack(el.scrollWidth <= el.clientWidth + 1)
   }, [])
 
   useEffect(() => {
@@ -84,6 +142,16 @@ export const UpNextCarousel = ({
       setVisibleItems(items)
     }
   }, [items, nowPlayingId, resetScroll])
+
+  useEffect(() => {
+    updateCenterTrack()
+    const el = scrollRef.current
+    if (!el) return
+
+    const ro = new ResizeObserver(updateCenterTrack)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [visibleItems, displayItems.length, updateCenterTrack])
 
   const updateIndexFromScroll = useCallback(() => {
     const el = scrollRef.current
@@ -143,7 +211,7 @@ export const UpNextCarousel = ({
 
       <div className="up-next__carousel-wrap">
         <div
-          className="up-next__track"
+          className={`up-next__track${centerTrack ? ' up-next__track--centered' : ''}`}
           ref={scrollRef}
           onScroll={updateIndexFromScroll}
           role="list"
@@ -151,10 +219,12 @@ export const UpNextCarousel = ({
           data-loading={isLoading || undefined}
         >
           {isEmpty ? (
-            <div className="up-next__card up-next__card--placeholder" role="listitem">
-              <p className="up-next__card-placeholder-text">
-                Nothing queued. Tap a podcast on Home to start a queue.
-              </p>
+            <div className="up-next__card-shell up-next__card-shell--solo" role="listitem">
+              <div className="up-next__card up-next__card--placeholder">
+                <p className="up-next__card-placeholder-text">
+                  Nothing queued. Tap a podcast on Home to start a queue.
+                </p>
+              </div>
             </div>
           ) : (
             <AnimatePresence mode="popLayout" initial={false}>
@@ -174,37 +244,12 @@ export const UpNextCarousel = ({
                     layout: layoutTransition,
                   }}
                 >
-                  <button
-                    type="button"
-                    className="up-next__card"
-                    onClick={() => onSelect(item.id)}
-                    aria-label={`Play next: ${item.episodeTitle}`}
-                  >
-                    <img src={item.coverSrc} alt="" className="up-next__card-cover" />
-                    <div className="up-next__card-scrim" aria-hidden />
-                    <p className="up-next__card-title">{item.episodeTitle}</p>
-                  </button>
-                  <motion.button
-                    type="button"
-                    className="up-next__card-action"
-                    aria-label={`Queue ${item.episodeTitle} as next without switching`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleQueueStart(item.id)
-                    }}
-                    whileTap={
-                      prefersReducedMotion
-                        ? undefined
-                        : { scale: 0.92, backgroundColor: 'hsla(0, 0%, 100%, 0.4)' }
-                    }
-                    transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-                  >
-                    <img
-                      src={feedAssetsRemote.controls.chevron}
-                      alt=""
-                      className="up-next__card-action-icon"
-                    />
-                  </motion.button>
+                  <UpNextCard
+                    item={item}
+                    onSelect={onSelect}
+                    onQueueStart={handleQueueStart}
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
                 </motion.div>
               ))}
             </AnimatePresence>
