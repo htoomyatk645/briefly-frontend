@@ -356,7 +356,7 @@
   height: 2.75rem;
   padding: 0;
   border: 1px solid var(--player-theme-border);
-  border-radius: var(--radius-sm, 10px);
+  border-radius: 50%;
   background: var(--player-theme-soft);
   cursor: pointer;
   display: inline-flex;
