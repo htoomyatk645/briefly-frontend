@@ -272,35 +272,6 @@
   }
 }
 
-@media (max-width: 390px) {
-  .player-card__hero {
-    padding-inline: 1rem;
-  }
-
-  .player-card__art-frame {
-    width: 168px;
-    height: 168px;
-  }
-
-  .player-card__toolbar {
-    padding-inline: 1rem;
-    gap: 0.4rem;
-  }
-
-  .player-card__meta,
-  .player-card__lower {
-    padding-inline: 1rem;
-  }
-
-  .player-card__title {
-    font-size: 1rem;
-  }
-
-  .player-card__controls {
-    gap: 22px;
-  }
-}
-
 /* —— Player zone — fills remaining height —— */
 .player-card {
   flex: 1;
@@ -360,18 +331,23 @@
 }
 
 .player-card__toolbar {
-  flex-shrink: 0;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
   gap: 0.5rem;
-  padding: 0 1.25rem 0.35rem;
+  padding: 0;
 }
 
 .player-card__toolbar-btn {
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0.4rem;
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
@@ -380,21 +356,30 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
+.player-card__toolbar-btn::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+}
+
 .player-card__toolbar-btn img {
-  width: 1.05rem;
-  height: 1.05rem;
+  width: 1.1rem;
+  height: 1.1rem;
   object-fit: contain;
 }
 
 .player-card__hero {
+  position: relative;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem 1.25rem 0.5rem;
+  min-height: 200px;
+  padding: 0.25rem 3.5rem 0.5rem 1.25rem;
 }
 
 .player-card__art-frame {
@@ -606,6 +591,41 @@
   font-size: 0.625rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.65);
+}
+
+@media (max-width: 390px) {
+  .player-card__hero {
+    min-height: 184px;
+    padding-inline: 1rem 3.25rem;
+  }
+
+  .player-card__art-frame {
+    width: 168px;
+    height: 168px;
+  }
+
+  .player-card__toolbar {
+    right: 10px;
+    gap: 0.45rem;
+  }
+
+  .player-card__toolbar-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .player-card__meta,
+  .player-card__lower {
+    padding-inline: 1rem;
+  }
+
+  .player-card__title {
+    font-size: 1rem;
+  }
+
+  .player-card__controls {
+    gap: 22px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

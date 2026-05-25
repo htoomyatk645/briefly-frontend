@@ -141,50 +141,6 @@ export const PlayerCard = ({
         <div className="player-card__grabber" aria-hidden />
 
         <div className="player-card__body">
-          <header className="player-card__toolbar" role="toolbar" aria-label="Player actions">
-            <button
-              type="button"
-              className={`player-card__toolbar-btn${saved ? ' player-card__toolbar-btn--saved' : ''}`}
-              onClick={handleSave}
-              aria-label={saved ? 'Remove from saved' : 'Save episode'}
-              aria-pressed={saved}
-            >
-              <img
-                src={feedAssetsRemote.actions.bookmark}
-                alt=""
-                className={`player-card__bookmark-icon${saved ? ' player-card__bookmark-icon--filled' : ''}${saveAnim ? ' player-card__bookmark-icon--spring' : ''}`}
-              />
-            </button>
-            <button
-              type="button"
-              className="player-card__toolbar-btn"
-              onClick={() => setSpeedOpen(true)}
-              aria-label={`Playback speed ${playbackRate}x`}
-              aria-haspopup="menu"
-              aria-expanded={speedOpen}
-            >
-              <img src={feedAssetsRemote.actions.speed} alt="" />
-            </button>
-            <button
-              type="button"
-              className="player-card__toolbar-btn"
-              aria-label="Choose audio output"
-              onClick={() => setOutputOpen(true)}
-            >
-              <img src={feedAssetsRemote.actions.airpods} alt="" />
-            </button>
-            <button
-              type="button"
-              className="player-card__toolbar-btn"
-              aria-label="More options"
-              aria-haspopup="menu"
-              aria-expanded={moreOpen}
-              onClick={() => setMoreOpen(true)}
-            >
-              <img src={feedAssetsRemote.actions.more} alt="" />
-            </button>
-          </header>
-
           <div className="player-card__hero">
             {prefersReducedMotion ? (
               <div className="player-card__art-frame">
@@ -219,6 +175,50 @@ export const PlayerCard = ({
                 ) : null}
               </motion.div>
             )}
+
+            <header className="player-card__toolbar" role="toolbar" aria-label="Player actions">
+              <button
+                type="button"
+                className={`player-card__toolbar-btn${saved ? ' player-card__toolbar-btn--saved' : ''}`}
+                onClick={handleSave}
+                aria-label={saved ? 'Remove from saved' : 'Save episode'}
+                aria-pressed={saved}
+              >
+                <img
+                  src={feedAssetsRemote.actions.bookmark}
+                  alt=""
+                  className={`player-card__bookmark-icon${saved ? ' player-card__bookmark-icon--filled' : ''}${saveAnim ? ' player-card__bookmark-icon--spring' : ''}`}
+                />
+              </button>
+              <button
+                type="button"
+                className="player-card__toolbar-btn"
+                onClick={() => setSpeedOpen(true)}
+                aria-label={`Playback speed ${playbackRate}x`}
+                aria-haspopup="menu"
+                aria-expanded={speedOpen}
+              >
+                <img src={feedAssetsRemote.actions.speed} alt="" />
+              </button>
+              <button
+                type="button"
+                className="player-card__toolbar-btn"
+                aria-label="Choose audio output"
+                onClick={() => setOutputOpen(true)}
+              >
+                <img src={feedAssetsRemote.actions.airpods} alt="" />
+              </button>
+              <button
+                type="button"
+                className="player-card__toolbar-btn"
+                aria-label="More options"
+                aria-haspopup="menu"
+                aria-expanded={moreOpen}
+                onClick={() => setMoreOpen(true)}
+              >
+                <img src={feedAssetsRemote.actions.more} alt="" />
+              </button>
+            </header>
           </div>
 
           <div className="player-card__meta">
