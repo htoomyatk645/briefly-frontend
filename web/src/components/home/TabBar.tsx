@@ -1,5 +1,5 @@
 import type React from 'react'
-import { feedAssetsRemote } from '../feed/feedAssets'
+import { feedAssets } from '../feed/feedAssets'
 import './tab-bar.css'
 
 export type TabId = 'home' | 'feed' | 'discover' | 'saved' | 'account'
@@ -58,11 +58,11 @@ type TabConfig = {
 }
 
 const tabs: TabConfig[] = [
-  { id: 'home', label: 'Home', feedSrc: feedAssetsRemote.tabs.home, Icon: HomeIcon, cap: 'left' },
-  { id: 'saved', label: 'Library', feedSrc: feedAssetsRemote.tabs.books, Icon: LibraryIcon, inPill: true },
-  { id: 'feed', label: 'Now playing', feedSrc: feedAssetsRemote.tabs.library, Icon: FeedIcon, inPill: true },
-  { id: 'discover', label: 'Discover', feedSrc: feedAssetsRemote.tabs.compass, Icon: DiscoverIcon, inPill: true },
-  { id: 'account', label: 'Search', feedSrc: feedAssetsRemote.tabs.search, Icon: SearchIcon, cap: 'right' },
+  { id: 'home', label: 'Home', feedSrc: feedAssets.tabs.home, Icon: HomeIcon, cap: 'left' },
+  { id: 'saved', label: 'Library', feedSrc: feedAssets.tabs.books, Icon: LibraryIcon, inPill: true },
+  { id: 'feed', label: 'Now playing', feedSrc: feedAssets.tabs.library, Icon: FeedIcon, inPill: true },
+  { id: 'discover', label: 'Discover', feedSrc: feedAssets.tabs.compass, Icon: DiscoverIcon, inPill: true },
+  { id: 'account', label: 'Search', feedSrc: feedAssets.tabs.search, Icon: SearchIcon, cap: 'right' },
 ]
 
 export const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {

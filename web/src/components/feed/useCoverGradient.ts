@@ -252,3 +252,8 @@ export function useCoverThemeAccent(coverSrc: string) {
 
   return accent
 }
+
+/** Solid cover tint for player background — gradients prohibited by brand rules. */
+export function useCoverGradient(coverSrc: string) {
+  return useCoverCardBackground(coverSrc)
+}

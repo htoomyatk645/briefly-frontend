@@ -1,17 +1,26 @@
 /**
- * Feed screen tokens — scoped to immersive player context.
- * Values reference canonical brand tokens via CSS variables where possible.
+ * Feed screen scoped tokens — Figma frame 23-31 layout + Palette B brand.
+ * Gradients and glass removed per brand reconciliation.
  */
 .feed-screen,
 .tab-shell--feed {
+  --feed-bg: #18110f;
+
+  /* Figma node 23:31 corner radii */
+  --feed-player-radius-top: clamp(2.75rem, 18vw, 9.6875rem);
+  --feed-player-radius-bottom: clamp(2rem, 10vw, 4.6875rem);
+  --feed-player-radius: var(--feed-player-radius-top) var(--feed-player-radius-top)
+    var(--feed-player-radius-bottom) var(--feed-player-radius-bottom);
+  --feed-player-surface: #221917;
+
   --feed-accent: var(--primary);
   --feed-text-primary: var(--text);
   --feed-text-secondary: var(--text-secondary);
   --feed-text: var(--text);
   --feed-font: 'Geist', sans-serif;
   --feed-tab-bar-height: 5.25rem;
-  --feed-player-radius: 2.75rem 2.75rem 0 0;
 
+  /* Up Next card tone fallbacks */
   --feed-up-purple: #6d62a7;
   --feed-up-navy: #16314e;
   --feed-up-crimson: #5e2329;

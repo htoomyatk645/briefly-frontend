@@ -79,11 +79,13 @@
 
 .up-next__heading {
   flex-shrink: 0;
-  margin: 0 0 0 1rem;
-  font-size: 1.375rem;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  margin: 0 0 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--feed-text);
 }
 
 .up-next__carousel-wrap {
@@ -256,7 +258,7 @@
   }
 
   .up-next__heading {
-    font-size: 1.25rem;
+    font-size: 1.0625rem;
   }
 }
 
@@ -298,8 +300,8 @@
   --player-theme-label: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 72%, var(--feed-text-primary));
   background: var(--player-cover-tint, var(--feed-player-surface));
   transition:
-    background 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+    background var(--duration-entrance) var(--ease-default),
+    color var(--duration-entrance) var(--ease-default);
 }
 
 .player-card--adaptive::before {
@@ -429,21 +431,21 @@
 .player-card__source {
   display: inline-flex;
   align-items: center;
-  padding: 5px 12px;
-  border-radius: 9999px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
   border: 1px solid var(--player-theme-border);
   background: var(--player-theme-soft);
   color: var(--player-theme-label);
-  font-family: var(--font-body, 'Geist', sans-serif);
+  font-family: var(--font-body);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.1em;
   cursor: pointer;
   max-width: min(100%, 16rem);
   transition:
-    background 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+    background var(--duration-entrance) var(--ease-default),
+    border-color var(--duration-entrance) var(--ease-default),
+    color var(--duration-entrance) var(--ease-default);
 }
 
 .player-card__source-text {

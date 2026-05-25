@@ -1,5 +1,57 @@
+/**
+ * Briefly design-system CSS custom properties.
+ * Feed/dark-context aliases — mirrors @briefly/tokens (Palette B).
+ */
 :root {
-  --duration-normal: 240ms;
+  /* Feed immersive zone (dark context) */
+  --color-bg-primary: #18110f;
+  --color-surface-1: #221917;
+  --color-surface-2: #261a18;
+  --color-surface-3: #342929;
+
+  /* Brand accents — dark-theme primary for feed shell */
+  --color-accent-primary: #ff6b8e;
+  --color-accent-warm: #ff6b8e;
+
+  /* Text on feed surfaces */
+  --color-text-primary: #faf8f8;
+  --color-text-secondary: #e3dbdb;
+  --color-text-muted: #705453;
+
+  /* Borders */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-default: rgba(255, 255, 255, 0.12);
+
+  /* Spacing */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Radius */
+  --radius-none: 0px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Typography families */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  /* Motion */
+  --ease-default: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-micro: 120ms;
+  --duration-transition: 240ms;
   --duration-entrance: 360ms;
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
