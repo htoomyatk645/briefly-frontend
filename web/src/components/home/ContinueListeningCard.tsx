@@ -5,9 +5,14 @@ import { pressSpring, transition } from '../../styles/motion'
 import '../../styles/sections.css'
 import './continue-listening.css'
 
+const RING_RADIUS = 32
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS
+const SKELETON_COUNT = 3
+
 export type ContinueListeningCardProps = {
   item: ContinueListeningEpisode
   onPress?: (id: string) => void
+  allowMotion?: boolean
 }
 
 function parseDominantColor(hsl: string): { h: string; s: string } {
@@ -19,12 +24,15 @@ function parseDominantColor(hsl: string): { h: string; s: string } {
 export const ContinueListeningCard = ({
   item,
   onPress,
+  allowMotion = true,
 }: ContinueListeningCardProps) => {
   const { h, s } = parseDominantColor(item.dominantColor)
   const tintStyle = {
     '--continue-card-h': h,
     '--continue-card-s': s,
   } as CSSProperties
+
+  const progressOffset = RING_CIRCUMFERENCE * (1 - item.progress)
 
   return (
     <motion.button
@@ -33,24 +41,44 @@ export const ContinueListeningCard = ({
       style={tintStyle}
       onClick={() => onPress?.(item.id)}
       aria-label={`Resume ${item.episodeTitle} from ${item.showName}`}
-      whileTap={{ scale: 0.97 }}
+      whileTap={allowMotion ? { scale: 0.97 } : undefined}
       transition={pressSpring}
     >
-      <img
-        src={item.coverSrc}
-        alt=""
-        className="continue-listening-card__art"
-        width={64}
-        height={64}
-      />
+      <div className="continue-listening-card__art-wrap" aria-hidden>
+        <svg
+          className="continue-listening-card__ring"
+          viewBox="0 0 68 68"
+          width={68}
+          height={68}
+        >
+          <circle
+            className="continue-listening-card__ring-track"
+            cx={34}
+            cy={34}
+            r={RING_RADIUS}
+          />
+          <circle
+            className="continue-listening-card__ring-fill"
+            cx={34}
+            cy={34}
+            r={RING_RADIUS}
+            strokeDasharray={RING_CIRCUMFERENCE}
+            strokeDashoffset={progressOffset}
+          />
+        </svg>
+        <img
+          src={item.coverSrc}
+          alt=""
+          className="continue-listening-card__art"
+          width={64}
+          height={64}
+        />
+      </div>
       <span className="continue-listening-card__body">
         <span className="continue-listening-card__show">{item.showName}</span>
         <span className="continue-listening-card__title">{item.episodeTitle}</span>
-        <span className="continue-listening-card__progress" aria-hidden>
-          <span
-            className="continue-listening-card__progress-fill"
-            style={{ width: `${Math.round(item.progress * 100)}%` }}
-          />
+        <span className="continue-listening-card__time-remaining">
+          {item.timeRemaining}
         </span>
       </span>
     </motion.button>
@@ -78,16 +106,18 @@ const cardVariants = {
 export type ContinueListeningSectionProps = {
   episodes: ContinueListeningEpisode[]
   onPress?: (id: string) => void
+  loading?: boolean
 }
 
 export const ContinueListeningSection = ({
   episodes,
   onPress,
+  loading = false,
 }: ContinueListeningSectionProps) => {
   const prefersReducedMotion = useReducedMotion()
+  const allowMotion = !prefersReducedMotion && !loading
   const visible = episodes.slice(0, 5)
-
-  if (visible.length === 0) return null
+  const isEmpty = !loading && visible.length === 0
 
   return (
     <section className="home-section continue-listening" aria-labelledby="continue-listening-heading">
@@ -98,24 +128,54 @@ export const ContinueListeningSection = ({
         <p className="section-subtitle">Pick up where you paused</p>
       </div>
 
-      <motion.div
-        className="continue-listening__scroller"
-        role="list"
-        variants={prefersReducedMotion ? undefined : listVariants}
-        initial={prefersReducedMotion ? false : 'hidden'}
-        animate={prefersReducedMotion ? undefined : 'show'}
-      >
-        {visible.map((item) => (
-          <motion.div
-            key={item.id}
-            role="listitem"
-            className="continue-listening__item"
-            variants={prefersReducedMotion ? undefined : cardVariants}
-          >
-            <ContinueListeningCard item={item} onPress={onPress} />
-          </motion.div>
-        ))}
-      </motion.div>
+      {loading ? (
+        <div
+          className="continue-listening__scroller"
+          role="status"
+          aria-label="Loading continue listening episodes"
+        >
+          {Array.from({ length: SKELETON_COUNT }, (_, i) => (
+            <div
+              key={`continue-skeleton-${i}`}
+              className="continue-listening-card continue-listening-card--skeleton"
+              aria-hidden
+            />
+          ))}
+        </div>
+      ) : isEmpty ? (
+        <div className="continue-listening__scroller" role="list">
+          <div role="listitem" className="continue-listening__item">
+            <div className="continue-listening-card continue-listening-card--ghost">
+              <p className="continue-listening-card__ghost-text">
+                Nothing in progress. Start an episode and it&apos;ll appear here.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <motion.div
+          className="continue-listening__scroller"
+          role="list"
+          variants={allowMotion ? listVariants : undefined}
+          initial={allowMotion ? 'hidden' : false}
+          animate={allowMotion ? 'show' : undefined}
+        >
+          {visible.map((item) => (
+            <motion.div
+              key={item.id}
+              role="listitem"
+              className="continue-listening__item"
+              variants={allowMotion ? cardVariants : undefined}
+            >
+              <ContinueListeningCard
+                item={item}
+                onPress={onPress}
+                allowMotion={allowMotion}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
     </section>
   )
 }

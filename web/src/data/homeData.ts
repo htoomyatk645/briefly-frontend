@@ -7,6 +7,7 @@ export type ContinueListeningEpisode = {
   episodeTitle: string
   coverSrc: string
   progress: number
+  timeRemaining: string
   /** Build-time dominant color from cover art (color-thief). Hue/sat used for card tint. */
   dominantColor: string
 }
@@ -36,6 +37,7 @@ export const continueListeningEpisodes: ContinueListeningEpisode[] = [
     episodeTitle: PLAYER_EPISODES.huberman.episodeTitle,
     coverSrc: PODCAST_COVERS.huberman,
     progress: 0.42,
+    timeRemaining: '23 min left',
     dominantColor: 'hsl(152 29% 62%)',
   },
   {
@@ -44,6 +46,7 @@ export const continueListeningEpisodes: ContinueListeningEpisode[] = [
     episodeTitle: 'Nicolas Cage Made Himself a Legend. Then He Had to Live With It.',
     coverSrc: PODCAST_COVERS.theDaily,
     progress: 0.68,
+    timeRemaining: '8 min left',
     dominantColor: 'hsl(197 100% 40%)',
   },
   {
@@ -52,6 +55,7 @@ export const continueListeningEpisodes: ContinueListeningEpisode[] = [
     episodeTitle: 'NVIDIA',
     coverSrc: PODCAST_COVERS.acquired,
     progress: 0.15,
+    timeRemaining: '1 hr 42 min left',
     dominantColor: 'hsl(177 75% 11%)',
   },
   {
@@ -60,6 +64,7 @@ export const continueListeningEpisodes: ContinueListeningEpisode[] = [
     episodeTitle: 'Our Field Trip to Google I/O + A Sit-Down With Sundar Pichai',
     coverSrc: PODCAST_COVERS.hardFork,
     progress: 0.31,
+    timeRemaining: '34 min left',
     dominantColor: 'hsl(59 79% 54%)',
   },
   {
@@ -68,6 +73,7 @@ export const continueListeningEpisodes: ContinueListeningEpisode[] = [
     episodeTitle: 'The Wubi Effect',
     coverSrc: PODCAST_COVERS.radiolab,
     progress: 0.57,
+    timeRemaining: '18 min left',
     dominantColor: 'hsl(6 100% 63%)',
   },
 ]
