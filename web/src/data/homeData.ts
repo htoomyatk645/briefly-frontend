@@ -1,4 +1,5 @@
 import { colors } from '../../../packages/tokens/colors'
+import { colors as brieflyColors } from '../tokens'
 import { PLAYER_EPISODES, PODCAST_COVERS } from './podcastCatalog'
 
 export type ContinueListeningEpisode = {
@@ -25,10 +26,12 @@ export type PulseEpisode = {
 
 export type EditorialPick = {
   id: string
-  kicker: string
   title: string
   coverSrc: string
-  accentColor: string
+  showName: string
+  episodeMeta: string
+  innerColor: string
+  frameColor: string
 }
 
 /** Dominant colors extracted via `node scripts/extract-continue-colors.mjs` */
@@ -131,8 +134,10 @@ export const pulseEpisodes: PulseEpisode[] = [
 
 export const editorialPick: EditorialPick = {
   id: 'edit-1',
-  kicker: "EDITOR'S PICK",
   title: 'Sleep, stress, and the science of showing up rested',
   coverSrc: PODCAST_COVERS.huberman,
-  accentColor: colors.neutral[800],
+  showName: PLAYER_EPISODES.huberman.showName,
+  episodeMeta: 'S: 01 | EPS: 12',
+  innerColor: colors.neutral[800],
+  frameColor: brieflyColors.accent.warm,
 }
