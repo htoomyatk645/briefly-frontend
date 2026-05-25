@@ -56,13 +56,13 @@
   border: 0;
 }
 
-/* —— Up Next — fixed 260px —— */
+/* —— Up Next — fixed height with heading + carousel breathing room —— */
 .up-next {
-  flex: 0 0 230px;
-  height: 230px;
-  max-height: 230px;
-  min-height: 230px;
-  padding: 0.75rem 0 0;
+  flex: 0 0 246px;
+  height: 246px;
+  max-height: 246px;
+  min-height: 246px;
+  padding: 0.75rem 0 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
