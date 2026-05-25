@@ -194,7 +194,8 @@
 /* The Edit */
 
 .the-edit {
-  padding-block: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
 
 .the-edit__card {
