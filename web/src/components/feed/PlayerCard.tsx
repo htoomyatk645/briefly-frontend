@@ -14,7 +14,7 @@ import { ShopSheet } from './player/ShopSheet'
 import { TranscriptSheet } from './player/TranscriptSheet'
 import type { PlaybackSpeed } from './player/playerStorage'
 import './player/player-interactions.css'
-import { useCoverCardBackground } from './useCoverGradient'
+import { useCoverCardBackground, useCoverThemeAccent } from './useCoverGradient'
 import { formatRemaining, formatTime } from './usePlayback'
 
 type PlayerCardProps = {
@@ -86,9 +86,16 @@ export const PlayerCard = ({
   const products = getProductsForEpisode(episode.id)
   const hasProducts = products.length > 0
   const coverTint = useCoverCardBackground(episode.coverSrc)
+  const themeAccent = useCoverThemeAccent(episode.coverSrc)
 
   const playerStyle = {
     '--player-cover-tint': coverTint,
+    '--player-theme-accent': themeAccent,
+  } as CSSProperties
+
+  const outputIconStyle = {
+    WebkitMaskImage: `url(${feedAssetsRemote.actions.airpods})`,
+    maskImage: `url(${feedAssetsRemote.actions.airpods})`,
   } as CSSProperties
 
   useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
@@ -312,7 +319,7 @@ export const PlayerCard = ({
                 aria-label="Choose audio output"
                 onClick={() => setOutputOpen(true)}
               >
-                <img src={feedAssetsRemote.actions.airpods} alt="" />
+                <span className="player-card__output-icon" style={outputIconStyle} aria-hidden />
               </button>
             </div>
           </div>
