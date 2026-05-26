@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import type { FeedCardTone, FeedEpisode } from './feedData'
 import { useCoverCardBackground } from './useCoverGradient'
+import { useFeedAutoplay } from './useFeedAutoplay'
 
 const CARD_WIDTH = 130
 const CARD_GAP = 10
@@ -199,6 +200,12 @@ export const UpNextCarousel = ({
     ? { duration: 0 }
     : { duration: 0.28, ease: EASE_OUT }
 
+  const visibleItemIds = useMemo(
+    () => visibleItems.map((item) => item.id),
+    [visibleItems],
+  )
+  const { autoplayCardId } = useFeedAutoplay(scrollRef, visibleItemIds)
+
   const isEmpty = displayItems.length === 0
 
   return (
@@ -231,7 +238,12 @@ export const UpNextCarousel = ({
                   role="listitem"
                   layout={!prefersReducedMotion}
                   initial={false}
-                  className="up-next__card-shell"
+                  className={`up-next__card-shell${
+                    autoplayCardId === item.id && !prefersReducedMotion
+                      ? ' up-next__card-shell--autoplay'
+                      : ''
+                  }`}
+                  data-feed-card-id={item.id}
                   exit={
                     prefersReducedMotion
                       ? { opacity: 0, transition: exitTransition }
