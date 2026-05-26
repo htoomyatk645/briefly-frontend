@@ -18,6 +18,16 @@
   overflow: hidden;
 }
 
+.tab-shell--library {
+  background: var(--library-tab-surface);
+}
+
+.tab-shell--library .tab-shell__content,
+.tab-shell--library .app-page-scroll,
+.tab-shell--library .app-page-body {
+  background: var(--library-tab-surface);
+}
+
 
 /* Placeholder tabs */
 .placeholder-screen {

@@ -1,9 +1,12 @@
 import { AnimatePresence, LayoutGroup } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AppHeader } from '../AppHeader'
 import { RouteTransition } from '../motion/RouteTransition'
+import { useLibraryScrollRestoration } from '../library/useLibraryScrollRestoration'
 import { Home } from '../../pages/Home'
 import { Discover } from '../../pages/Discover'
+import { LibraryRoutes } from '../../pages/LibraryRoutes'
 import { ClipFeed } from '../feed/ClipFeed'
 import { TabBar, type TabId } from './TabBar'
 import '../../styles/app-header.css'
@@ -13,6 +16,22 @@ type TabShellProps = {
   onShowSelect?: (id: string) => void
   onNotifications?: () => void
   onProfile?: () => void
+}
+
+const TAB_PATHS: Record<TabId, string> = {
+  home: '/',
+  library: '/library',
+  feed: '/feed',
+  discover: '/discover',
+  search: '/search',
+}
+
+function tabFromPath(pathname: string): TabId {
+  if (pathname.startsWith('/library')) return 'library'
+  if (pathname.startsWith('/feed')) return 'feed'
+  if (pathname.startsWith('/discover')) return 'discover'
+  if (pathname.startsWith('/search')) return 'search'
+  return 'home'
 }
 
 const PlaceholderScreen = ({ label }: { label: string }) => (
@@ -29,13 +48,34 @@ export const TabShell = ({
     typeof window !== 'undefined' &&
     new URLSearchParams(window.location.search).get('preview') === 'feed'
 
-  const [activeTab, setActiveTab] = useState<TabId>(previewFeed ? 'feed' : 'home')
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState<TabId>(() =>
+    previewFeed ? 'feed' : tabFromPath(location.pathname),
+  )
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null)
   const [feedIsPlaying, setFeedIsPlaying] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    scrollRef.current?.scrollTo(0, 0)
+    if (previewFeed) {
+      navigate('/feed', { replace: true })
+    }
+  }, [previewFeed, navigate])
+
+  useLibraryScrollRestoration(activeTab === 'library' ? scrollRef : { current: null })
+
+  useEffect(() => {
+    setActiveTab(tabFromPath(location.pathname))
+  }, [location.pathname])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    if (activeTab === 'library') return
+
+    el.scrollTo(0, 0)
   }, [activeTab])
 
   useEffect(() => {
@@ -44,15 +84,25 @@ export const TabShell = ({
     }
   }, [activeTab])
 
-  const handleTileSelect = useCallback((id: string) => {
-    setSelectedEpisodeId(id)
-    setActiveTab('feed')
-    onPlayEpisode?.(id)
-  }, [onPlayEpisode])
+  const handleTileSelect = useCallback(
+    (id: string) => {
+      setSelectedEpisodeId(id)
+      navigate('/feed')
+      onPlayEpisode?.(id)
+    },
+    [navigate, onPlayEpisode],
+  )
 
-  const handleTabChange = useCallback((tab: TabId) => {
-    setActiveTab(tab)
-  }, [])
+  const handleTabChange = useCallback(
+    (tab: TabId) => {
+      navigate(TAB_PATHS[tab])
+    },
+    [navigate],
+  )
+
+  const handleOpenFeed = useCallback(() => {
+    navigate('/feed')
+  }, [navigate])
 
   const handleFeedPlaybackChange = useCallback((isPlaying: boolean) => {
     setFeedIsPlaying(isPlaying)
@@ -78,17 +128,20 @@ export const TabShell = ({
       case 'discover':
         return <Discover />
       case 'library':
-        return <PlaceholderScreen label="Library" />
+        return <LibraryRoutes onOpenFeed={handleOpenFeed} />
       case 'search':
         return <PlaceholderScreen label="Search" />
     }
   }
 
   const isFeed = activeTab === 'feed'
+  const isLibrary = activeTab === 'library'
   const showAppHeader = activeTab !== 'home' && activeTab !== 'feed'
 
   return (
-    <div className={`tab-shell${isFeed ? ' tab-shell--feed' : ''}`}>
+    <div
+      className={`tab-shell${isFeed ? ' tab-shell--feed' : ''}${isLibrary ? ' tab-shell--library' : ''}`}
+    >
       <div className="tab-shell__content">
         <div className="app-page-scroll" ref={scrollRef}>
           {showAppHeader ? (
