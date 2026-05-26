@@ -12,6 +12,8 @@ import { getProductsForEpisode, MOCK_OUTPUTS } from './player/playerMocks'
 import type { MoreMenuAction } from './player/MoreMenu'
 import { MoreMenu } from './player/MoreMenu'
 import { SpeedPicker } from './player/SpeedPicker'
+import { getContextForEpisode } from './episodeContextData'
+import { ContextSheet } from './player/ContextSheet'
 import { ShopSheet } from './player/ShopSheet'
 import { TranscriptSheet } from './player/TranscriptSheet'
 import type { PlaybackSpeed } from './player/playerStorage'
@@ -105,11 +107,14 @@ export const PlayerCard = ({
   const [outputOpen, setOutputOpen] = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)
   const [transcriptOpen, setTranscriptOpen] = useState(false)
+  const [contextOpen, setContextOpen] = useState(false)
   const [activeOutputId, setActiveOutputId] = useState('iphone')
   const [saveAnim, setSaveAnim] = useState(false)
 
   const products = getProductsForEpisode(episode.id)
   const hasProducts = products.length > 0
+  const episodeContext = getContextForEpisode(episode.id)
+  const hasContext = Boolean(episodeContext)
   const coverTint = useCoverCardBackground(episode.coverSrc)
   const coverGradient = useCoverGradient(episode.coverSrc)
   const themeAccent = useCoverThemeAccent(episode.coverSrc)
@@ -125,7 +130,7 @@ export const PlayerCard = ({
     maskImage: `url(${feedAssets.actions.airpods})`,
   } as CSSProperties
 
-  useBodyScrollLock(shopOpen || outputOpen || transcriptOpen)
+  useBodyScrollLock(shopOpen || outputOpen || transcriptOpen || contextOpen)
 
   const handleProgressChange = (e: ChangeEvent<HTMLInputElement>) => {
     onSeek((Number(e.target.value) / 100) * duration)
@@ -242,6 +247,21 @@ export const PlayerCard = ({
               </button>
               <button
                 type="button"
+                className={`player-card__toolbar-btn player-card__toolbar-btn--context${
+                  hasContext ? '' : ' player-card__toolbar-btn--inactive'
+                }`}
+                aria-label="Episode context"
+                aria-haspopup="dialog"
+                aria-expanded={contextOpen}
+                disabled={!hasContext}
+                onClick={() => hasContext && setContextOpen(true)}
+              >
+                <span className="player-card__toolbar-letter" aria-hidden>
+                  C
+                </span>
+              </button>
+              <button
+                type="button"
                 className="player-card__toolbar-btn"
                 aria-label="More options"
                 aria-haspopup="menu"
@@ -342,6 +362,11 @@ export const PlayerCard = ({
         </div>
       </article>
 
+      <ContextSheet
+        open={contextOpen}
+        context={episodeContext ?? null}
+        onClose={() => setContextOpen(false)}
+      />
       <ShopSheet open={shopOpen} products={products} onClose={() => setShopOpen(false)} />
       <SpeedPicker
         open={speedOpen}

@@ -30,6 +30,70 @@
   box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.45);
 }
 
+.player-sheet--half {
+  max-height: 50vh;
+  min-height: min(50vh, 420px);
+}
+
+.episode-context {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.episode-context__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.episode-context__heading {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--feed-text-primary) 55%, transparent);
+}
+
+.episode-context__body {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--feed-text-primary);
+}
+
+.episode-context__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.episode-context__speaker-name,
+.episode-context__reference-label {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', Georgia, serif);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--feed-text-primary);
+}
+
+.episode-context__speaker-role {
+  margin: var(--space-1) 0 var(--space-2);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--feed-text-primary) 50%, transparent);
+}
+
 .player-sheet__handle {
   width: 2.5rem;
   height: 0.25rem;

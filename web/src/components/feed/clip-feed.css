@@ -414,6 +414,19 @@
   object-fit: contain;
 }
 
+.player-card__toolbar-letter {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  color: hsl(0 0% 100% / 0.96);
+  letter-spacing: -0.02em;
+}
+
+.player-card__toolbar-btn--context.player-card__toolbar-btn--inactive .player-card__toolbar-letter {
+  opacity: 0.45;
+}
+
 .player-card__hero {
   position: relative;
   flex: 1 1 0;

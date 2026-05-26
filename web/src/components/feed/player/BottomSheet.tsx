@@ -9,6 +9,7 @@ type BottomSheetProps = {
   onClose: () => void
   children: ReactNode
   variant?: 'default' | 'plain'
+  size?: 'default' | 'half'
   className?: string
   sheetStyle?: CSSProperties
 }
@@ -19,11 +20,18 @@ export const BottomSheet = ({
   onClose,
   children,
   variant = 'default',
+  size = 'default',
   className,
   sheetStyle,
 }: BottomSheetProps) => {
   const prefersReducedMotion = useReducedMotion()
-  const sheetClassName = ['player-sheet', className].filter(Boolean).join(' ')
+  const sheetClassName = [
+    'player-sheet',
+    size === 'half' ? 'player-sheet--half' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <AnimatePresence>
