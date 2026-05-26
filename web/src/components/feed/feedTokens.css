@@ -18,7 +18,7 @@
   --feed-text-secondary: var(--text-secondary);
   --feed-text: var(--text);
   --feed-font: 'Geist', sans-serif;
-  --feed-tab-bar-height: 5.25rem;
+  --feed-tab-bar-height: 5.75rem;
 
   /* Up Next card tone fallbacks */
   --feed-up-purple: #6d62a7;
