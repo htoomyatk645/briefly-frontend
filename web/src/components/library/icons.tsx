@@ -42,6 +42,24 @@ export const IconClose = () => (
   </svg>
 )
 
+export const IconMoreVertical = () => (
+  <svg className="library-icon library-icon--more" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M12 5.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
+export const IconTag = () => (
+  <svg className="library-icon library-icon--tag" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M10.5 3H5a2 2 0 0 0-2 2v5.5a1 1 0 0 0 .3.7l9.9 9.9a1 1 0 0 0 1.4 0l5.6-5.6a1 1 0 0 0 0-1.4l-9.9-9.9a1 1 0 0 0-.7-.3zM8.5 8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
 export const IconSliders = () => (
   <svg className="library-icon library-icon--sliders" viewBox="0 0 24 24" aria-hidden>
     <path

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useId, useRef } from 'react'
 import { useBodyScrollLock } from '../feed/player/BottomSheet'
-import { TuneFeedContent } from './TuneFeedContent'
+import { TuneFeedSurface } from './TuneFeedSurface'
 
 export type TuneFeedDrawerProps = {
   open: boolean
@@ -54,7 +54,7 @@ export function TuneFeedDrawer({ open, onClose }: TuneFeedDrawerProps) {
             exit={prefersReducedMotion ? { opacity: 0 } : { x: '100%' }}
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
           >
-            <TuneFeedContent titleId={titleId} />
+            <TuneFeedSurface titleId={titleId} />
           </motion.aside>
         </div>
       ) : null}

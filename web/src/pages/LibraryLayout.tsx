@@ -4,7 +4,6 @@ import {
   LibraryEmptyState,
   LibraryPageSkeleton,
   SavedClipsProvider,
-  TuneFeedPreferencesProvider,
   useLibraryPageState,
 } from '../components/library'
 import type { ClipMoment } from '../components/library/savedClipsTypes'
@@ -42,7 +41,6 @@ export function LibraryLayout({ onOpenFeed, onPlaySavedClip }: LibraryLayoutProp
 
   return (
     <SavedClipsProvider onPlayClip={onPlaySavedClip}>
-      <TuneFeedPreferencesProvider>
       {isLibraryIndex ? (
         <div className="library-page" style={surfaceStyle}>
           <header className="library-page__intro" ref={introRef} tabIndex={-1}>
@@ -56,7 +54,6 @@ export function LibraryLayout({ onOpenFeed, onPlaySavedClip }: LibraryLayoutProp
           <Outlet />
         </div>
       )}
-      </TuneFeedPreferencesProvider>
     </SavedClipsProvider>
   )
 }

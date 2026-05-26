@@ -1,0 +1,43 @@
+.ui-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--surface-alt);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ui-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.ui-toggle--on {
+  background: var(--color-brand);
+}
+
+.ui-toggle__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--on-primary);
+  transform: translateX(0);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ui-toggle--on .ui-toggle__thumb {
+  transform: translateX(20px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-toggle__thumb {
+    transition: none;
+  }
+}

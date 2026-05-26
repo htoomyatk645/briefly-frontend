@@ -110,7 +110,38 @@ Never Inter or Roboto as primary typefaces.
 
 ---
 
-## 7. Related docs
+## 7. Library — Tune Feed
+
+**Mobbin research (Instagram iOS, structural reference only):**
+
+| Search | Top screens referenced |
+|--------|-------------------------|
+| manage suggested content | Acknowledgement & Success Screen (toast after tuning) |
+| snooze suggestions feed | Banner / status row (temporary pause) |
+| interests recommendations | Marking flow (not interested / hide) |
+| not interested less of this | Marking + Following flows (row actions) |
+| reset suggested content | Acknowledgement & Success + settings list hierarchy |
+
+**Borrowed (structure, not visuals):**
+
+- Flat list rows with inline control on the right (not stacked cards per topic)
+- Temporary snooze vs persistent topic weight vs nuclear reset at the bottom
+- Overflow action for “hide / not interested” moving items to a muted list
+- Confirmation dialog before reset; snackbar acknowledgment after snooze toggle
+- “About this suggestion” style drill-in (implemented as “View recent feed decisions” bottom sheet with fixtures)
+
+**Rejected (Instagram aesthetics):**
+
+- Inter / system UI typography
+- Gradient backgrounds and purple-forward brand
+- Continuous sliders (Briefly uses 3-step segmented Less / Default / More)
+- Card-heavy topic layout from earlier Briefly draft
+
+**Implementation:** `web/src/pages/TuneFeed.tsx`, `web/src/components/library/TuneFeedSurface.tsx`, `web/src/state/feedTuning.ts` (Zustand + `localStorage`).
+
+---
+
+## 8. Related docs
 
 - `web/docs/brand-reconciliation.md` — audit that led to this reconciliation
 - `web/src/tokens.ts` — web spacing, typography, motion

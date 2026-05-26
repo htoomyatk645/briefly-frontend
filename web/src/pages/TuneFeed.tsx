@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { TuneFeedContent } from '../components/library/TuneFeedContent'
+import { TuneFeedSurface } from '../components/library/TuneFeedSurface'
 import '../components/library/tuneFeed.css'
 
 export default function TuneFeed() {
@@ -7,7 +7,7 @@ export default function TuneFeed() {
 
   return (
     <div className="tune-feed-page">
-      <TuneFeedContent
+      <TuneFeedSurface
         showBack
         autoFocusTitle={false}
         onBack={() => navigate('/library')}
