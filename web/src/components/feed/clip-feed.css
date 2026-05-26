@@ -329,18 +329,19 @@
   --player-theme-border: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 30%, transparent);
   --player-theme-muted: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 18%, rgba(255, 255, 255, 0.06));
   --player-theme-label: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 72%, var(--feed-text-primary));
-  background: var(--player-cover-tint, var(--feed-player-surface));
+  background-color: var(--player-cover-tint, var(--feed-player-surface));
+  background-image: none;
   transition:
-    background var(--duration-entrance) var(--ease-default),
+    background-color var(--duration-entrance) var(--ease-default),
     color var(--duration-entrance) var(--ease-default);
 }
 
-.player-card--adaptive::before {
-  content: none;
-}
-
+.player-card--adaptive::before,
 .player-card--adaptive::after {
+  display: none;
   content: none;
+  background: none;
+  background-image: none;
 }
 
 .player-card__grabber {

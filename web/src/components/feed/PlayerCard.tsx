@@ -18,7 +18,7 @@ import { ShopSheet } from './player/ShopSheet'
 import { TranscriptSheet } from './player/TranscriptSheet'
 import type { PlaybackSpeed } from './player/playerStorage'
 import './player/player-interactions.css'
-import { useCoverCardBackground, useCoverGradient, useCoverThemeAccent } from './useCoverGradient'
+import { useCoverCardBackground, useCoverThemeAccent } from './useCoverGradient'
 import { formatRemaining, formatTime } from './usePlayback'
 
 type PlayerCardProps = {
@@ -116,12 +116,10 @@ export const PlayerCard = ({
   const episodeContext = getContextForEpisode(episode.id)
   const hasContext = Boolean(episodeContext)
   const coverTint = useCoverCardBackground(episode.coverSrc)
-  const coverGradient = useCoverGradient(episode.coverSrc)
   const themeAccent = useCoverThemeAccent(episode.coverSrc)
 
   const playerStyle = {
     '--player-cover-tint': coverTint,
-    '--player-cover-gradient': coverGradient,
     '--player-theme-accent': themeAccent,
   } as CSSProperties
 
