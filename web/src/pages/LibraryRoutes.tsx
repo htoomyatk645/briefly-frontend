@@ -1,77 +1,45 @@
-import { useEffect, useRef } from 'react'
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { LibraryLayout } from './LibraryLayout'
 import { Library } from './Library'
+import SavedAll from './SavedAll'
+import type { ClipMoment } from '../components/library/savedClipsTypes'
 
 export type LibraryRoutesProps = {
   onOpenFeed: () => void
-}
-
-type LibraryRoutePlaceholderProps = {
-  title: string
-  description: string
-}
-
-function LibraryRoutePlaceholder({ title, description }: LibraryRoutePlaceholderProps) {
-  const navigate = useNavigate()
-  const backRef = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => {
-    backRef.current?.focus()
-  }, [])
-
-  return (
-    <div className="library-route-placeholder">
-      <button
-        ref={backRef}
-        type="button"
-        className="library-route-placeholder__back"
-        onClick={() => navigate('/library')}
-        aria-label="Back to Library"
-      >
-        Back to Library
-      </button>
-      <h2 className="library-route-placeholder__title">{title}</h2>
-      <p className="library-route-placeholder__copy">{description}</p>
-    </div>
-  )
-}
-
-function LibrarySavedRoute() {
-  return (
-    <LibraryRoutePlaceholder
-      title="Saved clips"
-      description="Full saved-clips grid arrives in a later prompt."
-    />
-  )
+  onPlaySavedClip: (moment: ClipMoment) => void
 }
 
 function LibraryShowRoute() {
-  const { showId } = useParams<{ showId: string }>()
-
   return (
-    <LibraryRoutePlaceholder
-      title="Show profile"
-      description={`Profile for ${showId ?? 'this show'} arrives in a later prompt.`}
-    />
+    <div className="library-route-placeholder">
+      <h2 className="library-route-placeholder__title">Show profile</h2>
+      <p className="library-route-placeholder__copy">
+        Show profile arrives in a later prompt.
+      </p>
+    </div>
   )
 }
 
 function LibraryTuneRoute() {
   return (
-    <LibraryRoutePlaceholder
-      title="Tune your feed"
-      description="Feed tuning surface arrives in a later prompt."
-    />
+    <div className="library-route-placeholder">
+      <h2 className="library-route-placeholder__title">Tune your feed</h2>
+      <p className="library-route-placeholder__copy">
+        Feed tuning surface arrives in a later prompt.
+      </p>
+    </div>
   )
 }
 
-export function LibraryRoutes({ onOpenFeed }: LibraryRoutesProps) {
+export function LibraryRoutes({ onOpenFeed, onPlaySavedClip }: LibraryRoutesProps) {
   return (
     <Routes>
-      <Route path="/library" element={<LibraryLayout onOpenFeed={onOpenFeed} />}>
+      <Route
+        path="/library"
+        element={<LibraryLayout onOpenFeed={onOpenFeed} onPlaySavedClip={onPlaySavedClip} />}
+      >
         <Route index element={<Library />} />
-        <Route path="saved" element={<LibrarySavedRoute />} />
+        <Route path="saved" element={<SavedAll />} />
         <Route path="shows/:showId" element={<LibraryShowRoute />} />
         <Route path="tune" element={<LibraryTuneRoute />} />
       </Route>

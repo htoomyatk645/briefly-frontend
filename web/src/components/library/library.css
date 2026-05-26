@@ -11,6 +11,10 @@
   box-sizing: border-box;
 }
 
+.library-page--nested {
+  padding-top: 1.25rem;
+}
+
 .library-page__intro {
   margin-bottom: 1.5rem;
 }
@@ -119,8 +123,8 @@
 }
 
 .library-rail-skeleton__card {
-  flex: 0 0 168px;
-  height: 196px;
+  flex: 0 0 260px;
+  height: 320px;
   border-radius: var(--radius-md);
 }
 

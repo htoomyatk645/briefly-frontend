@@ -22,7 +22,9 @@ import './clip-feed.css'
 
 type ClipFeedProps = {
   selectedEpisodeId?: string | null
+  clipSeekSeconds?: number | null
   onPlayEpisode?: (id: string) => void
+  onClipSeekApplied?: () => void
   onPlaybackActiveChange?: (isPlaying: boolean) => void
 }
 
@@ -33,7 +35,13 @@ function resolveInitialId(selectedEpisodeId?: string | null): string {
   return mosaicIdToFeedId(selectedEpisodeId)
 }
 
-export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveChange }: ClipFeedProps) => {
+export const ClipFeed = ({
+  selectedEpisodeId,
+  clipSeekSeconds,
+  onPlayEpisode,
+  onClipSeekApplied,
+  onPlaybackActiveChange,
+}: ClipFeedProps) => {
   const [nowPlayingId, setNowPlayingId] = useState(() => resolveInitialId(selectedEpisodeId))
   const [savedIds, setSavedIds] = useState(() => readSavedEpisodeIds())
   const [followedShows, setFollowedShows] = useState(() => readFollowedShowIds())
@@ -106,6 +114,18 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
   useEffect(() => {
     setNowPlayingId(resolveInitialId(selectedEpisodeId))
   }, [selectedEpisodeId])
+
+  useEffect(() => {
+    if (clipSeekSeconds == null) return
+
+    const frame = requestAnimationFrame(() => {
+      playback.seek(clipSeekSeconds)
+      playback.play()
+      onClipSeekApplied?.()
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [clipSeekSeconds, nowPlayingId, onClipSeekApplied])
 
   const selectFromUpNext = useCallback(
     (id: string) => {

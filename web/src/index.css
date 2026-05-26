@@ -34,6 +34,7 @@
   --border-strong: #c9bfbf;
   --focus-ring: hsl(343 79% 44% / 0.22);
   --color-brand: #c9184a;
+  --brand-hsl: 343 79% 44%;
   --surface-base-hsl: 40 20% 97%;
   --library-tab-surface: hsl(var(--surface-base-hsl) / 0.98);
   --duration-library-entrance: 280ms;
@@ -68,6 +69,7 @@
   --border-strong: #705453;
   --focus-ring: hsl(346 100% 71% / 0.35);
   --color-brand: #ff6b8e;
+  --brand-hsl: 346 100% 71%;
   --surface-base-hsl: 20 6% 7%;
   --library-tab-surface: hsl(var(--surface-base-hsl) / 0.98);
   --duration-library-entrance: 280ms;

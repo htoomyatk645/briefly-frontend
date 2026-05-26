@@ -8,6 +8,7 @@ import { Home } from '../../pages/Home'
 import { Discover } from '../../pages/Discover'
 import { LibraryRoutes } from '../../pages/LibraryRoutes'
 import { ClipFeed } from '../feed/ClipFeed'
+import type { ClipMoment } from '../library/savedClipsTypes'
 import { TabBar, type TabId } from './TabBar'
 import '../../styles/app-header.css'
 
@@ -54,6 +55,7 @@ export const TabShell = ({
     previewFeed ? 'feed' : tabFromPath(location.pathname),
   )
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string | null>(null)
+  const [pendingClipMoment, setPendingClipMoment] = useState<ClipMoment | null>(null)
   const [feedIsPlaying, setFeedIsPlaying] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -104,6 +106,27 @@ export const TabShell = ({
     navigate('/feed')
   }, [navigate])
 
+  const handlePlaySavedClip = useCallback(
+    (moment: ClipMoment) => {
+      setSelectedEpisodeId(moment.episodeId)
+      setPendingClipMoment(moment)
+      navigate('/feed')
+      onPlayEpisode?.(moment.episodeId)
+    },
+    [navigate, onPlayEpisode],
+  )
+
+  const handleClipSeekApplied = useCallback(() => {
+    setPendingClipMoment(null)
+  }, [])
+
+  const clipSeekSeconds =
+    pendingClipMoment &&
+    selectedEpisodeId &&
+    pendingClipMoment.episodeId === selectedEpisodeId
+      ? pendingClipMoment.seekSeconds
+      : null
+
   const handleFeedPlaybackChange = useCallback((isPlaying: boolean) => {
     setFeedIsPlaying(isPlaying)
   }, [])
@@ -121,14 +144,18 @@ export const TabShell = ({
         return (
           <ClipFeed
             selectedEpisodeId={selectedEpisodeId}
+            clipSeekSeconds={clipSeekSeconds}
             onPlayEpisode={onPlayEpisode}
+            onClipSeekApplied={handleClipSeekApplied}
             onPlaybackActiveChange={handleFeedPlaybackChange}
           />
         )
       case 'discover':
         return <Discover />
       case 'library':
-        return <LibraryRoutes onOpenFeed={handleOpenFeed} />
+        return (
+          <LibraryRoutes onOpenFeed={handleOpenFeed} onPlaySavedClip={handlePlaySavedClip} />
+        )
       case 'search':
         return <PlaceholderScreen label="Search" />
     }
