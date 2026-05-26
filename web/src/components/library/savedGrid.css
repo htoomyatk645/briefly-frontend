@@ -103,8 +103,8 @@
 }
 
 .saved-grid__skeleton {
-  height: 320px;
-  border-radius: var(--radius-md);
+  height: 240px;
+  border-radius: 16px;
 }
 
 @media (min-width: 640px) {
