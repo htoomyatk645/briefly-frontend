@@ -55,9 +55,8 @@ export default function SavedClipCard({
     <article
       ref={cardRef}
       className={`saved-clip-card saved-clip-card--${layout}${
-        isRemoving ? ' saved-clip-card--removing' : ''
-      }${prefersReducedMotion ? ' saved-clip-card--reduced-motion' : ''}`}
-      data-removing={isRemoving || undefined}
+        prefersReducedMotion ? ' saved-clip-card--reduced-motion' : ''
+      }`}
     >
       <button
         type="button"
