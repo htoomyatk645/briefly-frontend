@@ -75,9 +75,6 @@ export const ContinueListeningCard = ({
         />
       </span>
       <span className="continue-listening-card__body">
-        <span className="continue-listening-card__progress-label">
-          {item.progressLabel}
-        </span>
         <span className="continue-listening-card__title">{item.episodeTitle}</span>
       </span>
     </motion.button>
