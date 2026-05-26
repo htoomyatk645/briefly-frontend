@@ -1,43 +1,23 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useState } from 'react'
 import { BrowseChannels } from '../components/BrowseChannels'
-import { BrowseCatalog } from '../components/discover/browse-catalog/BrowseCatalog'
-import { BrieflyPicks } from '../components/discover/briefly-picks/BrieflyPicks'
-import { EditorialHero } from '../components/discover/editorial-hero/EditorialHero'
-import { InTheMoodFor } from '../components/discover/in-the-mood/InTheMoodFor'
-import { TrendingBriefs } from '../components/discover/trending-briefs/TrendingBriefs'
+import { BrieflyPicks } from '../components/discover/BrieflyPicks'
+import { CatalogMosaic } from '../components/discover/CatalogMosaic'
+import { EditorialHero } from '../components/discover/EditorialHero'
+import { TrendingBriefs } from '../components/discover/TrendingBriefs'
+import { VibeShelves } from '../components/discover/VibeShelves'
 import { SectionReveal } from '../components/motion/SectionReveal'
 import { categories } from '../data/discoverData'
-import {
-  catalogBriefs,
-  curatorCollections,
-  editorialHeroPick,
-  moodShelves,
-  trendingBriefs,
-} from '../data/discoverSectionsData'
 import { transition } from '../styles/motion'
-import '../styles/sections.css'
 import '../styles/discover-layout.css'
-import '../components/homeShelves.css'
 
-export type DiscoverProps = {
-  onPlay?: (id: string) => void
-}
-
-export const Discover = ({ onPlay }: DiscoverProps) => {
+export const Discover = () => {
   const prefersReducedMotion = useReducedMotion()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
   const handleCategorySelect = useCallback((id: string) => {
     setActiveCategory((current) => (current === id ? null : id))
   }, [])
-
-  const handlePlay = useCallback(
-    (id: string) => {
-      onPlay?.(id)
-    },
-    [onPlay],
-  )
 
   return (
     <div className="discover discover-page">
@@ -60,41 +40,25 @@ export const Discover = ({ onPlay }: DiscoverProps) => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="discover-page__body">
+      <div className="discover-page__sections" aria-label="Discover content">
         <SectionReveal id="discover-editorial-hero">
-          <EditorialHero pick={editorialHeroPick} onPlay={handlePlay} />
+          <EditorialHero />
         </SectionReveal>
 
-        <SectionReveal id="discover-in-the-mood">
-          <InTheMoodFor
-            shelves={moodShelves}
-            activeCategory={activeCategory}
-            onPlay={handlePlay}
-          />
+        <SectionReveal id="discover-vibe-shelves">
+          <VibeShelves />
         </SectionReveal>
 
         <SectionReveal id="discover-briefly-picks">
-          <BrieflyPicks
-            collections={curatorCollections}
-            activeCategory={activeCategory}
-            onPlay={handlePlay}
-          />
+          <BrieflyPicks />
         </SectionReveal>
 
         <SectionReveal id="discover-trending-briefs">
-          <TrendingBriefs
-            briefs={trendingBriefs}
-            activeCategory={activeCategory}
-            onPlay={handlePlay}
-          />
+          <TrendingBriefs />
         </SectionReveal>
 
-        <SectionReveal id="discover-browse-catalog">
-          <BrowseCatalog
-            briefs={catalogBriefs}
-            activeCategory={activeCategory}
-            onTileSelect={handlePlay}
-          />
+        <SectionReveal id="discover-catalog-mosaic">
+          <CatalogMosaic />
         </SectionReveal>
       </div>
     </div>

@@ -151,7 +151,7 @@ export const TabShell = ({
           />
         )
       case 'discover':
-        return <Discover onPlay={handleTileSelect} />
+        return <Discover />
       case 'library':
         return (
           <LibraryRoutes onOpenFeed={handleOpenFeed} onPlaySavedClip={handlePlaySavedClip} />
