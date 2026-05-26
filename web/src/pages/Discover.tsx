@@ -8,7 +8,7 @@ import { TrendingBriefs } from '../components/discover/TrendingBriefs'
 import { VibeShelves } from '../components/discover/VibeShelves'
 import { SectionReveal } from '../components/motion/SectionReveal'
 import { categories } from '../data/discoverData'
-import { editorialHero, vibeShelves } from '../data/discoverFeed'
+import { editorialHero, trendingBriefs, vibeShelves } from '../data/discoverFeed'
 import { transition } from '../styles/motion'
 import '../styles/discover-layout.css'
 
@@ -55,7 +55,7 @@ export const Discover = () => {
         </SectionReveal>
 
         <SectionReveal id="discover-trending-briefs">
-          <TrendingBriefs />
+          <TrendingBriefs briefs={trendingBriefs} />
         </SectionReveal>
 
         <SectionReveal id="discover-catalog-mosaic">

@@ -220,6 +220,22 @@ export const brieflyPicks: BrieflyPickList[] = [
   },
 ]
 
+function toListensTodayLabel(playCountLabel: string): string {
+  return playCountLabel.replace(/\s*plays$/i, ' listens today').replace(/^([\d.]+)k/i, (_, value: string) => {
+    const num = Number.parseFloat(value)
+    return num % 1 === 0 ? `${Math.round(num)}K` : `${num}K`
+  })
+}
+
+function withListensToday(brief: BriefCard): BriefCard {
+  return {
+    ...brief,
+    playCountLabel: brief.playCountLabel
+      ? toListensTodayLabel(brief.playCountLabel)
+      : undefined,
+  }
+}
+
 export const trendingBriefs: BriefCard[] = [
   briefCatalog[3],
   briefCatalog[1],
@@ -231,4 +247,4 @@ export const trendingBriefs: BriefCard[] = [
   briefCatalog[6],
   briefCatalog[7],
   briefCatalog[2],
-]
+].map(withListensToday)
