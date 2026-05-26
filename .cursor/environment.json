@@ -1,0 +1,25 @@
+{
+  "install": "npm install",
+  "ports": [
+    {
+      "name": "Briefly Web",
+      "port": 5173
+    },
+    {
+      "name": "Briefly Mobile",
+      "port": 8081
+    }
+  ],
+  "terminals": [
+    {
+      "name": "Web Preview",
+      "command": "npm run preview:web",
+      "description": "Build and serve the web prototype on port 5173 for sidebar preview."
+    },
+    {
+      "name": "Mobile Preview",
+      "command": "cd mobile && npx expo start --web --port 8081",
+      "description": "Serve the Expo mobile app in the browser on port 8081."
+    }
+  ]
+}
