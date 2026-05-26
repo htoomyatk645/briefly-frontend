@@ -7,6 +7,7 @@ import { useLibraryScrollRestoration } from '../library/useLibraryScrollRestorat
 import { Home } from '../../pages/Home'
 import { Discover } from '../../pages/Discover'
 import { LibraryRoutes } from '../../pages/LibraryRoutes'
+import { SearchRoutes } from '../../pages/SearchRoutes'
 import { ClipFeed } from '../feed/ClipFeed'
 import type { ClipMoment } from '../library/savedClipsTypes'
 import { TabBar, type TabId } from './TabBar'
@@ -34,12 +35,6 @@ function tabFromPath(pathname: string): TabId {
   if (pathname.startsWith('/search')) return 'search'
   return 'home'
 }
-
-const PlaceholderScreen = ({ label }: { label: string }) => (
-  <div className="placeholder-screen">
-    <span className="placeholder-screen__label">{label}</span>
-  </div>
-)
 
 export const TabShell = ({
   onPlayEpisode,
@@ -157,13 +152,14 @@ export const TabShell = ({
           <LibraryRoutes onOpenFeed={handleOpenFeed} onPlaySavedClip={handlePlaySavedClip} />
         )
       case 'search':
-        return <PlaceholderScreen label="Search" />
+        return <SearchRoutes />
     }
   }
 
   const isFeed = activeTab === 'feed'
   const isLibrary = activeTab === 'library'
-  const showAppHeader = activeTab !== 'home' && activeTab !== 'feed'
+  const showAppHeader =
+    activeTab !== 'home' && activeTab !== 'feed' && activeTab !== 'search'
 
   return (
     <div
