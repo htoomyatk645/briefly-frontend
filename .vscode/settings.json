@@ -1,0 +1,14 @@
+{
+  "remote.autoForwardPorts": true,
+  "remote.autoForwardPortsSource": "process",
+  "remote.portsAttributes": {
+    "5173": {
+      "label": "Briefly Web",
+      "onAutoForward": "openBrowser"
+    },
+    "8081": {
+      "label": "Briefly Mobile",
+      "onAutoForward": "notify"
+    }
+  }
+}
