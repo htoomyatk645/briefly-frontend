@@ -14,9 +14,10 @@
   --feed-player-surface: #221917;
 
   --feed-accent: var(--primary);
-  --feed-text-primary: var(--text);
-  --feed-text-secondary: var(--text-secondary);
-  --feed-text: var(--text);
+  /* Feed zone is always on dark surfaces — do not inherit page theme text */
+  --feed-text-primary: #f2f0eb;
+  --feed-text-secondary: hsl(0 0% 100% / 0.62);
+  --feed-text: #f2f0eb;
   --feed-font: 'Geist', sans-serif;
   --feed-tab-bar-height: 5.75rem;
 
