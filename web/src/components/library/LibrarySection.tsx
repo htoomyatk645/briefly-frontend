@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { IconChevronRight } from './icons'
 
 export type LibrarySectionProps = {
   id: string
@@ -38,7 +39,8 @@ export function LibrarySection({
             className="library-section__see-all"
             aria-label={`${seeAllLabel}: ${title}`}
           >
-            {seeAllLabel}
+            <span className="library-section__see-all-label">{seeAllLabel}</span>
+            <IconChevronRight />
           </Link>
         ) : null}
       </div>
