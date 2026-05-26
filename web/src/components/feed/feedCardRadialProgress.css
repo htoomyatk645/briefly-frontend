@@ -1,7 +1,6 @@
 .feed-card-radial-progress {
   position: absolute;
   inset: calc(var(--feed-radial-art-padding, 4px) * -1);
-  transform: rotate(-90deg);
   pointer-events: none;
 }
 

@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import type { CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { ContinueListeningEpisode } from '../../data/homeData'
 import { FeedCardRadialProgress } from '../feed/FeedCardRadialProgress'
 import { pressSpring, transition } from '../../styles/motion'
@@ -25,11 +25,30 @@ export const ContinueListeningCard = ({
   onPress,
   allowMotion = true,
 }: ContinueListeningCardProps) => {
+  const artWrapRef = useRef<HTMLSpanElement>(null)
+  const [artSize, setArtSize] = useState({ width: 132, height: 132 })
   const { h, s } = parseDominantColor(item.dominantColor)
   const tintStyle = {
     '--continue-card-h': h,
     '--continue-card-s': s,
   } as CSSProperties
+
+  useEffect(() => {
+    const element = artWrapRef.current
+    if (!element) return
+
+    const measure = () => {
+      setArtSize({
+        width: element.clientWidth,
+        height: element.clientHeight,
+      })
+    }
+
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <motion.button
@@ -41,7 +60,7 @@ export const ContinueListeningCard = ({
       whileTap={allowMotion ? { scale: 0.97 } : undefined}
       transition={pressSpring}
     >
-      <span className="continue-listening-card__art-wrap">
+      <span ref={artWrapRef} className="continue-listening-card__art-wrap">
         <img
           src={item.coverSrc}
           alt=""
@@ -49,7 +68,11 @@ export const ContinueListeningCard = ({
           width={132}
           height={132}
         />
-        <FeedCardRadialProgress progress={item.progress} />
+        <FeedCardRadialProgress
+          progress={item.progress}
+          artWidth={artSize.width}
+          artHeight={artSize.height}
+        />
       </span>
       <span className="continue-listening-card__body">
         <span className="continue-listening-card__progress-label">

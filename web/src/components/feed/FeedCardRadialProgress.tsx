@@ -1,7 +1,7 @@
 import { useReducedMotion } from 'framer-motion'
 import './feedCardRadialProgress.css'
 import {
-  getRadialProgressMetrics,
+  getSquareProgressMetrics,
   getStrokeDashoffset,
   RADIAL_STROKE_WIDTH_PX,
   shouldShowRadialProgress,
@@ -9,12 +9,14 @@ import {
 
 export type FeedCardRadialProgressProps = {
   progress: number
-  artSize?: number
+  artWidth?: number
+  artHeight?: number
 }
 
 export const FeedCardRadialProgress = ({
   progress,
-  artSize = 132,
+  artWidth = 132,
+  artHeight = 132,
 }: FeedCardRadialProgressProps) => {
   const prefersReducedMotion = useReducedMotion()
 
@@ -22,32 +24,31 @@ export const FeedCardRadialProgress = ({
     return null
   }
 
-  const { svgSize, radius, circumference, center } = getRadialProgressMetrics(artSize)
-  const dashoffset = getStrokeDashoffset(circumference, progress)
+  const { svgWidth, svgHeight, path, perimeter } = getSquareProgressMetrics(
+    artWidth,
+    artHeight,
+  )
+  const dashoffset = getStrokeDashoffset(perimeter, progress)
 
   return (
     <svg
       className={`feed-card-radial-progress${prefersReducedMotion ? ' feed-card-radial-progress--static' : ''}`}
-      width={svgSize}
-      height={svgSize}
-      viewBox={`0 0 ${svgSize} ${svgSize}`}
+      width={svgWidth}
+      height={svgHeight}
+      viewBox={`0 0 ${svgWidth} ${svgHeight}`}
       aria-hidden
     >
-      <circle
+      <path
         className="feed-card-radial-progress__track"
-        cx={center}
-        cy={center}
-        r={radius}
+        d={path}
         strokeWidth={RADIAL_STROKE_WIDTH_PX}
       />
-      <circle
+      <path
         className="feed-card-radial-progress__fill"
-        cx={center}
-        cy={center}
-        r={radius}
+        d={path}
         strokeWidth={RADIAL_STROKE_WIDTH_PX}
         style={{
-          strokeDasharray: circumference,
+          strokeDasharray: perimeter,
           strokeDashoffset: dashoffset,
         }}
       />
