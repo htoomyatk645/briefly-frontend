@@ -36,6 +36,7 @@
   --color-brand: #c9184a;
   --brand-hsl: 343 79% 44%;
   --surface-base-hsl: 40 20% 97%;
+  --bg-base-hsl: 40 20% 97%;
   --library-tab-surface: hsl(var(--surface-base-hsl) / 0.98);
   --duration-library-entrance: 280ms;
   --shadow-sm: 0 2px 8px hsl(0 7% 10% / 0.06);
@@ -71,6 +72,7 @@
   --color-brand: #ff6b8e;
   --brand-hsl: 346 100% 71%;
   --surface-base-hsl: 20 6% 7%;
+  --bg-base-hsl: 20 6% 7%;
   --library-tab-surface: hsl(var(--surface-base-hsl) / 0.98);
   --duration-library-entrance: 280ms;
   --shadow-sm: 0 2px 10px hsl(0 0% 0% / 0.4);

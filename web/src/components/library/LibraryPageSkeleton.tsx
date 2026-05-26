@@ -27,10 +27,12 @@ export function LibraryPageSkeleton() {
         </div>
       </LibrarySection>
 
-      <LibrarySection id="shows-skeleton" title="Shows">
-        <div className="library-grid-skeleton" role="presentation">
-          {Array.from({ length: 6 }, (_, index) => (
-            <SkeletonShimmer key={index} className="library-grid-skeleton__tile" />
+      <LibrarySection id="shows-skeleton" title="Shows" subtitle="Voices you've spent time with.">
+        <div className="shows-grid shows-grid--loading" role="presentation">
+          {Array.from({ length: 8 }, (_, index) => (
+            <div key={index} className="shows-grid__skeleton-wrap">
+              <SkeletonShimmer className="shows-grid__skeleton" />
+            </div>
           ))}
         </div>
       </LibrarySection>

@@ -128,37 +128,7 @@
   border-radius: var(--radius-md);
 }
 
-/* Shows grid */
-.library-shows-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
-}
-
-.library-shows-grid--empty {
-  min-height: 120px;
-  border: 1px dashed hsl(var(--surface-base-hsl) / 0.2);
-  border-radius: var(--radius-md);
-  background: hsl(var(--surface-base-hsl) / 0.35);
-}
-
-.library-grid-skeleton {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
-}
-
-.library-grid-skeleton__tile {
-  aspect-ratio: 1;
-  border-radius: var(--radius-md);
-}
-
-@media (min-width: 900px) {
-  .library-shows-grid,
-  .library-grid-skeleton {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
+/* Shows grid — see showsGrid.css */
 
 /* Mentions */
 .library-mentions {

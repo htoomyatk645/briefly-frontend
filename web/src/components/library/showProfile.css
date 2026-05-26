@@ -1,0 +1,303 @@
+.show-profile {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-bottom: var(--space-8);
+}
+
+.show-profile__hero {
+  position: relative;
+  min-height: 280px;
+  margin: 0 calc(-1 * 1.25rem) var(--space-5);
+  padding: var(--space-4) 1.25rem var(--space-6);
+  overflow: hidden;
+}
+
+.show-profile__hero-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--cover-tint-hsl) / 0.18) 0%,
+    transparent 200px
+  );
+}
+
+.show-profile__back {
+  position: absolute;
+  top: var(--space-4);
+  left: 1.25rem;
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: hsl(var(--bg-base-hsl) / 0.72);
+  backdrop-filter: blur(12px);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.show-profile__back:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.show-profile__follow {
+  position: absolute;
+  top: var(--space-4);
+  right: 1.25rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.5rem;
+  padding: 0 var(--space-4);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--color-brand);
+  color: var(--on-primary);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.show-profile__follow--active {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.show-profile__follow:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.show-profile__hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-5);
+  margin-top: 3rem;
+}
+
+.show-profile__hero-cover {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px hsl(0 0% 0% / 0.2);
+}
+
+.show-profile__hero-copy {
+  min-width: 0;
+  padding-bottom: var(--space-2);
+}
+
+.show-profile__name {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.show-profile__host {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.show-profile__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.show-profile__section-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.show-profile__inline-empty {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.show-profile__saved-rail {
+  margin: 0 calc(-1 * 1.25rem);
+  padding-inline: 1.25rem;
+}
+
+.show-profile__clip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.show-profile__clip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.show-profile__clip-row:hover {
+  border-color: var(--border-strong);
+}
+
+.show-profile__clip-row:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.show-profile__clip-art {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.show-profile__clip-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.show-profile__clip-title {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.show-profile__clip-episode {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.show-profile__clip-duration {
+  flex-shrink: 0;
+  font-family: var(--font-mono, 'Geist Mono', monospace);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.show-profile__load-more {
+  margin-top: var(--space-4);
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-alt);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.show-profile__load-more:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.show-profile--error {
+  padding: var(--space-10) var(--space-4);
+  text-align: center;
+}
+
+.show-profile__error-title {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.show-profile__error-back {
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border: none;
+  border-radius: 8px;
+  background: var(--color-brand);
+  color: var(--on-primary);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.show-profile__hero-skeleton {
+  height: 280px;
+  border-radius: 0;
+  margin: 0 calc(-1 * 1.25rem) var(--space-5);
+}
+
+.show-profile__next-skeleton {
+  height: 220px;
+  border-radius: var(--radius-md);
+}
+
+.show-profile__row-skeleton {
+  height: 72px;
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 640px) {
+  .show-profile__hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .show-profile__hero-cover {
+    width: 160px;
+    height: 160px;
+  }
+
+  .show-profile__name {
+    font-size: 1.625rem;
+  }
+}

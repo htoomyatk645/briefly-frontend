@@ -4,6 +4,7 @@ import type { ClipMoment, SavedClip } from './savedClipsTypes'
 
 export type SavedClipsContextValue = ReturnType<typeof useSavedClips> & {
   onPlayClip: (clip: SavedClip) => void
+  playMoment: (moment: ClipMoment) => void
 }
 
 const SavedClipsContext = createContext<SavedClipsContextValue | null>(null)
@@ -18,6 +19,7 @@ export function SavedClipsProvider({ children, onPlayClip }: SavedClipsProviderP
 
   const value: SavedClipsContextValue = {
     ...saved,
+    playMoment: onPlayClip,
     onPlayClip: (clip) => {
       onPlayClip({
         episodeId: clip.episodeId,
