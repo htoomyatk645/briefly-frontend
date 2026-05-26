@@ -149,7 +149,9 @@ export default function MentionedProducts({
             {activePreviewId === product.id && previewPlayback ? (
               <div className="mention-preview-wrap">
                 <MentionPreview
-                  product={product}
+                  mentionLabel={product.title}
+                  hostName={product.hostName}
+                  episodeTitle={product.episodeTitle}
                   playback={previewPlayback}
                   onClose={() => void closePreview()}
                   onOpenClip={handleOpenClip}
