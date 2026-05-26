@@ -1,7 +1,9 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import type { FeedCardTone, FeedEpisode } from './feedData'
+import { FeedCard } from './FeedCard'
 import { useCoverCardBackground } from './useCoverGradient'
+import { useUpNextAnticipation } from './useUpNextAnticipation'
 
 const CARD_WIDTH = 130
 const CARD_GAP = 10
@@ -24,6 +26,7 @@ type UpNextCarouselProps = {
 
 type UpNextCardProps = {
   item: FeedEpisode
+  anticipation: number
   onSelect: (id: string) => void
   onQueueStart: (id: string) => void
   prefersReducedMotion: boolean | null
@@ -42,11 +45,18 @@ const UpNextChevronIcon = () => (
   </svg>
 )
 
-const UpNextCard = ({ item, onSelect, onQueueStart, prefersReducedMotion }: UpNextCardProps) => {
+const UpNextCard = ({
+  item,
+  anticipation,
+  onSelect,
+  onQueueStart,
+  prefersReducedMotion,
+}: UpNextCardProps) => {
   const coverBackground = useCoverCardBackground(item.coverSrc)
   const cardStyle = {
     background: coverBackground || TONE_BG[item.cardTone],
   } as CSSProperties
+  const allowAnticipation = !prefersReducedMotion
 
   return (
     <>
@@ -57,7 +67,13 @@ const UpNextCard = ({ item, onSelect, onQueueStart, prefersReducedMotion }: UpNe
         onClick={() => onSelect(item.id)}
         aria-label={`Play next: ${item.episodeTitle}`}
       >
-        <img src={item.coverSrc} alt="" className="up-next__card-art" />
+        <FeedCard
+          coverSrc={item.coverSrc}
+          anticipation={anticipation}
+          animateAnticipation={allowAnticipation}
+          className="up-next__card-art-wrap"
+          artClassName="up-next__card-art"
+        />
         <div className="up-next__card-body">
           <p className="up-next__card-title">{item.episodeTitle}</p>
         </div>
@@ -199,6 +215,16 @@ export const UpNextCarousel = ({
     ? { duration: 0 }
     : { duration: 0.28, ease: EASE_OUT }
 
+  const visibleItemIds = useMemo(
+    () => visibleItems.map((item) => item.id),
+    [visibleItems],
+  )
+  const anticipationById = useUpNextAnticipation(
+    scrollRef,
+    visibleItemIds,
+    !prefersReducedMotion,
+  )
+
   const isEmpty = displayItems.length === 0
 
   return (
@@ -232,6 +258,7 @@ export const UpNextCarousel = ({
                   layout={!prefersReducedMotion}
                   initial={false}
                   className="up-next__card-shell"
+                  data-feed-card-id={item.id}
                   exit={
                     prefersReducedMotion
                       ? { opacity: 0, transition: exitTransition }
@@ -247,6 +274,7 @@ export const UpNextCarousel = ({
                 >
                   <UpNextCard
                     item={item}
+                    anticipation={anticipationById[item.id] ?? 0}
                     onSelect={onSelect}
                     onQueueStart={handleQueueStart}
                     prefersReducedMotion={prefersReducedMotion}
