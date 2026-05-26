@@ -132,9 +132,9 @@
 }
 
 .library-rail-skeleton__card {
-  flex: 0 0 260px;
-  height: 320px;
-  border-radius: var(--radius-md);
+  flex: 0 0 152px;
+  height: 240px;
+  border-radius: 16px;
 }
 
 /* Shows grid — see showsGrid.css */
