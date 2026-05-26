@@ -1,17 +1,26 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import './mentionPreview.css'
 import { useEffect, useRef, useState } from 'react'
 import { IconClose } from './icons'
-import type { MentionedProduct } from './libraryProductsData'
 import type { MentionPreviewPlayback } from './mentionPreviewAudio'
 
 export type MentionPreviewProps = {
-  product: MentionedProduct
+  mentionLabel: string
+  hostName: string
+  episodeTitle: string
   playback: MentionPreviewPlayback
   onClose: () => void
   onOpenClip: () => void
 }
 
-export function MentionPreview({ product, playback, onClose, onOpenClip }: MentionPreviewProps) {
+export function MentionPreview({
+  mentionLabel,
+  hostName,
+  episodeTitle,
+  playback,
+  onClose,
+  onOpenClip,
+}: MentionPreviewProps) {
   const prefersReducedMotion = useReducedMotion()
   const [progress, setProgress] = useState(0)
   const frameRef = useRef<number | null>(null)
@@ -31,7 +40,7 @@ export function MentionPreview({ product, playback, onClose, onOpenClip }: Menti
     <motion.div
       className="mention-preview"
       role="dialog"
-      aria-label={`Preview mention of ${product.title}`}
+      aria-label={`Preview mention of ${mentionLabel}`}
       initial={
         prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }
       }
@@ -55,8 +64,8 @@ export function MentionPreview({ product, playback, onClose, onOpenClip }: Menti
         <IconClose />
       </button>
 
-      <p className="mention-preview__host">{product.hostName}</p>
-      <p className="mention-preview__episode">{product.episodeTitle}</p>
+      <p className="mention-preview__host">{hostName}</p>
+      <p className="mention-preview__episode">{episodeTitle}</p>
 
       <button type="button" className="mention-preview__open" onClick={onOpenClip}>
         Open clip

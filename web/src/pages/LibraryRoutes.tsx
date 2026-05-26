@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import { LibraryLayout } from './LibraryLayout'
 import { Library } from './Library'
 import SavedAll from './SavedAll'
+import ReadingAll from './ReadingAll'
 import ShopAll from './ShopAll'
 import ShowProfile from './ShowProfile'
 import type { ClipMoment } from '../components/library/savedClipsTypes'
@@ -32,6 +33,7 @@ export function LibraryRoutes({ onOpenFeed, onPlaySavedClip }: LibraryRoutesProp
         <Route index element={<Library />} />
         <Route path="saved" element={<SavedAll />} />
         <Route path="shop" element={<ShopAll />} />
+        <Route path="reading" element={<ReadingAll />} />
         <Route path="shows/:showId" element={<ShowProfile />} />
         <Route path="tune" element={<LibraryTuneRoute />} />
       </Route>

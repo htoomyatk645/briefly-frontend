@@ -42,6 +42,19 @@ export const IconClose = () => (
   </svg>
 )
 
+export const IconBookOpen = () => (
+  <svg className="library-icon library-icon--book" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M12 7v14M5.5 5.2A2 2 0 0 1 7.4 4h9.2a2 2 0 0 1 1.9 1.2L21 7v14a1 1 0 0 1-1 1H6a2 2 0 0 1-2-1.4l.5-5.4z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
 export const IconCart = () => (
   <svg className="library-icon library-icon--cart" viewBox="0 0 24 24" aria-hidden>
     <path
