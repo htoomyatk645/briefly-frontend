@@ -1,5 +1,4 @@
 import { PLAYER_EPISODES } from '../../data/podcastCatalog'
-import type { FeedItem } from './feedLayout'
 
 export type FeedCardTone = 'purple' | 'navy' | 'crimson'
 
@@ -112,18 +111,3 @@ export function promoteUpNextItem(items: FeedEpisode[], id: string): FeedEpisode
   if (items[0]?.id === id) return items
   return [hit, ...items.filter((e) => e.id !== id)]
 }
-
-const FEED_LISTENER_COUNTS: Record<string, number> = {
-  'feed-huberman': 4820,
-  'feed-wsj': 1290,
-  'feed-fa': 760,
-  'feed-jay': 2140,
-}
-
-const EDITORIAL_FEED_IDS = new Set<string>(['feed-huberman'])
-
-export const FEED_ITEMS: FeedItem[] = FEED_QUEUE.map((episode) => ({
-  ...episode,
-  editorial: EDITORIAL_FEED_IDS.has(episode.id),
-  listenerCount: FEED_LISTENER_COUNTS[episode.id] ?? 840,
-}))

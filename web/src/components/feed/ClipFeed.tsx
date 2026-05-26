@@ -7,12 +7,15 @@ import {
   mosaicIdToFeedId,
   promoteUpNextItem,
 } from './feedData'
+import type { MoreMenuAction } from './player/MoreMenu'
 import {
+  readFollowedShowIds,
   readSavedEpisodeIds,
+  writeFollowedShowIds,
   writeSavedEpisodeIds,
 } from './player/playerStorage'
+import { PlayerCard } from './PlayerCard'
 import { UpNextCarousel } from './UpNextCarousel'
-import { FeedLayoutList } from './FeedLayoutList'
 import { FEED_AUTOPLAY_EVENT, type FeedAutoplayEventDetail } from './feedAutoplayConfig'
 import { usePlayback } from './usePlayback'
 import './clip-feed.css'
@@ -33,6 +36,8 @@ function resolveInitialId(selectedEpisodeId?: string | null): string {
 export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveChange }: ClipFeedProps) => {
   const [nowPlayingId, setNowPlayingId] = useState(() => resolveInitialId(selectedEpisodeId))
   const [savedIds, setSavedIds] = useState(() => readSavedEpisodeIds())
+  const [followedShows, setFollowedShows] = useState(() => readFollowedShowIds())
+  const [toast, setToast] = useState<string | null>(null)
   const [queueOrder, setQueueOrder] = useState<string[] | null>(null)
   const autoPlayNext = useRef(false)
   const feedScreenRef = useRef<HTMLDivElement>(null)
@@ -53,6 +58,11 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
   useEffect(() => {
     setQueueOrder(null)
   }, [nowPlayingId])
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg)
+    window.setTimeout(() => setToast(null), 2400)
+  }, [])
 
   const playNextInQueue = useCallback(() => {
     if (upNextItems.length === 0) return
@@ -112,6 +122,19 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
     setQueueOrder(next.map((e) => e.id))
   }, [nowPlayingId])
 
+  const goNext = useCallback(() => {
+    playNextInQueue()
+    playback.play()
+  }, [playNextInQueue, playback])
+
+  const goPrev = useCallback(() => {
+    const idx = FEED_QUEUE.findIndex((e) => e.id === nowPlayingId)
+    const prev = FEED_QUEUE[(idx - 1 + FEED_QUEUE.length) % FEED_QUEUE.length]
+    setNowPlayingId(prev.id)
+    onPlayEpisode?.(prev.id)
+    playback.play()
+  }, [nowPlayingId, onPlayEpisode, playback])
+
   const toggleSaved = useCallback(() => {
     setSavedIds((prev) => {
       const next = new Set(prev)
@@ -122,8 +145,54 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
     })
   }, [nowPlayingId])
 
+  const toggleFollow = useCallback(() => {
+    setFollowedShows((prev) => {
+      const next = new Set(prev)
+      if (next.has(nowPlaying.showId)) next.delete(nowPlaying.showId)
+      else next.add(nowPlaying.showId)
+      writeFollowedShowIds(next)
+      return next
+    })
+  }, [nowPlaying.showId])
+
+  const handleMoreAction = useCallback(
+    (action: MoreMenuAction) => {
+      switch (action) {
+        case 'similar':
+          showToast('Three similar episodes added to Up Next')
+          break
+        case 'not-similar':
+          showToast("We'll show fewer episodes like this")
+          break
+        case 'unplayed':
+          playback.seek(0)
+          showToast('Marked as unplayed')
+          break
+        case 'report':
+          showToast('Thanks — we will review this report')
+          break
+        case 'share': {
+          const t = playback.formatTime(playback.currentTime)
+          const text = `Listen to "${nowPlaying.episodeTitle}" at ${t}`
+          if (navigator.share) {
+            void navigator.share({ title: nowPlaying.showName, text, url: window.location.href })
+          } else {
+            void navigator.clipboard.writeText(`${text}\n${window.location.href}`)
+            showToast('Link copied with timestamp')
+          }
+          break
+        }
+        default:
+          break
+      }
+    },
+    [nowPlaying, playback, showToast],
+  )
+
   return (
     <div className="feed-screen" ref={feedScreenRef}>
+      {toast ? <div className="player-toast" role="status">{toast}</div> : null}
+
       <UpNextCarousel
         items={upNextItems}
         queueDepth={upNextItems.length}
@@ -132,21 +201,26 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
         onQueue={queueFromUpNext}
       />
 
-      <FeedLayoutList
-        nowPlayingId={nowPlayingId}
+      <PlayerCard
+        episode={nowPlaying}
         isPlaying={playback.isPlaying}
-        progress={playback.progress}
         currentTime={playback.currentTime}
         duration={playback.duration}
+        progress={playback.progress}
+        playbackRate={playback.playbackRate}
         saved={savedIds.has(nowPlayingId)}
-        onSelect={(id) => {
-          setNowPlayingId(id)
-          onPlayEpisode?.(id)
-          playback.play()
-        }}
+        following={followedShows.has(nowPlaying.showId)}
         onTogglePlay={playback.togglePlay}
         onSeek={playback.seek}
+        onRewind15={playback.rewind15}
+        onForward30={playback.forward30}
+        onPrev={goPrev}
+        onNext={goNext}
+        onSetSpeed={playback.setSpeed}
         onToggleSaved={toggleSaved}
+        onToggleFollow={toggleFollow}
+        onMoreAction={handleMoreAction}
+        onShowPage={() => showToast(`Opening ${nowPlaying.showName}`)}
       />
     </div>
   )
