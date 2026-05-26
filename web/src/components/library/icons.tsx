@@ -42,6 +42,49 @@ export const IconClose = () => (
   </svg>
 )
 
+export const IconMoreVertical = () => (
+  <svg className="library-icon library-icon--more" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M12 5.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
+export const IconTag = () => (
+  <svg className="library-icon library-icon--tag" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M10.5 3H5a2 2 0 0 0-2 2v5.5a1 1 0 0 0 .3.7l9.9 9.9a1 1 0 0 0 1.4 0l5.6-5.6a1 1 0 0 0 0-1.4l-9.9-9.9a1 1 0 0 0-.7-.3zM8.5 8a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
+export const IconSliders = () => (
+  <svg className="library-icon library-icon--sliders" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M2 14h4M10 10h4M18 16h4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+)
+
+export const IconChevronRight = () => (
+  <svg className="library-icon library-icon--chevron" viewBox="0 0 24 24" aria-hidden>
+    <path
+      d="M9 18l6-6-6-6"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
 export const IconBookOpen = () => (
   <svg className="library-icon library-icon--book" viewBox="0 0 24 24" aria-hidden>
     <path

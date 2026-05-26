@@ -188,7 +188,7 @@ export default function MentionedReading({
         Books and articles cited in clips will collect here.
       </p>
       <p className="reading-empty__caption">
-        Once you&apos;ve listened to a few clips, this shelf will fill up.
+        Once you've listened to a few clips, this shelf will fill up.
       </p>
     </div>
   ) : (

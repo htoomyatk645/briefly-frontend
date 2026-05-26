@@ -200,7 +200,12 @@
   color: var(--text-secondary);
 }
 
+.library-tune-skeleton {
+  width: 100%;
+}
+
 .library-tune-skeleton__card {
+  width: 100%;
   height: 96px;
   border-radius: var(--radius-md);
 }
