@@ -75,11 +75,32 @@
   background: var(--primary);
 }
 
-.pulse-card__art {
+.pulse-card__art-wrap {
+  position: relative;
   flex-shrink: 0;
   width: 72px;
   height: 72px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm, 8px);
+  overflow: hidden;
+}
+
+.pulse-card__art-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-bg-primary) 36%, transparent),
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.pulse-card__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
   object-fit: cover;
 }
 

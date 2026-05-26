@@ -1,6 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import type { CSSProperties } from 'react'
 import type { PulseEpisode } from '../data/homeData'
+import { FeedCardListenerBadge } from './feed/FeedCardListenerBadge'
+import { FeedCardWaveform } from './feed/FeedCardWaveform'
+import { useFeedCardInView } from './feed/useFeedCardInView'
 import { AnimatedNumber } from './motion/AnimatedNumber'
 import { pressSpring, transition } from '../styles/motion'
 import '../styles/sections.css'
@@ -61,6 +64,7 @@ type PulseCardProps = {
 const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
   const parsed = parseListenerCount(episode.trendLabel)
   const { h, s } = parseDominantColor(episode.dominantColor)
+  const { ref, inView } = useFeedCardInView<HTMLButtonElement>({ enabled: allowMotion })
   const tintStyle = {
     '--pulse-card-h': h,
     '--pulse-card-s': s,
@@ -68,6 +72,7 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
 
   return (
     <motion.button
+      ref={ref}
       type="button"
       className="pulse-card"
       style={tintStyle}
@@ -81,13 +86,16 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
         style={{ height: `${accentHeight(episode.trendScore)}px` }}
         aria-hidden
       />
-      <img
-        src={episode.coverSrc}
-        alt=""
-        className="pulse-card__art"
-        width={72}
-        height={72}
-      />
+      <span className="pulse-card__art-wrap">
+        <img
+          src={episode.coverSrc}
+          alt=""
+          className="pulse-card__art"
+          width={72}
+          height={72}
+        />
+        <FeedCardWaveform active={allowMotion && inView} />
+      </span>
       <span className="pulse-card__body">
         <span className="pulse-card__title">{episode.episodeTitle}</span>
         <span className="pulse-card__show">{episode.showName}</span>
@@ -97,15 +105,17 @@ const PulseCard = ({ episode, onPlay, allowMotion }: PulseCardProps) => {
             aria-hidden
           />
           {parsed ? (
-            <span className="pulse-card__trend-label">
-              <AnimatedNumber
-                value={parsed.count}
-                format={(n) =>
-                  n % 1 === 0 ? String(Math.round(n)) : n.toFixed(1)
-                }
-              />
-              {parsed.suffix}
-            </span>
+            <FeedCardListenerBadge animate={allowMotion}>
+              <span className="pulse-card__trend-label">
+                <AnimatedNumber
+                  value={parsed.count}
+                  format={(n) =>
+                    n % 1 === 0 ? String(Math.round(n)) : n.toFixed(1)
+                  }
+                />
+                {parsed.suffix}
+              </span>
+            </FeedCardListenerBadge>
           ) : (
             episode.trendLabel
           )}

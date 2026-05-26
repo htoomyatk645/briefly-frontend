@@ -1,0 +1,68 @@
+.feed-card-waveform {
+  position: absolute;
+  left: var(--space-2, 8px);
+  bottom: var(--space-2, 8px);
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.feed-card-waveform__bar {
+  width: 2px;
+  height: 100%;
+  border-radius: var(--radius-none, 0);
+  background: color-mix(in srgb, var(--color-accent-warm) 60%, transparent);
+  transform: scaleY(0.2);
+  transform-origin: bottom center;
+}
+
+.feed-card-waveform--active .feed-card-waveform__bar {
+  animation: feed-card-waveform-bar var(--feed-wave-duration, 900ms) ease-in-out infinite;
+}
+
+@keyframes feed-card-waveform-bar {
+  0%,
+  100% {
+    transform: scaleY(0.2);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.feed-card-listener-badge {
+  display: inline-flex;
+  min-width: 0;
+  transform: scale(1);
+  transform-origin: left center;
+  animation: feed-card-listener-breathe 2400ms ease-in-out infinite;
+}
+
+.feed-card-listener-badge--static {
+  animation: none;
+}
+
+@keyframes feed-card-listener-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-card-waveform {
+    display: none;
+  }
+
+  .feed-card-listener-badge {
+    animation: none;
+  }
+}
