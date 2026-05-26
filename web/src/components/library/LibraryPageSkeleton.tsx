@@ -44,9 +44,9 @@ export function LibraryPageSkeleton() {
         </div>
       </LibrarySection>
 
-      <LibrarySection id="tune-skeleton" title="Tune your feed">
+      <div className="library-tune-skeleton" aria-hidden>
         <SkeletonShimmer className="library-tune-skeleton__card" />
-      </LibrarySection>
+      </div>
     </div>
   )
 }

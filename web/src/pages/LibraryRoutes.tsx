@@ -5,22 +5,12 @@ import SavedAll from './SavedAll'
 import ReadingAll from './ReadingAll'
 import ShopAll from './ShopAll'
 import ShowProfile from './ShowProfile'
+import TuneFeed from './TuneFeed'
 import type { ClipMoment } from '../components/library/savedClipsTypes'
 
 export type LibraryRoutesProps = {
   onOpenFeed: () => void
   onPlaySavedClip: (moment: ClipMoment) => void
-}
-
-function LibraryTuneRoute() {
-  return (
-    <div className="library-route-placeholder">
-      <h2 className="library-route-placeholder__title">Tune your feed</h2>
-      <p className="library-route-placeholder__copy">
-        Feed tuning surface arrives in a later prompt.
-      </p>
-    </div>
-  )
 }
 
 export function LibraryRoutes({ onOpenFeed, onPlaySavedClip }: LibraryRoutesProps) {
@@ -35,7 +25,7 @@ export function LibraryRoutes({ onOpenFeed, onPlaySavedClip }: LibraryRoutesProp
         <Route path="shop" element={<ShopAll />} />
         <Route path="reading" element={<ReadingAll />} />
         <Route path="shows/:showId" element={<ShowProfile />} />
-        <Route path="tune" element={<LibraryTuneRoute />} />
+        <Route path="tune" element={<TuneFeed />} />
       </Route>
     </Routes>
   )
