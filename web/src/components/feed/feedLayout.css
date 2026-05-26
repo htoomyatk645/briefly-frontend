@@ -1,0 +1,346 @@
+.feed-layout {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0 var(--space-4) var(--space-4);
+  -webkit-overflow-scrolling: touch;
+}
+
+.feed-compact-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+.feed-layout-card {
+  will-change: opacity, transform;
+}
+
+.feed-hero-card {
+  flex: none;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border-radius: var(--feed-player-radius, var(--radius-md));
+  overflow: hidden;
+  position: relative;
+  background: var(--player-cover-tint, var(--feed-player-surface));
+  color: var(--feed-text-primary);
+  box-sizing: border-box;
+}
+
+.feed-hero-card--active {
+  --player-theme-soft: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 14%, transparent);
+  --player-theme-border: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 30%, transparent);
+  --player-theme-label: color-mix(in srgb, var(--player-theme-accent, var(--feed-accent)) 72%, var(--feed-text-primary));
+}
+
+.feed-hero-card__grabber {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 0.22rem;
+  margin: 0.5rem auto 0.25rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--feed-text-primary) 24%, transparent);
+}
+
+.feed-hero-card__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.feed-hero-card__hero {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 3.5rem 0.5rem 1.25rem;
+}
+
+.feed-hero-card__hero-hit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.feed-hero-card__art-frame {
+  width: min(100%, 220px);
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.feed-hero-card__art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.feed-hero-card__source {
+  margin-top: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--feed-text-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--feed-text-primary) 16%, transparent);
+}
+
+.feed-hero-card__source-text {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--player-theme-label, var(--feed-text-primary));
+}
+
+.feed-hero-card__toolbar {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.feed-hero-card__toolbar-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--player-theme-border, rgba(255, 255, 255, 0.12));
+  border-radius: 50%;
+  background: var(--player-theme-soft, rgba(255, 255, 255, 0.08));
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feed-hero-card__toolbar-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.feed-hero-card__meta {
+  padding: 0 var(--space-4) var(--space-2);
+}
+
+.feed-hero-card__title {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--feed-text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.feed-hero-card__lower {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.feed-hero-card__progress {
+  position: relative;
+  margin-bottom: var(--space-3);
+}
+
+.feed-hero-card__progress-track {
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--feed-text-primary) 16%, transparent);
+  overflow: hidden;
+}
+
+.feed-hero-card__progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--player-theme-accent, var(--feed-accent-warm, #ff6640));
+  transform-origin: left center;
+}
+
+.feed-hero-card__slider {
+  position: absolute;
+  inset: -8px 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.feed-hero-card__times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+  font-family: var(--font-mono, 'Geist Mono', monospace);
+  font-size: 11px;
+  color: color-mix(in srgb, var(--feed-text-primary) 72%, transparent);
+}
+
+.feed-hero-card__controls {
+  display: flex;
+  justify-content: center;
+}
+
+.feed-hero-card__play {
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--feed-text-primary);
+  color: var(--feed-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.feed-hero-card__play svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.feed-hero-card__play--ready {
+  background: var(--player-theme-accent, var(--feed-accent));
+  color: var(--feed-bg);
+}
+
+.feed-hero-card__cta {
+  margin: 0 var(--space-4) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--feed-text-primary) 16%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--feed-text-primary) 8%, transparent);
+  color: var(--feed-text-primary);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.feed-compact-card {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--feed-border-subtle, rgba(255, 255, 255, 0.06));
+  border-radius: var(--radius-md);
+  background: var(--feed-surface-1, #13171e);
+  color: var(--feed-text-primary);
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.feed-compact-card__main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 0;
+  flex: 1;
+}
+
+.feed-compact-card--active {
+  border-color: color-mix(in srgb, var(--feed-accent) 40%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--feed-accent) 24%, transparent);
+}
+
+.feed-compact-card__art {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.feed-compact-card__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.feed-compact-card__show {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--feed-text-secondary, #8a9099);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feed-compact-card__title {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--feed-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feed-compact-card__listener {
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--feed-accent-warm, #ff6640);
+}
+
+.feed-compact-card .feed-card-listener-badge {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+}
+
+.feed-compact-card__active-bar {
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: var(--space-2);
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--feed-text-primary) 14%, transparent);
+  overflow: hidden;
+}
+
+.feed-compact-card__active-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--feed-accent-warm, #ff6640);
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-layout-card {
+    will-change: auto;
+  }
+}
