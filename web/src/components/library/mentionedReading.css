@@ -1,12 +1,14 @@
 /* Mentioned reading — books, resources, rail, grid */
 
 .reading-rail {
+  --reading-card-height: 240px;
   display: flex;
+  align-items: stretch;
   gap: var(--space-3);
   overflow-x: auto;
   padding-bottom: var(--space-1);
   scrollbar-width: none;
-  min-height: 260px;
+  min-height: var(--reading-card-height);
 }
 
 .reading-rail::-webkit-scrollbar {
@@ -16,6 +18,8 @@
 .reading-rail__item {
   position: relative;
   flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
 }
 
 .reading-rail__item--book {
@@ -29,16 +33,24 @@
 }
 
 .reading-grid {
+  --reading-card-height: 240px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
+  align-items: stretch;
 }
 
 .reading-grid__item {
   position: relative;
   display: flex;
-  justify-content: center;
+  align-items: stretch;
   min-width: 0;
+}
+
+.reading-grid .book-card,
+.reading-grid .resource-card {
+  width: 100%;
+  height: var(--reading-card-height, 240px);
 }
 
 .reading-grid__item--book {
@@ -70,7 +82,7 @@
   display: flex;
   flex-direction: column;
   width: 140px;
-  height: 240px;
+  height: var(--reading-card-height, 240px);
   box-sizing: border-box;
   padding: 0.75rem;
   border: 1px solid var(--border);
@@ -161,7 +173,7 @@
   display: flex;
   flex-direction: column;
   width: 220px;
-  height: 120px;
+  height: var(--reading-card-height, 240px);
   box-sizing: border-box;
   padding: 0.75rem;
   border: 1px solid var(--border);
@@ -175,7 +187,9 @@
 }
 
 .resource-card__hit {
+  display: flex;
   flex: 1;
+  flex-direction: column;
   min-height: 0;
   margin: 0;
   padding: 0;
@@ -195,15 +209,19 @@
 
 .resource-card__main {
   display: flex;
-  gap: var(--space-3);
-  align-items: flex-start;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
   min-height: 0;
 }
 
 .resource-card__favicon-wrap {
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--surface-alt);
@@ -211,9 +229,9 @@
 
 .resource-card__favicon {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: contain;
 }
 
 .resource-card__favicon--placeholder {
@@ -223,8 +241,8 @@
 }
 
 .resource-card__copy {
+  flex-shrink: 0;
   min-width: 0;
-  flex: 1;
 }
 
 .resource-card__title {
@@ -345,7 +363,7 @@
 .resource-card__skeleton {
   flex: 0 0 220px;
   width: 220px;
-  height: 120px;
+  height: var(--reading-card-height, 240px);
   border-radius: var(--radius-md);
 }
 
