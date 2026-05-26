@@ -47,6 +47,7 @@ export default function RootLayout() {
       <BottomSheetModalProvider>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="search" options={{ headerShown: false, presentation: 'card' }} />
         </Stack>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
