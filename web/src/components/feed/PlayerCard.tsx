@@ -52,6 +52,31 @@ const PauseIcon = () => (
   </svg>
 )
 
+const SourceFollowPlusIcon = () => (
+  <svg className="player-card__source-follow-icon" viewBox="0 0 16 16" aria-hidden>
+    <path
+      d="M8 3.5v9M3.5 8h9"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+)
+
+const SourceFollowCheckIcon = () => (
+  <svg className="player-card__source-follow-icon" viewBox="0 0 16 16" aria-hidden>
+    <path
+      d="M4 8.5 6.5 11 12 5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
 export const PlayerCard = ({
   episode,
   isPlaying,
@@ -164,14 +189,30 @@ export const PlayerCard = ({
                 </motion.div>
               )}
 
-              <Link
-                to={`/library/shows/${episode.showId}`}
-                className="player-card__source"
-                aria-label={`Show: ${episode.showName}`}
-                onClick={markShowProfileOpenedFromFeed}
-              >
-                <span className="player-card__source-text">{episode.showName.toUpperCase()}</span>
-              </Link>
+              <div className="player-card__source-row">
+                <Link
+                  to={`/library/shows/${episode.showId}`}
+                  className="player-card__source"
+                  aria-label={`Show: ${episode.showName}`}
+                  onClick={markShowProfileOpenedFromFeed}
+                >
+                  <span className="player-card__source-text">{episode.showName.toUpperCase()}</span>
+                </Link>
+                <button
+                  type="button"
+                  className={`player-card__source-follow${
+                    following ? ' player-card__source-follow--active' : ''
+                  }`}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    onToggleFollow()
+                  }}
+                  aria-label={following ? `Unfollow ${episode.showName}` : `Follow ${episode.showName}`}
+                  aria-pressed={following}
+                >
+                  {following ? <SourceFollowCheckIcon /> : <SourceFollowPlusIcon />}
+                </button>
+              </div>
             </div>
 
             <header className="player-card__toolbar" role="toolbar" aria-label="Player actions">
