@@ -1,0 +1,569 @@
+/* Mentioned products — rail, grid, cards, preview, detail sheet */
+
+.products-rail {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+  scrollbar-width: none;
+}
+
+.products-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.products-rail__item {
+  position: relative;
+  flex: 0 0 180px;
+  width: 180px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.products-grid__item {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .products-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .products-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Product card */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  height: 280px;
+  box-sizing: border-box;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.product-card--preview-open {
+  z-index: 2;
+}
+
+.product-card__body-hit {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.product-card__body-hit:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.product-card__image-wrap {
+  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: var(--space-2);
+}
+
+.product-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+}
+
+.product-card__image--placeholder {
+  background: hsl(var(--surface-base-hsl) / 0.55);
+}
+
+.product-card__copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.product-card__title {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card__meta-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-1);
+}
+
+.product-card__brand {
+  min-width: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card__price {
+  flex-shrink: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.product-card__footer {
+  display: grid;
+  grid-template-columns: 24px 1fr 28px;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  height: 32px;
+  margin: var(--space-2) -0.75rem -0.75rem;
+  padding: 0 var(--space-2);
+  border-top: 1px solid hsl(var(--mix-highlight) / 0.06);
+  background: hsl(var(--surface-base-hsl) / 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.product-card__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid hsl(var(--mix-highlight) / 0.12);
+}
+
+.product-card__mention-label {
+  min-width: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card__play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: hsl(var(--mix-highlight) / 0.08);
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.product-card__play:hover {
+  background: hsl(var(--mix-highlight) / 0.14);
+}
+
+.product-card__play:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.library-icon--play {
+  width: 14px;
+  height: 14px;
+}
+
+/* Floating mention preview */
+.mention-preview-wrap {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  bottom: calc(100% + var(--space-2));
+  width: min(360px, calc(100vw - 2.5rem));
+  pointer-events: none;
+}
+
+.mention-preview-wrap > * {
+  pointer-events: auto;
+}
+
+.mention-preview {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: 0 12px 32px hsl(var(--shadow-hsl, 0 0% 0%) / 0.28);
+}
+
+.mention-preview__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  overflow: hidden;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: hsl(var(--mix-highlight) / 0.08);
+}
+
+.mention-preview__progress-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: var(--color-brand);
+}
+
+.mention-preview__close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.mention-preview__close:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.mention-preview__host {
+  margin: var(--space-1) 0 0;
+  padding-right: 2rem;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mention-preview__episode {
+  margin: 0.2rem 0 0;
+  padding-right: 2rem;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mention-preview__open {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-3);
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.mention-preview__open:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Empty + loading */
+.products-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.library-icon--cart {
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+}
+
+.products-empty__title {
+  margin: 0;
+  max-width: 28rem;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.products-empty__caption {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.product-card__skeleton {
+  flex: 0 0 180px;
+  width: 180px;
+  height: 280px;
+  border-radius: var(--radius-md);
+}
+
+.products-grid--loading .product-card__skeleton {
+  flex: none;
+  width: 100%;
+  max-width: 180px;
+}
+
+/* Product detail sheet */
+.product-detail-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.product-detail-sheet__media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-alt);
+}
+
+.product-detail-sheet__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-detail-sheet__image--placeholder {
+  width: 100%;
+  height: 100%;
+  background: hsl(var(--surface-base-hsl) / 0.55);
+}
+
+.product-detail-sheet__brand {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.product-detail-sheet__price {
+  margin: calc(var(--space-1) * -1) 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.product-detail-sheet__context {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 2px solid hsl(var(--brand-hsl) / 0.35);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  font-style: normal;
+  color: var(--text-secondary);
+}
+
+.product-detail-sheet__meta {
+  margin: 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.product-detail-sheet__meta strong {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.product-detail-sheet__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: var(--space-2);
+  padding: 0 var(--space-6);
+  border-radius: 8px;
+  background: var(--color-brand);
+  color: var(--on-primary);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.product-detail-sheet__cta:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Shop all page */
+.shop-all {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding: 0 0 var(--space-6);
+}
+
+.shop-all__back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.shop-all__back:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.shop-all__back:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.shop-all__head {
+  margin-bottom: var(--space-4);
+}
+
+.shop-all__title {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.shop-all__subtitle {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.shop-all__filters {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-2) 0;
+  background: var(--library-tab-surface);
+}
+
+.shop-all__filter {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.shop-all__filter--active {
+  border-color: hsl(var(--brand-hsl) / 0.35);
+  color: var(--text);
+  background: hsl(var(--brand-hsl) / 0.08);
+}
+
+.shop-all__filter:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.shop-all__filter-note {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.mentioned-products--embedded {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card__play {
+    transition: none;
+  }
+}
