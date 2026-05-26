@@ -79,16 +79,25 @@
 }
 
 .library-section__see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   flex-shrink: 0;
   margin-top: 0.15rem;
   font-family: var(--font-body, 'Geist', sans-serif);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
 }
 
-.library-section__see-all:hover {
+.library-section__see-all .library-icon--chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.library-section__see-all:hover .library-section__see-all-label {
   text-decoration: underline;
 }
 
