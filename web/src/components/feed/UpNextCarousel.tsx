@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import type { FeedCardTone, FeedEpisode } from './feedData'
 import { FeedCard } from './FeedCard'
 import { useCoverCardBackground } from './useCoverGradient'
+import { useFeedAutoplay } from './useFeedAutoplay'
 import { useUpNextAnticipation } from './useUpNextAnticipation'
 
 const CARD_WIDTH = 130
@@ -224,6 +225,7 @@ export const UpNextCarousel = ({
     visibleItemIds,
     !prefersReducedMotion,
   )
+  const { autoplayCardId } = useFeedAutoplay(scrollRef, visibleItemIds)
 
   const isEmpty = displayItems.length === 0
 
@@ -257,7 +259,11 @@ export const UpNextCarousel = ({
                   role="listitem"
                   layout={!prefersReducedMotion}
                   initial={false}
-                  className="up-next__card-shell"
+                  className={`up-next__card-shell${
+                    autoplayCardId === item.id && !prefersReducedMotion
+                      ? ' up-next__card-shell--autoplay'
+                      : ''
+                  }`}
                   data-feed-card-id={item.id}
                   exit={
                     prefersReducedMotion

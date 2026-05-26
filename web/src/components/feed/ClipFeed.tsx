@@ -16,6 +16,7 @@ import {
 } from './player/playerStorage'
 import { PlayerCard } from './PlayerCard'
 import { UpNextCarousel } from './UpNextCarousel'
+import { FEED_AUTOPLAY_EVENT, type FeedAutoplayEventDetail } from './feedAutoplayConfig'
 import { usePlayback } from './usePlayback'
 import './clip-feed.css'
 
@@ -39,6 +40,7 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
   const [toast, setToast] = useState<string | null>(null)
   const [queueOrder, setQueueOrder] = useState<string[] | null>(null)
   const autoPlayNext = useRef(false)
+  const feedScreenRef = useRef<HTMLDivElement>(null)
 
   const nowPlaying = useMemo(
     () => getEpisodeById(nowPlayingId) ?? FEED_QUEUE[0],
@@ -86,6 +88,20 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
   useEffect(() => {
     onPlaybackActiveChange?.(playback.isPlaying)
   }, [playback.isPlaying, onPlaybackActiveChange])
+
+  useEffect(() => {
+    const root = feedScreenRef.current
+    if (!root) return
+
+    const handleFeedAutoplay = (event: Event) => {
+      const { cardId } = (event as CustomEvent<FeedAutoplayEventDetail>).detail
+      if (!cardId) return
+      onPlaybackActiveChange?.(true)
+    }
+
+    root.addEventListener(FEED_AUTOPLAY_EVENT, handleFeedAutoplay)
+    return () => root.removeEventListener(FEED_AUTOPLAY_EVENT, handleFeedAutoplay)
+  }, [onPlaybackActiveChange])
 
   useEffect(() => {
     setNowPlayingId(resolveInitialId(selectedEpisodeId))
@@ -174,7 +190,7 @@ export const ClipFeed = ({ selectedEpisodeId, onPlayEpisode, onPlaybackActiveCha
   )
 
   return (
-    <div className="feed-screen">
+    <div className="feed-screen" ref={feedScreenRef}>
       {toast ? <div className="player-toast" role="status">{toast}</div> : null}
 
       <UpNextCarousel
