@@ -8,6 +8,7 @@ import { TrendingBriefs } from '../components/discover/TrendingBriefs'
 import { VibeShelves } from '../components/discover/VibeShelves'
 import { SectionReveal } from '../components/motion/SectionReveal'
 import { categories } from '../data/discoverData'
+import { editorialHero } from '../data/discoverFeed'
 import { transition } from '../styles/motion'
 import '../styles/discover-layout.css'
 
@@ -42,7 +43,7 @@ export const Discover = () => {
 
       <div className="discover-page__sections" aria-label="Discover content">
         <SectionReveal id="discover-editorial-hero">
-          <EditorialHero />
+          <EditorialHero hero={editorialHero} />
         </SectionReveal>
 
         <SectionReveal id="discover-vibe-shelves">
