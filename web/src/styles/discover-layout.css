@@ -21,22 +21,12 @@
 }
 
 .discover-page__body {
-  padding-inline: 16px;
   padding-bottom: 2rem;
 }
 
-.discover-page__filter-label {
-  margin: 0 0 1rem;
-  font-family: var(--font-body, 'Geist', sans-serif);
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
-.discover-page__placeholder {
-  margin: 1.5rem 0 0;
-  font-family: var(--font-body, 'Geist', sans-serif);
-  font-size: 0.875rem;
-  color: var(--text-muted);
+.discover-page__body .home-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 1rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
