@@ -1,10 +1,14 @@
 import { Route, Routes } from 'react-router-dom'
 import { Search } from './Search'
 
-export function SearchRoutes() {
+export type SearchRoutesProps = {
+  onPlayClip: (episodeId: string, seekSeconds?: number) => void
+}
+
+export function SearchRoutes({ onPlayClip }: SearchRoutesProps) {
   return (
     <Routes>
-      <Route path="/search" element={<Search />} />
+      <Route path="/search" element={<Search onPlayClip={onPlayClip} />} />
     </Routes>
   )
 }

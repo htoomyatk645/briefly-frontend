@@ -152,7 +152,18 @@ export const TabShell = ({
           <LibraryRoutes onOpenFeed={handleOpenFeed} onPlaySavedClip={handlePlaySavedClip} />
         )
       case 'search':
-        return <SearchRoutes />
+        return (
+          <SearchRoutes
+            onPlayClip={(episodeId, seekSeconds) => {
+              setSelectedEpisodeId(episodeId)
+              if (seekSeconds != null) {
+                setPendingClipMoment({ episodeId, seekSeconds })
+              }
+              navigate('/feed')
+              onPlayEpisode?.(episodeId)
+            }}
+          />
+        )
     }
   }
 
