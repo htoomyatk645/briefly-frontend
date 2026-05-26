@@ -11,6 +11,19 @@
   min-height: var(--reading-card-height);
 }
 
+/* Rail track stays flat — no panel fill or gradient behind cards */
+.reading-rail.library-rail {
+  background: transparent;
+}
+
+.reading-rail--loading .library-shimmer::after {
+  display: none;
+}
+
+.reading-rail--loading .library-shimmer {
+  background: hsl(var(--surface-base-hsl) / 0.45);
+}
+
 .reading-rail::-webkit-scrollbar {
   display: none;
 }
@@ -128,12 +141,12 @@
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-sm);
-  box-shadow: 0 8px 24px hsl(0 0% 0% / 0.18);
-  background: var(--surface-alt);
+  background: var(--surface);
 }
 
 .book-card__cover--placeholder {
-  background: hsl(var(--surface-base-hsl) / 0.55);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
 }
 
 .book-card__copy {
@@ -224,7 +237,8 @@
   width: 100%;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  background: var(--surface-alt);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
 }
 
 .resource-card__favicon {
@@ -237,7 +251,7 @@
 .resource-card__favicon--placeholder {
   width: 100%;
   height: 100%;
-  background: hsl(var(--surface-base-hsl) / 0.55);
+  background: var(--surface);
 }
 
 .resource-card__copy {
@@ -413,15 +427,15 @@
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: var(--radius-sm);
-  box-shadow: 0 8px 24px hsl(0 0% 0% / 0.18);
-  background: var(--surface-alt);
+  background: var(--surface);
 }
 
 .reading-detail-sheet__book-cover--placeholder {
   width: 100%;
   aspect-ratio: 2 / 3;
   border-radius: var(--radius-sm);
-  background: hsl(var(--surface-base-hsl) / 0.55);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
 }
 
 .reading-detail-sheet__author {
@@ -451,7 +465,8 @@
   height: 56px;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  background: var(--surface-alt);
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
 }
 
 .reading-detail-sheet__favicon {
@@ -463,7 +478,7 @@
 .reading-detail-sheet__favicon--placeholder {
   width: 100%;
   height: 100%;
-  background: hsl(var(--surface-base-hsl) / 0.55);
+  background: var(--surface);
 }
 
 .reading-detail-sheet__source {
