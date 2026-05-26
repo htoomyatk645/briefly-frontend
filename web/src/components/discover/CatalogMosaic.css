@@ -1,0 +1,85 @@
+.catalog-mosaic {
+  width: 100%;
+}
+
+.catalog-mosaic__header {
+  margin-bottom: 16px;
+}
+
+.catalog-mosaic__title {
+  margin: 0;
+  font-family: var(--font-display, 'Fraunces', Georgia, serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.catalog-mosaic__subtitle {
+  margin: 6px 0 0;
+  font-family: var(--font-body, 'Geist', sans-serif);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.catalog-mosaic__grid-wrap {
+  margin-inline: -16px;
+  padding-inline: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.catalog-mosaic__grid-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.catalog-mosaic__grid {
+  margin-inline: auto;
+}
+
+.catalog-mosaic__grid .mosaic-tile {
+  --lens-scale: 1;
+  transition: transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.catalog-mosaic__loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.catalog-mosaic__skeleton {
+  width: 100%;
+  max-width: 420px;
+  height: 240px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0%,
+    var(--surface-alt) 50%,
+    var(--surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: catalog-mosaic-shimmer 1400ms ease-in-out infinite;
+}
+
+@keyframes catalog-mosaic-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-mosaic__grid .mosaic-tile {
+    transition: none;
+  }
+
+  .catalog-mosaic__skeleton {
+    animation: none;
+    background: var(--surface-alt);
+  }
+}

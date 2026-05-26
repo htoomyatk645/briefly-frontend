@@ -1,10 +1,13 @@
+import { useMemo } from 'react'
 import { useReducedMotion } from 'framer-motion'
-import type { VibeShelf as VibeShelfData } from '../../data/discoverFeed'
+import type { CategoryId } from '../../data/discoverData'
+import { filterVibeShelvesByCategory, type VibeShelf as VibeShelfData } from '../../data/discoverFeed'
 import { VibeShelf } from './VibeShelf'
 import './VibeShelves.css'
 
 export type VibeShelvesProps = {
   shelves?: VibeShelfData[]
+  activeCategoryId?: CategoryId | null
   loading?: boolean
   onSelect?: (vibeId: string) => void
 }
@@ -13,13 +16,19 @@ const HEADING_ID = 'vibe-shelves-heading'
 
 export const VibeShelves = ({
   shelves = [],
+  activeCategoryId = null,
   loading = false,
   onSelect,
 }: VibeShelvesProps) => {
   const prefersReducedMotion = useReducedMotion()
   const allowMotion = !prefersReducedMotion && !loading
 
-  if (!loading && shelves.length === 0) {
+  const visibleShelves = useMemo(
+    () => filterVibeShelvesByCategory(shelves, activeCategoryId),
+    [shelves, activeCategoryId],
+  )
+
+  if (!loading && visibleShelves.length === 0) {
     return null
   }
 
@@ -30,7 +39,7 @@ export const VibeShelves = ({
       </h2>
 
       <VibeShelf
-        shelves={shelves}
+        shelves={visibleShelves}
         loading={loading}
         onSelect={onSelect}
         allowMotion={allowMotion}

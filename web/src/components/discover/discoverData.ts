@@ -1,5 +1,7 @@
 import { MOCK_HOME_FEED } from '../home/homeData'
 import { continueListeningEpisodes, pulseEpisodes } from '../../data/homeData'
+import type { CategoryId } from '../../data/discoverData'
+import { matchesCategoryId } from '../../data/discoverData'
 import { PLAYER_EPISODES, PODCAST_COVERS } from '../../data/podcastCatalog'
 
 export type MosaicItem = {
@@ -9,11 +11,36 @@ export type MosaicItem = {
   artworkTone: string
   coverSrc: string
   durationLabel?: string
+  categoryId: CategoryId
 }
 
 /** Strip duplicate suffix so feed routing resolves to the canonical episode id. */
 export function getMosaicBaseId(id: string): string {
   return id.replace(/~dup-[a-z0-9-]+$/i, '')
+}
+
+export function buildMosaicRows<T>(items: T[], cols: number): T[][] {
+  const rows: T[][] = []
+  let index = 0
+  let rowIdx = 0
+
+  while (index < items.length) {
+    const isOffset = rowIdx % 2 === 1
+    const rowLen = isOffset ? cols - 1 : cols
+    rows.push(items.slice(index, index + rowLen))
+    index += rowLen
+    rowIdx += 1
+  }
+
+  return rows
+}
+
+export function filterMosaicByCategory(
+  items: MosaicItem[],
+  activeCategoryId: CategoryId | null,
+): MosaicItem[] {
+  if (activeCategoryId === null) return items
+  return items.filter((item) => matchesCategoryId(item.categoryId, activeCategoryId))
 }
 
 const EXTRA_CATALOG: MosaicItem[] = [
@@ -24,6 +51,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'ocean',
     coverSrc: PODCAST_COVERS.theDaily,
     durationLabel: '32 min',
+    categoryId: 'news',
   },
   {
     id: 'cat-acquired',
@@ -32,6 +60,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'forest',
     coverSrc: PODCAST_COVERS.acquired,
     durationLabel: '3h 12 min',
+    categoryId: 'business',
   },
   {
     id: 'cat-revisionist',
@@ -40,6 +69,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'plum',
     coverSrc: PODCAST_COVERS.revisionistHistory,
     durationLabel: '38 min',
+    categoryId: 'society',
   },
   {
     id: 'cat-hibt',
@@ -48,6 +78,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'sand',
     coverSrc: PODCAST_COVERS.howIBuiltThis,
     durationLabel: '48 min',
+    categoryId: 'business',
   },
   {
     id: 'cat-invisible',
@@ -56,6 +87,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'coral',
     coverSrc: PODCAST_COVERS.invisible,
     durationLabel: '34 min',
+    categoryId: 'society',
   },
   {
     id: 'cat-rest',
@@ -64,6 +96,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'gold',
     coverSrc: PODCAST_COVERS.restIsHistory,
     durationLabel: '52 min',
+    categoryId: 'society',
   },
   {
     id: 'cat-crime',
@@ -72,6 +105,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'berry',
     coverSrc: PODCAST_COVERS.crimeJunkie,
     durationLabel: '44 min',
+    categoryId: 'true-crime',
   },
   {
     id: 'cat-mfm',
@@ -80,6 +114,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'rust',
     coverSrc: PODCAST_COVERS.myFavoriteMurder,
     durationLabel: '61 min',
+    categoryId: 'true-crime',
   },
   {
     id: 'cat-darknet',
@@ -88,6 +123,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'indigo',
     coverSrc: PODCAST_COVERS.darknetDiaries,
     durationLabel: '55 min',
+    categoryId: 'technology',
   },
   {
     id: 'cat-chd',
@@ -96,6 +132,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'terracotta',
     coverSrc: PODCAST_COVERS.callHerDaddy,
     durationLabel: '47 min',
+    categoryId: 'comedy',
   },
   {
     id: 'cat-huberman',
@@ -104,6 +141,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'moss',
     coverSrc: PODCAST_COVERS.huberman,
     durationLabel: '14 min',
+    categoryId: 'health',
   },
   {
     id: 'cat-jay',
@@ -112,6 +150,7 @@ const EXTRA_CATALOG: MosaicItem[] = [
     artworkTone: 'terracotta',
     coverSrc: PODCAST_COVERS.jayShetty,
     durationLabel: '36 min',
+    categoryId: 'health',
   },
 ]
 
@@ -132,6 +171,7 @@ function flatten(): MosaicItem[] {
     artworkTone: MOCK_HOME_FEED.featured.artworkTone,
     coverSrc: MOCK_HOME_FEED.featured.coverSrc!,
     durationLabel: MOCK_HOME_FEED.featured.durationLabel,
+    categoryId: 'society',
   })
 
   for (const r of MOCK_HOME_FEED.recommendations) {
@@ -142,6 +182,7 @@ function flatten(): MosaicItem[] {
       artworkTone: r.artworkTone,
       coverSrc: r.coverSrc!,
       durationLabel: r.durationLabel,
+      categoryId: 'society',
     })
   }
 
@@ -152,6 +193,7 @@ function flatten(): MosaicItem[] {
       episodeTitle: cl.episodeTitle,
       artworkTone: 'slate',
       coverSrc: cl.coverSrc,
+      categoryId: 'health',
     })
   }
 
@@ -163,6 +205,7 @@ function flatten(): MosaicItem[] {
       artworkTone: ne.artworkTone,
       coverSrc: ne.coverSrc!,
       durationLabel: ne.durationLabel,
+      categoryId: 'news',
     })
   }
 
@@ -173,6 +216,7 @@ function flatten(): MosaicItem[] {
       episodeTitle: p.episodeTitle,
       artworkTone: 'indigo',
       coverSrc: p.coverSrc,
+      categoryId: 'technology',
     })
   }
 

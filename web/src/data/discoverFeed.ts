@@ -1,8 +1,14 @@
 import type { MosaicItem } from '../components/discover/discoverData'
+import type { CategoryId } from './discoverData'
 import { PODCAST_COVERS, PLAYER_EPISODES } from './podcastCatalog'
+import {
+  filterMosaicByCategory,
+  MOSAIC_ITEMS,
+} from '../components/discover/discoverData'
 
 export type BriefCard = MosaicItem & {
   playCountLabel?: string
+  categoryId: CategoryId
 }
 
 export type EditorialHeroItem = {
@@ -42,6 +48,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.huberman,
     durationLabel: '4 min',
     playCountLabel: '28k plays',
+    categoryId: 'health',
   },
   {
     id: 'brief-02',
@@ -51,6 +58,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.acquired,
     durationLabel: '5 min',
     playCountLabel: '45k plays',
+    categoryId: 'business',
   },
   {
     id: 'brief-03',
@@ -60,6 +68,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.radiolab,
     durationLabel: '3 min',
     playCountLabel: '9.8k plays',
+    categoryId: 'science',
   },
   {
     id: 'brief-04',
@@ -69,6 +78,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.crimeJunkie,
     durationLabel: '4 min',
     playCountLabel: '67k plays',
+    categoryId: 'true-crime',
   },
   {
     id: 'brief-05',
@@ -78,6 +88,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.hardFork,
     durationLabel: '4 min',
     playCountLabel: '33k plays',
+    categoryId: 'technology',
   },
   {
     id: 'brief-06',
@@ -87,6 +98,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.smartLess,
     durationLabel: '3 min',
     playCountLabel: '15k plays',
+    categoryId: 'comedy',
   },
   {
     id: 'brief-07',
@@ -96,6 +108,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.foreignAffairs,
     durationLabel: '3 min',
     playCountLabel: '12k plays',
+    categoryId: 'news',
   },
   {
     id: 'brief-08',
@@ -105,6 +118,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.planetMoney,
     durationLabel: '3 min',
     playCountLabel: '11k plays',
+    categoryId: 'business',
   },
   {
     id: 'brief-09',
@@ -114,6 +128,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.jayShetty,
     durationLabel: '4 min',
     playCountLabel: '22k plays',
+    categoryId: 'health',
   },
   {
     id: 'brief-10',
@@ -123,6 +138,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.theDaily,
     durationLabel: '3 min',
     playCountLabel: '41k plays',
+    categoryId: 'news',
   },
   {
     id: 'brief-11',
@@ -132,6 +148,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.revisionistHistory,
     durationLabel: '3 min',
     playCountLabel: '7.4k plays',
+    categoryId: 'society',
   },
   {
     id: 'brief-12',
@@ -141,6 +158,7 @@ const briefCatalog: BriefCard[] = [
     coverSrc: PODCAST_COVERS.invisible,
     durationLabel: '3 min',
     playCountLabel: '5.6k plays',
+    categoryId: 'society',
   },
 ]
 
@@ -257,4 +275,48 @@ export function getBriefCover(id: string): Pick<BriefCard, 'coverSrc' | 'artwork
   const brief = briefById[id]
   if (!brief) return null
   return { coverSrc: brief.coverSrc, artworkTone: brief.artworkTone }
+}
+
+export function filterBriefsByCategory(
+  briefs: BriefCard[],
+  activeCategoryId: CategoryId | null,
+): BriefCard[] {
+  if (activeCategoryId === null) return briefs
+  return briefs.filter((brief) => brief.categoryId === activeCategoryId)
+}
+
+export function filterVibeShelvesByCategory(
+  shelves: VibeShelf[],
+  activeCategoryId: CategoryId | null,
+): VibeShelf[] {
+  if (activeCategoryId === null) return shelves
+
+  return shelves
+    .map((shelf) => ({
+      ...shelf,
+      items: shelf.items.filter((item) => item.categoryId === activeCategoryId),
+    }))
+    .filter((shelf) => shelf.items.length > 0)
+}
+
+export function filterBrieflyPicksByCategory(
+  picks: BrieflyPickList[],
+  activeCategoryId: CategoryId | null,
+): BrieflyPickList[] {
+  if (activeCategoryId === null) return picks
+
+  return picks.filter((pick) =>
+    pick.coverIds.some((coverId) => briefById[coverId]?.categoryId === activeCategoryId),
+  )
+}
+
+export function hasDiscoverFilterResults(activeCategoryId: CategoryId | null): boolean {
+  if (activeCategoryId === null) return true
+
+  return (
+    filterVibeShelvesByCategory(vibeShelves, activeCategoryId).length > 0 ||
+    filterBrieflyPicksByCategory(brieflyPicks, activeCategoryId).length > 0 ||
+    filterBriefsByCategory(trendingBriefs, activeCategoryId).length > 0 ||
+    filterMosaicByCategory(MOSAIC_ITEMS, activeCategoryId).length > 0
+  )
 }

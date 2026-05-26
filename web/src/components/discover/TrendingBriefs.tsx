@@ -1,10 +1,13 @@
+import { useMemo } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import type { BriefCard } from '../../data/discoverFeed'
+import type { CategoryId } from '../../data/discoverData'
+import { filterBriefsByCategory, type BriefCard } from '../../data/discoverFeed'
 import { TrendingBriefRow } from './TrendingBriefRow'
 import './TrendingBriefs.css'
 
 export type TrendingBriefsProps = {
   briefs?: BriefCard[]
+  activeCategoryId?: CategoryId | null
   loading?: boolean
   onPlay?: (id: string) => void
 }
@@ -14,13 +17,19 @@ const SKELETON_COUNT = 6
 
 export const TrendingBriefs = ({
   briefs = [],
+  activeCategoryId = null,
   loading = false,
   onPlay,
 }: TrendingBriefsProps) => {
   const prefersReducedMotion = useReducedMotion()
   const allowMotion = !prefersReducedMotion && !loading
 
-  if (!loading && briefs.length === 0) {
+  const visibleBriefs = useMemo(
+    () => filterBriefsByCategory(briefs, activeCategoryId),
+    [briefs, activeCategoryId],
+  )
+
+  if (!loading && visibleBriefs.length === 0) {
     return null
   }
 
@@ -48,7 +57,7 @@ export const TrendingBriefs = ({
           ? Array.from({ length: SKELETON_COUNT }, (_, index) => (
               <TrendingBriefRow key={`trending-skeleton-${index}`} rank={0} loading />
             ))
-          : briefs.map((brief, index) => (
+          : visibleBriefs.map((brief, index) => (
               <TrendingBriefRow
                 key={brief.id}
                 rank={index + 1}

@@ -1,10 +1,16 @@
+import { useMemo } from 'react'
 import { useReducedMotion } from 'framer-motion'
-import type { BrieflyPickList } from '../../data/discoverFeed'
+import type { CategoryId } from '../../data/discoverData'
+import {
+  filterBrieflyPicksByCategory,
+  type BrieflyPickList,
+} from '../../data/discoverFeed'
 import { BrieflyPickCard } from './BrieflyPickCard'
 import './BrieflyPicks.css'
 
 export type BrieflyPicksProps = {
   picks?: BrieflyPickList[]
+  activeCategoryId?: CategoryId | null
   loading?: boolean
   onSelect?: (pickId: string) => void
   onSeeAll?: () => void
@@ -15,6 +21,7 @@ const SKELETON_COUNT = 3
 
 export const BrieflyPicks = ({
   picks = [],
+  activeCategoryId = null,
   loading = false,
   onSelect,
   onSeeAll,
@@ -22,7 +29,12 @@ export const BrieflyPicks = ({
   const prefersReducedMotion = useReducedMotion()
   const allowMotion = !prefersReducedMotion && !loading
 
-  if (!loading && picks.length === 0) {
+  const visiblePicks = useMemo(
+    () => filterBrieflyPicksByCategory(picks, activeCategoryId),
+    [picks, activeCategoryId],
+  )
+
+  if (!loading && visiblePicks.length === 0) {
     return null
   }
 
@@ -56,7 +68,7 @@ export const BrieflyPicks = ({
           ? Array.from({ length: SKELETON_COUNT }, (_, index) => (
               <BrieflyPickCard key={`briefly-pick-skeleton-${index}`} loading />
             ))
-          : picks.map((pick, index) => (
+          : visiblePicks.map((pick, index) => (
               <BrieflyPickCard
                 key={pick.id}
                 pick={pick}
