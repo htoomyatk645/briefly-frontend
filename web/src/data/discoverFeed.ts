@@ -248,3 +248,13 @@ export const trendingBriefs: BriefCard[] = [
   briefCatalog[7],
   briefCatalog[2],
 ].map(withListensToday)
+
+export const briefById: Record<string, BriefCard> = Object.fromEntries(
+  briefCatalog.map((brief) => [brief.id, brief]),
+)
+
+export function getBriefCover(id: string): Pick<BriefCard, 'coverSrc' | 'artworkTone'> | null {
+  const brief = briefById[id]
+  if (!brief) return null
+  return { coverSrc: brief.coverSrc, artworkTone: brief.artworkTone }
+}
