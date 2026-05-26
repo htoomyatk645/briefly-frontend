@@ -692,17 +692,17 @@
 
 .player-card__progress-track {
   position: relative;
-  height: 3px;
+  height: 3.9px;
   background: var(--player-theme-muted);
   border: none;
   overflow: hidden;
   clip-path: polygon(
     0% 50%,
-    5px 0%,
-    calc(100% - 5px) 0%,
+    6.5px 0%,
+    calc(100% - 6.5px) 0%,
     100% 50%,
-    calc(100% - 5px) 100%,
-    5px 100%
+    calc(100% - 6.5px) 100%,
+    6.5px 100%
   );
   transition: background 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -713,13 +713,13 @@
   top: 0;
   bottom: 0;
   background: var(--player-theme-accent, var(--feed-accent));
-  min-width: 2px;
+  min-width: 2.6px;
   clip-path: polygon(
     0% 50%,
-    5px 0%,
+    6.5px 0%,
     100% 0%,
     100% 100%,
-    5px 100%
+    6.5px 100%
   );
   transition: background 0.36s cubic-bezier(0.22, 1, 0.36, 1);
 }
