@@ -1,5 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useId, useState, type ChangeEvent, type CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
+import { markShowProfileOpenedFromFeed } from '../library/useShowProfileBack'
 import { AnimatedNumber } from '../motion/AnimatedNumber'
 import { transition } from '../../styles/motion'
 import type { FeedEpisode } from './feedData'
@@ -36,7 +38,6 @@ type PlayerCardProps = {
   onToggleSaved: () => void
   onToggleFollow: () => void
   onMoreAction: (action: MoreMenuAction) => void
-  onShowPage?: (showId: string) => void
 }
 
 const PlayIcon = () => (
@@ -70,7 +71,6 @@ export const PlayerCard = ({
   onToggleSaved,
   onToggleFollow,
   onMoreAction,
-  onShowPage,
 }: PlayerCardProps) => {
   const prefersReducedMotion = useReducedMotion()
   const progressId = useId()
@@ -164,14 +164,14 @@ export const PlayerCard = ({
                 </motion.div>
               )}
 
-              <button
-                type="button"
+              <Link
+                to={`/library/shows/${episode.showId}`}
                 className="player-card__source"
                 aria-label={`Show: ${episode.showName}`}
-                onClick={() => onShowPage?.(episode.showId)}
+                onClick={markShowProfileOpenedFromFeed}
               >
                 <span className="player-card__source-text">{episode.showName.toUpperCase()}</span>
-              </button>
+              </Link>
             </div>
 
             <header className="player-card__toolbar" role="toolbar" aria-label="Player actions">

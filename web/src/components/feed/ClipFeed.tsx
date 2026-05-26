@@ -240,7 +240,6 @@ export const ClipFeed = ({
         onToggleSaved={toggleSaved}
         onToggleFollow={toggleFollow}
         onMoreAction={handleMoreAction}
-        onShowPage={() => showToast(`Opening ${nowPlaying.showName}`)}
       />
     </div>
   )
