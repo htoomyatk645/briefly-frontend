@@ -1,11 +1,12 @@
 import { PLAYER_EPISODES, PODCAST_COVERS } from '../../data/podcastCatalog'
+import { LIBRARY_PRODUCT_IMAGES } from './libraryAssetPaths'
 
 export type MentionedProduct = {
   id: string
   title: string
   brand: string
   price: string
-  imageUrl?: string
+  imageUrl: string
   affiliateUrl: string
   hostName: string
   hostFirstName: string
@@ -26,7 +27,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Momentous Magnesium Threonate',
     brand: 'Momentous',
     price: '$29.99',
-    affiliateUrl: 'https://example.com/momentous-magnesium',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.magnesium,
+    affiliateUrl: 'https://www.livemomentous.com/products/magnesium-threonate',
     hostName: PLAYER_EPISODES.huberman.showName,
     hostFirstName: 'Andrew',
     hostAvatarSrc: PODCAST_COVERS.huberman,
@@ -42,7 +44,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Why We Sleep',
     brand: 'Penguin Books',
     price: '$18.00',
-    affiliateUrl: 'https://example.com/why-we-sleep',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.whyWeSleep,
+    affiliateUrl: 'https://bookshop.org/books/why-we-sleep/9781501144310',
     hostName: PLAYER_EPISODES.huberman.showName,
     hostFirstName: 'Andrew',
     hostAvatarSrc: PODCAST_COVERS.huberman,
@@ -57,6 +60,7 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Rechargeable Red-Spectrum Desk Lamp',
     brand: 'Helios Labs',
     price: '$64.00',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.redLamp,
     affiliateUrl: 'https://example.com/red-spectrum-lamp',
     hostName: PLAYER_EPISODES.huberman.showName,
     hostFirstName: 'Andrew',
@@ -73,9 +77,10 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'AG1 Daily Foundational Nutrition',
     brand: 'Athletic Greens',
     price: '$79.00',
-    affiliateUrl: 'https://example.com/ag1',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.ag1,
+    affiliateUrl: 'https://drinkag1.com',
     hostName: PLAYER_EPISODES.wsj.showName,
-    hostFirstName: 'Tech',
+    hostFirstName: 'Kate',
     hostAvatarSrc: PODCAST_COVERS.wsj,
     episodeId: 'feed-wsj',
     episodeTitle: PLAYER_EPISODES.wsj.episodeTitle,
@@ -89,7 +94,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Notion for Research Teams',
     brand: 'Notion',
     price: 'Free trial',
-    affiliateUrl: 'https://example.com/notion',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.notion,
+    affiliateUrl: 'https://www.notion.so',
     hostName: PLAYER_EPISODES.foreignAffairs.showName,
     hostFirstName: 'Dan',
     hostAvatarSrc: PODCAST_COVERS.foreignAffairs,
@@ -105,7 +111,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Headspace Annual Membership',
     brand: 'Headspace',
     price: '$69.99',
-    affiliateUrl: 'https://example.com/headspace',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.headspace,
+    affiliateUrl: 'https://www.headspace.com/subscriptions',
     hostName: PLAYER_EPISODES.jayShetty.showName,
     hostFirstName: 'Jay',
     hostAvatarSrc: PODCAST_COVERS.jayShetty,
@@ -121,7 +128,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Oura Ring Gen 3',
     brand: 'Oura',
     price: '$299.00',
-    affiliateUrl: 'https://example.com/oura-ring',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.oura,
+    affiliateUrl: 'https://ouraring.com',
     hostName: PLAYER_EPISODES.huberman.showName,
     hostFirstName: 'Andrew',
     hostAvatarSrc: PODCAST_COVERS.huberman,
@@ -137,7 +145,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Audible Plus',
     brand: 'Audible',
     price: '$7.95/mo',
-    affiliateUrl: 'https://example.com/audible',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.audible,
+    affiliateUrl: 'https://www.audible.com/plus',
     hostName: 'The Daily',
     hostFirstName: 'Michael',
     hostAvatarSrc: PODCAST_COVERS.theDaily,
@@ -153,7 +162,8 @@ export const MENTIONED_PRODUCTS: MentionedProduct[] = [
     title: 'Hydro Flask 32oz',
     brand: 'Hydro Flask',
     price: '$44.95',
-    affiliateUrl: 'https://example.com/hydroflask',
+    imageUrl: LIBRARY_PRODUCT_IMAGES.hydroFlask,
+    affiliateUrl: 'https://www.hydroflask.com',
     hostName: PLAYER_EPISODES.jayShetty.showName,
     hostFirstName: 'Jay',
     hostAvatarSrc: PODCAST_COVERS.jayShetty,

@@ -1,4 +1,5 @@
-import { PLAYER_EPISODES, PODCAST_COVERS } from '../../data/podcastCatalog'
+import { PLAYER_EPISODES } from '../../data/podcastCatalog'
+import { faviconForDomain, LIBRARY_BOOK_COVERS } from './libraryAssetPaths'
 
 export type MentionedReadingBase = {
   id: string
@@ -14,8 +15,8 @@ export type MentionedBook = MentionedReadingBase & {
   kind: 'book'
   title: string
   author: string
-  coverUrl?: string
-  description?: string
+  coverUrl: string
+  description: string
   bookshopSearchUrl: string
 }
 
@@ -24,7 +25,7 @@ export type MentionedResource = MentionedReadingBase & {
   title: string
   url: string
   domain: string
-  faviconUrl?: string
+  faviconUrl: string
   snippet: string
 }
 
@@ -38,7 +39,7 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     id: 'read-why-we-sleep',
     title: 'Why We Sleep',
     author: 'Matthew Walker',
-    coverUrl: PODCAST_COVERS.huberman,
+    coverUrl: LIBRARY_BOOK_COVERS.whyWeSleep,
     description:
       'A field guide to what sleep does for memory, metabolism, and emotional regulation — cited constantly on health podcasts.',
     bookshopSearchUrl: 'https://bookshop.org/search?keywords=Why%20We%20Sleep%20Matthew%20Walker',
@@ -55,6 +56,7 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     title: 'NIH: Sleep Deprivation and Deficiency',
     url: 'https://www.nhlbi.nih.gov/health/sleep-deprivation',
     domain: 'nhlbi.nih.gov',
+    faviconUrl: faviconForDomain('nhlbi.nih.gov'),
     snippet:
       'Walker points listeners to the NIH overview when arguing that even mild restriction compounds across a work week.',
     hostName: PLAYER_EPISODES.huberman.showName,
@@ -69,6 +71,9 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     id: 'read-thinking-fast',
     title: 'Thinking, Fast and Slow',
     author: 'Daniel Kahneman',
+    coverUrl: LIBRARY_BOOK_COVERS.thinkingFastAndSlow,
+    description:
+      'Used as shorthand for System 1 versus System 2 reasoning when the conversation turns to leader misjudgment.',
     bookshopSearchUrl: 'https://bookshop.org/search?keywords=Thinking%20Fast%20and%20Slow',
     hostName: PLAYER_EPISODES.foreignAffairs.showName,
     hostFirstName: 'Dan',
@@ -76,8 +81,6 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     episodeTitle: PLAYER_EPISODES.foreignAffairs.episodeTitle,
     showName: PLAYER_EPISODES.foreignAffairs.showName,
     mentionOffsetSeconds: 18 * 60 + 40,
-    description:
-      'Used as shorthand for System 1 versus System 2 reasoning when the conversation turns to leader misjudgment.',
   },
   {
     kind: 'resource',
@@ -85,6 +88,7 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     title: 'CFR: Realism and Its Limits',
     url: 'https://www.cfr.org/article/realism-and-its-limits',
     domain: 'cfr.org',
+    faviconUrl: faviconForDomain('cfr.org'),
     snippet:
       'The guest references this essay when distinguishing structural constraints from leader psychology.',
     hostName: PLAYER_EPISODES.foreignAffairs.showName,
@@ -99,7 +103,9 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     id: 'read-atomic-habits',
     title: 'Atomic Habits',
     author: 'James Clear',
-    coverUrl: PODCAST_COVERS.jayShetty,
+    coverUrl: LIBRARY_BOOK_COVERS.atomicHabits,
+    description:
+      'Framed as a practical stack for morning rituals rather than motivation theater.',
     bookshopSearchUrl: 'https://bookshop.org/search?keywords=Atomic%20Habits',
     hostName: PLAYER_EPISODES.jayShetty.showName,
     hostFirstName: 'Jay',
@@ -107,8 +113,6 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     episodeTitle: PLAYER_EPISODES.jayShetty.episodeTitle,
     showName: PLAYER_EPISODES.jayShetty.showName,
     mentionOffsetSeconds: 9 * 60 + 18,
-    description:
-      'Framed as a practical stack for morning rituals rather than motivation theater.',
   },
   {
     kind: 'resource',
@@ -116,6 +120,7 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     title: 'Headspace: The Science of Meditation',
     url: 'https://www.headspace.com/science',
     domain: 'headspace.com',
+    faviconUrl: faviconForDomain('headspace.com'),
     snippet:
       'Jay links out to the research hub when explaining why guided breath is measurable, not aesthetic.',
     hostName: PLAYER_EPISODES.jayShetty.showName,
@@ -130,15 +135,16 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     id: 'read-chip-war',
     title: 'Chip War',
     author: 'Chris Miller',
+    coverUrl: LIBRARY_BOOK_COVERS.chipWar,
+    description:
+      'The history of semiconductor supply chains, invoked when discussing why SVB’s collapse rippled through hardware startups.',
     bookshopSearchUrl: 'https://bookshop.org/search?keywords=Chip%20War%20Chris%20Miller',
     hostName: PLAYER_EPISODES.wsj.showName,
-    hostFirstName: 'Tech',
+    hostFirstName: 'Kate',
     episodeId: 'feed-wsj',
     episodeTitle: PLAYER_EPISODES.wsj.episodeTitle,
     showName: PLAYER_EPISODES.wsj.showName,
     mentionOffsetSeconds: 4 * 60 + 55,
-    description:
-      'The history of semiconductor supply chains, invoked when discussing why SVB’s collapse rippled through hardware startups.',
   },
   {
     kind: 'resource',
@@ -146,10 +152,11 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     title: 'Federal Reserve: SVB Supervisory Review',
     url: 'https://www.federalreserve.gov/publications/svb-review.htm',
     domain: 'federalreserve.gov',
+    faviconUrl: faviconForDomain('federalreserve.gov'),
     snippet:
       'Hosts cite the Fed’s post-mortem when separating liquidity panic from underlying asset quality.',
     hostName: PLAYER_EPISODES.wsj.showName,
-    hostFirstName: 'Tech',
+    hostFirstName: 'Kate',
     episodeId: 'feed-wsj',
     episodeTitle: PLAYER_EPISODES.wsj.episodeTitle,
     showName: PLAYER_EPISODES.wsj.showName,
@@ -160,6 +167,9 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     id: 'read-meditations',
     title: 'Meditations',
     author: 'Marcus Aurelius',
+    coverUrl: LIBRARY_BOOK_COVERS.meditations,
+    description:
+      'Quoted for the line on controlling perception — a staple reference in discipline conversations.',
     bookshopSearchUrl: 'https://bookshop.org/search?keywords=Meditations%20Marcus%20Aurelius',
     hostName: PLAYER_EPISODES.jayShetty.showName,
     hostFirstName: 'Jay',
@@ -167,7 +177,5 @@ export const MENTIONED_READING: MentionedReadingItem[] = [
     episodeTitle: 'Stoicism for modern mornings',
     showName: PLAYER_EPISODES.jayShetty.showName,
     mentionOffsetSeconds: 16 * 60 + 20,
-    description:
-      'Quoted for the line on controlling perception — a staple reference in discipline conversations.',
   },
 ]

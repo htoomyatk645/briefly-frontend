@@ -6,7 +6,9 @@ export type ContextCardProps = {
 }
 
 export default function ContextCard({ context, onOpen }: ContextCardProps) {
-  const referencePreview = context.references[0]?.label ?? 'References inside'
+  const speakerCount = context.speakers.length
+  const referenceCount = context.references.length
+  const metaLabel = `${speakerCount} speaker${speakerCount === 1 ? '' : 's'} · ${referenceCount} reference${referenceCount === 1 ? '' : 's'}`
 
   return (
     <article className="context-card">
@@ -19,7 +21,7 @@ export default function ContextCard({ context, onOpen }: ContextCardProps) {
         <span className="context-card__eyebrow">{context.showName}</span>
         <h3 className="context-card__title">{context.episodeTitle}</h3>
         <p className="context-card__teaser">{context.showContext}</p>
-        <span className="context-card__meta">{referencePreview}</span>
+        <span className="context-card__meta">{metaLabel}</span>
       </button>
     </article>
   )

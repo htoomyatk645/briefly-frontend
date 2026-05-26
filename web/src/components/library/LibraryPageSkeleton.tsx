@@ -37,6 +37,18 @@ export function LibraryPageSkeleton() {
         </div>
       </LibrarySection>
 
+      <LibrarySection
+        id="context-skeleton"
+        title="Context"
+        subtitle="Show background, speakers, and references from your clips."
+      >
+        <div className="library-rail-skeleton" role="presentation">
+          {Array.from({ length: 3 }, (_, index) => (
+            <SkeletonShimmer key={index} className="context-rail__skeleton" />
+          ))}
+        </div>
+      </LibrarySection>
+
       <LibrarySection id="mentions-skeleton" title="From the episodes">
         <div className="library-mentions-skeleton" role="presentation">
           <SkeletonShimmer className="library-mentions-skeleton__panel" />
