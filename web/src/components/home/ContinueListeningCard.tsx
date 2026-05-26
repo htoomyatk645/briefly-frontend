@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import type { CSSProperties } from 'react'
 import type { ContinueListeningEpisode } from '../../data/homeData'
+import { FeedCardRadialProgress } from '../feed/FeedCardRadialProgress'
 import { pressSpring, transition } from '../../styles/motion'
 import '../../styles/sections.css'
 import './continue-listening.css'
@@ -40,20 +41,17 @@ export const ContinueListeningCard = ({
       whileTap={allowMotion ? { scale: 0.97 } : undefined}
       transition={pressSpring}
     >
-      <img
-        src={item.coverSrc}
-        alt=""
-        className="continue-listening-card__art"
-        width={132}
-        height={132}
-      />
+      <span className="continue-listening-card__art-wrap">
+        <img
+          src={item.coverSrc}
+          alt=""
+          className="continue-listening-card__art"
+          width={132}
+          height={132}
+        />
+        <FeedCardRadialProgress progress={item.progress} />
+      </span>
       <span className="continue-listening-card__body">
-        <span className="continue-listening-card__progress" aria-hidden>
-          <span
-            className="continue-listening-card__progress-fill"
-            style={{ width: `${Math.round(item.progress * 100)}%` }}
-          />
-        </span>
         <span className="continue-listening-card__progress-label">
           {item.progressLabel}
         </span>

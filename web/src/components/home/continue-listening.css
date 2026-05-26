@@ -42,11 +42,19 @@
   box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
-.continue-listening-card__art {
+.continue-listening-card__art-wrap {
+  position: relative;
+  flex-shrink: 0;
   width: 100%;
   height: 132px;
-  flex-shrink: 0;
-  border-radius: 8px;
+  --feed-radial-art-padding: 4px;
+}
+
+.continue-listening-card__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-sm, 8px);
   object-fit: cover;
 }
 
@@ -56,21 +64,6 @@
   gap: 6px;
   flex: 1;
   min-height: 0;
-}
-
-.continue-listening-card__progress {
-  display: block;
-  height: 3px;
-  border-radius: 999px;
-  background: hsl(0 0% 100% / 0.25);
-  overflow: hidden;
-}
-
-.continue-listening-card__progress-fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--mix-highlight);
 }
 
 .continue-listening-card__progress-label {

@@ -1,0 +1,28 @@
+.feed-card-radial-progress {
+  position: absolute;
+  inset: calc(var(--feed-radial-art-padding, 4px) * -1);
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.feed-card-radial-progress__track {
+  fill: none;
+  stroke: hsl(0 0% 100% / 0.15);
+}
+
+.feed-card-radial-progress__fill {
+  fill: none;
+  stroke: var(--color-accent-warm);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.feed-card-radial-progress--static .feed-card-radial-progress__fill {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-card-radial-progress__fill {
+    transition: none;
+  }
+}
