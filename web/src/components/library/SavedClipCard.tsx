@@ -1,13 +1,21 @@
-import { useReducedMotion } from 'framer-motion'
-import { useRef, type RefObject } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
 import { FeedCardRadialProgress } from '../feed/FeedCardRadialProgress'
-import { formatRelativeSaveDate } from './savedClipsTypes'
+import { pressSpring } from '../../styles/motion'
 import type { SavedClip } from './savedClipsTypes'
 import { SavedClipWaveform } from './SavedClipWaveform'
+import { useCoverTintHsl } from './useCoverTintHsl'
 import { useSavedClipRailCentered } from './useSavedClipRailCentered'
+import '../home/continue-listening.css'
 import './savedClipCard.css'
 
-const COVER_SIZE = 64
+const ART_HEIGHT = 132
+
+function parseTintHsl(tint: string): { h: string; s: string } {
+  const match = tint.match(/^([\d.]+)\s+([\d.]+)%/)
+  if (!match) return { h: '220', s: '30%' }
+  return { h: match[1], s: `${match[2]}%` }
+}
 
 export type SavedClipCardProps = {
   clip: SavedClip
@@ -34,17 +42,40 @@ export default function SavedClipCard({
   onUnsave,
 }: SavedClipCardProps) {
   const cardRef = useRef<HTMLElement>(null)
+  const artWrapRef = useRef<HTMLSpanElement>(null)
+  const [artSize, setArtSize] = useState({ width: 132, height: ART_HEIGHT })
   const prefersReducedMotion = useReducedMotion()
+  const coverTint = useCoverTintHsl(clip.coverSrc)
+  const { h, s } = parseTintHsl(coverTint)
+  const tintStyle = {
+    '--continue-card-h': h,
+    '--continue-card-s': s,
+  } as CSSProperties
+
   const isCentered = useSavedClipRailCentered(
     railRef ?? { current: null },
     cardRef,
     layout === 'rail' && Boolean(railRef) && !prefersReducedMotion,
   )
   const waveformActive = layout === 'rail' && isCentered && !prefersReducedMotion
+  const allowMotion = !prefersReducedMotion
 
-  const handleCardClick = () => {
-    onPlay(clip)
-  }
+  useEffect(() => {
+    const element = artWrapRef.current
+    if (!element) return
+
+    const measure = () => {
+      setArtSize({
+        width: element.clientWidth,
+        height: element.clientHeight,
+      })
+    }
+
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
 
   const handleUnsave = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -54,47 +85,36 @@ export default function SavedClipCard({
   return (
     <article
       ref={cardRef}
-      className={`saved-clip-card saved-clip-card--${layout}${
-        prefersReducedMotion ? ' saved-clip-card--reduced-motion' : ''
-      }`}
+      className={`saved-clip-card saved-clip-card--${layout}`}
     >
-      <button
+      <motion.button
         type="button"
-        className="saved-clip-card__hit"
-        onClick={handleCardClick}
+        className="continue-listening-card saved-clip-card__surface"
+        style={tintStyle}
+        onClick={() => onPlay(clip)}
         aria-label={`Play saved moment from ${clip.showName}: ${clip.sentenceBefore}`}
+        whileTap={allowMotion ? { scale: 0.97 } : undefined}
+        transition={pressSpring}
       >
-        <div className="saved-clip-card__top">
-          <span className="saved-clip-card__cover-wrap">
-            <img
-              src={clip.coverSrc}
-              alt=""
-              className="saved-clip-card__cover"
-              width={COVER_SIZE}
-              height={COVER_SIZE}
-            />
-            <span className="saved-clip-card__cover-warmth" aria-hidden />
-            <SavedClipWaveform active={waveformActive} />
-            <FeedCardRadialProgress
-              progress={clip.clipProgress}
-              artWidth={COVER_SIZE}
-              artHeight={COVER_SIZE}
-            />
-          </span>
-        </div>
-
-        <p className="saved-clip-card__quote">{clip.sentenceBefore}</p>
-
-        <div className="saved-clip-card__meta">
-          <div className="saved-clip-card__meta-primary">
-            <span className="saved-clip-card__show">{clip.showName}</span>
-            <span className="saved-clip-card__episode">{clip.episodeTitle}</span>
-          </div>
-          <time className="saved-clip-card__date" dateTime={clip.savedAt}>
-            {formatRelativeSaveDate(clip.savedAt)}
-          </time>
-        </div>
-      </button>
+        <span ref={artWrapRef} className="continue-listening-card__art-wrap">
+          <img
+            src={clip.coverSrc}
+            alt=""
+            className="continue-listening-card__art"
+            width={132}
+            height={ART_HEIGHT}
+          />
+          <SavedClipWaveform active={waveformActive} />
+          <FeedCardRadialProgress
+            progress={clip.clipProgress}
+            artWidth={artSize.width}
+            artHeight={artSize.height}
+          />
+        </span>
+        <span className="continue-listening-card__body">
+          <span className="continue-listening-card__title">{clip.episodeTitle}</span>
+        </span>
+      </motion.button>
 
       <button
         type="button"
