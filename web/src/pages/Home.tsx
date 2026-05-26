@@ -3,9 +3,6 @@ import { TheEdit } from '../components/TheEdit'
 import { JumpRightIn } from '../components/discover/JumpRightIn'
 import { AccountMenuButton } from '../components/home/AccountMenuButton'
 import { ContinueListeningSection } from '../components/home/ContinueListeningCard'
-import { EpisodeFeedItem } from '../components/home/EpisodeFeedItem'
-import { FeaturedEpisodeCard } from '../components/home/FeaturedEpisodeCard'
-import { MOCK_HOME_FEED } from '../components/home/homeData'
 import { NewEpisodeFeedItem } from '../components/home/NewEpisodeFeedItem'
 import { SectionReveal } from '../components/motion/SectionReveal'
 import { BrieflyLogo } from '../components/onboarding/BrieflyLogo'
@@ -15,6 +12,7 @@ import {
   editorialPick,
   pulseEpisodes,
 } from '../data/homeData'
+import { MOCK_HOME_FEED } from '../components/home/homeData'
 import '../components/home/home.css'
 import '../components/discover/discover-mosaic.css'
 import '../styles/sections.css'
@@ -61,31 +59,6 @@ export const Home = ({ onTileSelect }: HomeProps) => {
 
         <SectionReveal id="the-edit">
           <TheEdit pick={editorialPick} onPlay={onTileSelect} />
-        </SectionReveal>
-
-        <SectionReveal id="for-you-today">
-          <section className="home-section" aria-labelledby="for-you-heading">
-            <div className="home-section__head">
-              <h2 id="for-you-heading" className="home-section__title">
-                For you today
-              </h2>
-              <p className="home-section__subtitle">
-                Hand-picked highlights based on your tastes.
-              </p>
-            </div>
-
-            <FeaturedEpisodeCard episode={feed.featured} onPlay={onTileSelect} />
-
-            <div className="home-feed-list" role="list">
-              {feed.recommendations.map((episode) => (
-                <EpisodeFeedItem
-                  key={episode.id}
-                  episode={episode}
-                  onPress={onTileSelect}
-                />
-              ))}
-            </div>
-          </section>
         </SectionReveal>
 
         <SectionReveal id="new-episodes">
